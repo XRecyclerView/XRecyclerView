@@ -40,6 +40,29 @@ and
 ```
 to notify that the refreshing work is done
 
+###custom refresh and loading more style
+pull refresh and loading more style is highly customizable.
+#### custom loading style
+the loading effect we use the AVLoadingIndicatorView. and it is built in(make a little change).
+we provide all the effect in AVLoadingIndicatorView library besides we add a system style.
+you can call 
+```java
+mRecyclerView.setRefreshProgressStyle(ProgressStyle.SysProgress);
+```
+and 
+```java
+mRecyclerView.setLaodingMoreProgressStyle(ProgressStyle.BallClipRotate);
+```
+to set the RefreshProgressStyle and  LaodingMoreProgressStyle respectively.
+#### refresh arrow icon
+we provide a default arrow icon:
+
+but if you don't like it,you can replace it to any other icon  you want.
+just call
+```java
+mRecyclerView.setArrowImageView(R.drawable.iconfontarrowdown);
+```
+
 ###disable refresh and load more featrue
 if you don't want the refresh and load more featrue(in that case,you probably dont'n need the lib neither),you can call
 ```java
