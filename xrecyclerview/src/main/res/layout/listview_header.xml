@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:gravity="bottom" >
+
+    <RelativeLayout
+        android:id="@+id/listview_header_content"
+        android:layout_width="fill_parent"
+        android:layout_height="60dp" >
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:orientation="vertical" android:id="@+id/listview_header_text">
+
+            <TextView
+                android:id="@+id/refresh_status_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/listview_header_hint_normal" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/listview_header_last_time"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/last_refresh_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="12sp" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/listview_header_arrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="35dp"
+            android:layout_toLeftOf="@id/listview_header_text"
+            android:src="@drawable/ic_pulltorefresh_arrow" />
+
+        <com.jcodecraeer.xrecyclerview.SimpleViewSwithcer
+            android:id="@+id/listview_header_progressbar"
+            android:layout_width="30dip"
+            android:layout_height="30dip"
+            android:layout_toLeftOf="@id/listview_header_text"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="40dp"
+            android:visibility="invisible" />
+    </RelativeLayout>
+
+</LinearLayout>
