@@ -33,12 +33,18 @@ you can use
 ```java
 mRecyclerView.loadMoreComplate();
 ```
-to notify that the loading more work is done
+to notify that the loading more work is done.
 and
+
 ```java
  mRecyclerView.refreshComplate();
 ```
-to notify that the refreshing work is done
+
+to notify that the refreshing work is done.
+
+here is what we get:
+
+![default](https://github.com/jianghejie/XRecyclerView/blob/master/art/default.gif)
 
 ###custom refresh and loading more style
 pull refresh and loading more style is highly customizable.
