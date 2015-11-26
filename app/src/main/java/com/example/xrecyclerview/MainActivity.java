@@ -1,16 +1,69 @@
 package com.example.xrecyclerview;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class MainActivity extends AppCompatActivity {
+import com.jcodecraeer.xrecyclerview.XRecyclerView;
 
+import java.util.ArrayList;
+
+public class MainActivity extends AppCompatActivity {
+    private XRecyclerView mRecyclerView;
+    private MyAdapter mAdapter;
+    private ArrayList<String> listData;
+    private int refreshTime = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mRecyclerView = (XRecyclerView)this.findViewById(R.id.recyclerview);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        mRecyclerView.setLayoutManager(layoutManager);
+        mRecyclerView.setLoadingListener(new XRecyclerView.LoadingListener() {
+            @Override
+            public void onRefresh() {
+                refreshTime ++;
+                new Handler().postDelayed(new Runnable(){
+                    public void run() {
+                        listData.clear();
+                        for(int i = 0; i < 15 ;i++){
+                            listData.add("item" + i + "after " + refreshTime + " times of refresh");
+                        }
+                        mAdapter.notifyDataSetChanged();
+                        mRecyclerView.refreshComplate();
+                    }
+
+                }, 4000);            //refresh data here
+            }
+
+            @Override
+            public void onLoadMore() {
+                new Handler().postDelayed(new Runnable(){
+
+                    public void run() {
+                        for(int i = 0; i < 15 ;i++){
+                            listData.add("item" + (i + listData.size()) );
+                        }
+                        mAdapter.notifyDataSetChanged();
+                        mRecyclerView.loadMoreComplate();
+                    }
+
+                }, 4000);
+
+            }
+        });
+
+        listData = new  ArrayList<String>();
+        mAdapter = new MyAdapter(listData);
+        for(int i = 0; i < 15 ;i++){
+            listData.add("item" + i);
+        }
+        mRecyclerView.setAdapter(mAdapter);
     }
 
     @Override
@@ -34,4 +87,6 @@ public class MainActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+
 }
