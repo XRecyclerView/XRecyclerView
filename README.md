@@ -31,13 +31,13 @@ the pull to refresh and load more featrue is enabled by default. we provide a ca
 and of course you have to tell our RecyclerView when the refreshing or loading more work is done.
 you can use
 ```java
-mRecyclerView.loadMoreComplate();
+mRecyclerView.loadMoreComplete();
 ```
 to notify that the loading more work is done.
 and
 
 ```java
- mRecyclerView.refreshComplate();
+ mRecyclerView.refreshComplete();
 ```
 
 to notify that the refreshing work is done.
@@ -132,3 +132,8 @@ and
 mRecyclerView.setPullRefreshEnabled(true);
 ```
 in which false means disabled ,true means enabled.
+##Header
+you can add header to XRecyclerView.
+ first create a view 
+
+
