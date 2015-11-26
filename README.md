@@ -49,7 +49,7 @@ here is what we get:
 ###custom refresh and loading more style
 pull refresh and loading more style is highly customizable.
 #### custom loading style
-the loading effect we use the AVLoadingIndicatorView. and it is built in(make a little change).
+the loading effect we use the  [AVLoadingIndicatorView](https://github.com/81813780/AVLoadingIndicatorView) . and it is built in(make a little change).
 we provide all the effect in AVLoadingIndicatorView library besides we add a system style.
 you can call 
 ```java
@@ -71,7 +71,9 @@ mRecyclerView.setLaodingMoreProgressStyle(ProgressStyle.SquareSpin);
 ```
 ![loadingmoresquarespin](https://github.com/jianghejie/XRecyclerView/blob/master/art/loadingmoresquarespin.gif)
 
+
 BallPulse  effect
+
 ![BallPulse](https://github.com/jianghejie/XRecyclerView/blob/master/art/ballpulse.gif)
 
 all the effect can be get in the ProgressStyle class
