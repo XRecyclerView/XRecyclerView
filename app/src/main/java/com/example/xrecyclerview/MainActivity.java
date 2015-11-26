@@ -28,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
 
         mRecyclerView.setRefreshProgressStyle(ProgressStyle.BallPulse);
         mRecyclerView.setLaodingMoreProgressStyle(ProgressStyle.SquareSpin);
+        mRecyclerView.setArrowImageView(R.drawable.iconfont_downgrey);
 
         mRecyclerView.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
