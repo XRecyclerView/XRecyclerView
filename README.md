@@ -67,8 +67,10 @@ mRecyclerView.setRefreshProgressStyle(ProgressStyle.BallSpinFadeLoader);
 ```
 ![refreshloadingballspinfade](https://github.com/jianghejie/XRecyclerView/blob/master/art/refreshloadingballspinfade.gif)
 ```java
-mRecyclerView.setLaodingMoreProgressStyle(int style);
+mRecyclerView.setLaodingMoreProgressStyle(ProgressStyle.SquareSpin);
 ```
+![loadingmoresquarespin](https://github.com/jianghejie/XRecyclerView/blob/master/art/loadingmoresquarespin.gif)
+
 
 #### refresh arrow icon
 we provide a default arrow icon:
