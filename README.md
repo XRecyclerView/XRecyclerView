@@ -5,7 +5,7 @@ Screenshots
 -----------
 ![demo](https://github.com/jianghejie/XRecyclerView/blob/master/art/demo.gif)
 
-in real device it is much more smoother
+on real device it is much more smoother.
 Usage
 -----
 just like a standard RecyclerView
