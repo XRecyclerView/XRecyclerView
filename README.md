@@ -145,4 +145,11 @@ you can add header to XRecyclerView，just call addHeaderView().
 View header =   LayoutInflater.from(this).inflate(R.layout.recyclerview_header, (ViewGroup)findViewById(android.R.id.content),false);
 mRecyclerView.addHeaderView(header);
 ```
+if you like ,you can add two header
 
+```java
+View header =   LayoutInflater.from(this).inflate(R.layout.recyclerview_header, (ViewGroup)findViewById(android.R.id.content),false);
+View header1 =   LayoutInflater.from(this).inflate(R.layout.recyclerview_header1, (ViewGroup)findViewById(android.R.id.content),false);
+mRecyclerView.addHeaderView(header);
+mRecyclerView.addHeaderView(header1);
+```
