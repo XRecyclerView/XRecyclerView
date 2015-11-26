@@ -32,8 +32,9 @@ public class MainActivity extends AppCompatActivity {
         mRecyclerView.setLaodingMoreProgressStyle(ProgressStyle.Pacman);
         mRecyclerView.setArrowImageView(R.drawable.iconfont_downgrey);
 
-        View header =   LayoutInflater.from(this).inflate(R.layout.recyclerview_header, null);
+        View header =   LayoutInflater.from(this).inflate(R.layout.recyclerview_header, null,false);
         mRecyclerView.addHeaderView(header);
+        header
 
         mRecyclerView.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
@@ -55,7 +56,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onLoadMore() {
                 new Handler().postDelayed(new Runnable(){
-
                     public void run() {
                         for(int i = 0; i < 15 ;i++){
                             listData.add("item" + (i + listData.size()) );
@@ -63,7 +63,6 @@ public class MainActivity extends AppCompatActivity {
                         mAdapter.notifyDataSetChanged();
                         mRecyclerView.loadMoreComplete();
                     }
-
                 }, 3000);
 
             }
