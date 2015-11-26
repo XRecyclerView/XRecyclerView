@@ -8,6 +8,10 @@ Screenshots
 on real device it is much more smoother.
 Usage
 -----
+##gradle
+```groovy
+compile 'com.jcodecraeer:xrecyclerview:1.1.1'
+```
 just like a standard RecyclerView
 ```java
 LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
@@ -135,7 +139,10 @@ mRecyclerView.setPullRefreshEnabled(true);
 ```
 in which false means disabled ,true means enabled.
 ##Header
-you can add header to XRecyclerView.
- first create a view 
+you can add header to XRecyclerView，just call addHeaderView().
 
+```java
+View header =   LayoutInflater.from(this).inflate(R.layout.recyclerview_header, (ViewGroup)findViewById(android.R.id.content),false);
+mRecyclerView.addHeaderView(header);
+```
 
