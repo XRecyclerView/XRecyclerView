@@ -97,14 +97,14 @@ public class XRecyclerView extends RecyclerView {
         mFootViews.add(view);
     }
 
-    public void loadMoreComplate() {
+    public void loadMoreComplete() {
         if (mFootViews.size() > 0) {
             mFootViews.get(0).setVisibility(GONE);
         }
         isLoadingData = false;
     }
 
-    public void refreshComplate() {
+    public void refreshComplete() {
         mRefreshHeader.refreshComplate();
     }
 

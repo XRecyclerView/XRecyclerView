@@ -44,8 +44,9 @@ public class LoadingMoreFooter extends LinearLayout {
         addView(progressCon);
         TextView text = new TextView(context);
         text.setText("正在加载...");
+
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        layoutParams.setMargins(10,0,0,0);//4个参数按顺序分别是左上右下
+        layoutParams.setMargins((int)getResources().getDimension(R.dimen.textandiconmargin),0,0,0);
 
         text.setLayoutParams(layoutParams);
         addView(text);

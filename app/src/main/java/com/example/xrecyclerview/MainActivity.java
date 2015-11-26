@@ -4,8 +4,10 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.jcodecraeer.xrecyclerview.ProgressStyle;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
@@ -27,8 +29,11 @@ public class MainActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(layoutManager);
 
         mRecyclerView.setRefreshProgressStyle(ProgressStyle.BallSpinFadeLoader);
-        mRecyclerView.setLaodingMoreProgressStyle(ProgressStyle.LineScalePulseOutRapid);
+        mRecyclerView.setLaodingMoreProgressStyle(ProgressStyle.Pacman);
         mRecyclerView.setArrowImageView(R.drawable.iconfont_downgrey);
+
+        View header =   LayoutInflater.from(this).inflate(R.layout.recyclerview_header, null);
+        mRecyclerView.addHeaderView(header);
 
         mRecyclerView.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
@@ -41,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
                             listData.add("item" + i + "after " + refreshTime + " times of refresh");
                         }
                         mAdapter.notifyDataSetChanged();
-                        mRecyclerView.refreshComplate();
+                        mRecyclerView.refreshComplete();
                     }
 
                 }, 3000);            //refresh data here
@@ -56,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
                             listData.add("item" + (i + listData.size()) );
                         }
                         mAdapter.notifyDataSetChanged();
-                        mRecyclerView.loadMoreComplate();
+                        mRecyclerView.loadMoreComplete();
                     }
 
                 }, 3000);
