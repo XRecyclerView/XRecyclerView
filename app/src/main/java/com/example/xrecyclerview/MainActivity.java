@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(layoutManager);
 
-        mRecyclerView.setRefreshProgressStyle(ProgressStyle.BallSpinFadeLoader);
+        mRecyclerView.setRefreshProgressStyle(ProgressStyle.BallBeat);
         mRecyclerView.setLaodingMoreProgressStyle(ProgressStyle.SquareSpin);
 
         mRecyclerView.setLoadingListener(new XRecyclerView.LoadingListener() {
