@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(layoutManager);
 
         mRecyclerView.setRefreshProgressStyle(ProgressStyle.BallPulse);
-        mRecyclerView.setLaodingMoreProgressStyle(ProgressStyle.SquareSpin);
+        mRecyclerView.setLaodingMoreProgressStyle(ProgressStyle.BallPulse);
         mRecyclerView.setArrowImageView(R.drawable.iconfont_downgrey);
 
         mRecyclerView.setLoadingListener(new XRecyclerView.LoadingListener() {
