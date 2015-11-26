@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(layoutManager);
 
         mRecyclerView.setRefreshProgressStyle(ProgressStyle.BallSpinFadeLoader);
-        //mRecyclerView.setLaodingMoreProgressStyle();
+        mRecyclerView.setLaodingMoreProgressStyle(ProgressStyle.SquareSpin);
 
         mRecyclerView.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
