@@ -4,6 +4,7 @@ you don't need to implement a special adapter .
 Screenshots
 -----------
 ![demo](https://github.com/jianghejie/XRecyclerView/blob/master/art/demo.gif)
+
 in real device it is much more smoother
 Usage
 -----
