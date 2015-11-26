@@ -26,8 +26,8 @@ public class MainActivity extends AppCompatActivity {
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(layoutManager);
 
-        mRecyclerView.setRefreshProgressStyle(ProgressStyle.BallPulse);
-        mRecyclerView.setLaodingMoreProgressStyle(ProgressStyle.BallPulse);
+        mRecyclerView.setRefreshProgressStyle(ProgressStyle.BallSpinFadeLoader);
+        mRecyclerView.setLaodingMoreProgressStyle(ProgressStyle.LineScalePulseOutRapid);
         mRecyclerView.setArrowImageView(R.drawable.iconfont_downgrey);
 
         mRecyclerView.setLoadingListener(new XRecyclerView.LoadingListener() {
@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
                         mRecyclerView.refreshComplate();
                     }
 
-                }, 4000);            //refresh data here
+                }, 3000);            //refresh data here
             }
 
             @Override
@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
                         mRecyclerView.loadMoreComplate();
                     }
 
-                }, 4000);
+                }, 3000);
 
             }
         });

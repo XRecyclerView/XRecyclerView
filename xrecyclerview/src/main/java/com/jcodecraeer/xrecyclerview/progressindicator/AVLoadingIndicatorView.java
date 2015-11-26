@@ -142,7 +142,7 @@ public class AVLoadingIndicatorView extends View{
     public @interface Indicator{}
 
     //Sizes (with defaults in DP)
-    public static final int DEFAULT_SIZE=45;
+    public static final int DEFAULT_SIZE=30;
 
     //attrs
     int mIndicatorId;
