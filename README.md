@@ -113,13 +113,13 @@ public class ProgressStyle {
 ```
 #### refresh arrow icon
 we provide a default arrow icon:
-
+![ic_pulltorefresh_arrow](https://github.com/jianghejie/XRecyclerView/blob/master/art/ic_pulltorefresh_arrow.png)
 but if you don't like it,you can replace it to any other icon  you want.
 just call
 ```java
-mRecyclerView.setArrowImageView(R.drawable.iconfontarrowdown);
+mRecyclerView.setArrowImageView(R.drawable.iconfont_downgrey);
 ```
-
+![customarrow](https://github.com/jianghejie/XRecyclerView/blob/master/art/customarrow.gif)
 ###disable refresh and load more featrue
 if you don't want the refresh and load more featrue(in that case,you probably dont'n need the lib neither),you can call
 ```java
