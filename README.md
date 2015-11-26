@@ -53,13 +53,23 @@ the loading effect we use the AVLoadingIndicatorView. and it is built in(make a 
 we provide all the effect in AVLoadingIndicatorView library besides we add a system style.
 you can call 
 ```java
-mRecyclerView.setRefreshProgressStyle(ProgressStyle.SysProgress);
+mRecyclerView.setRefreshProgressStyle(int style);
 ```
 and 
 ```java
-mRecyclerView.setLaodingMoreProgressStyle(ProgressStyle.BallClipRotate);
+mRecyclerView.setLaodingMoreProgressStyle(int style);
 ```
 to set the RefreshProgressStyle and  LaodingMoreProgressStyle respectively.
+
+for example
+```java
+mRecyclerView.setRefreshProgressStyle(ProgressStyle.BallSpinFadeLoader);
+```
+![refreshloadingballspinfade](https://github.com/jianghejie/XRecyclerView/blob/master/art/refreshloadingballspinfade.gif)
+```java
+mRecyclerView.setLaodingMoreProgressStyle(int style);
+```
+
 #### refresh arrow icon
 we provide a default arrow icon:
 
