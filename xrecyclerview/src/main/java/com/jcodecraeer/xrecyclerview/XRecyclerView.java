@@ -16,6 +16,7 @@ public class XRecyclerView extends RecyclerView {
 
     private static Context mContext;
     private boolean isLoadingData = false;
+    private boolean isnomore = false;
     private int mRefreshProgressStyle = ProgressStyle.SysProgress;
     private int mLoadingMoreProgressStyle = ProgressStyle.SysProgress;
     private ArrayList<View> mHeaderViews = new ArrayList<>();
@@ -32,6 +33,9 @@ public class XRecyclerView extends RecyclerView {
     private static final int TYPE_HEADER =  -4;
     private static final int TYPE_NORMAL =  0;
     private static final int TYPE_FOOTER =  -3;
+    private int previousTotal = 0;
+    private int mPageCount = 0;
+
     public XRecyclerView(Context context) {
         this(context, null);
     }
@@ -53,17 +57,12 @@ public class XRecyclerView extends RecyclerView {
             mRefreshHeader = refreshHeader;
             mRefreshHeader.setProgressStyle(mRefreshProgressStyle);
         }
-
         LoadingMoreFooter footView = new LoadingMoreFooter(mContext);
         footView.setProgressStyle(mLoadingMoreProgressStyle);
         addFootView(footView);
+        mFootViews.get(0).setVisibility(GONE);
     }
 
-    /**
-     * 添加头部视图，可以添加多个
-     *
-     * @param view
-     */
     public void addHeaderView(View view) {
         if (pullRefreshEnabled && !(mHeaderViews.get(0) instanceof ArrowRefreshHeader)) {
             ArrowRefreshHeader refreshHeader = new ArrowRefreshHeader(mContext);
@@ -74,9 +73,7 @@ public class XRecyclerView extends RecyclerView {
         mHeaderViews.add(view);
     }
 
-
     private void layoutGridAttach(final GridLayoutManager manager) {
-        // GridView布局
         manager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
             @Override
             public int getSpanSize(int position) {
@@ -87,21 +84,40 @@ public class XRecyclerView extends RecyclerView {
         requestLayout();
     }
 
-    /**
-     * 添加脚部视图，此视图只能添加一个
-     *
-     * @param view
-     */
     public void addFootView(final View view) {
         mFootViews.clear();
         mFootViews.add(view);
     }
 
     public void loadMoreComplete() {
-        if (mFootViews.size() > 0) {
-            mFootViews.get(0).setVisibility(GONE);
-        }
         isLoadingData = false;
+        View footView = mFootViews.get(0);
+        if(previousTotal <  getLayoutManager().getItemCount()) {
+            if(footView instanceof  LoadingMoreFooter) {
+                ( (LoadingMoreFooter) footView ).setState(LoadingMoreFooter.STATE_COMPLETE);
+            } else{
+                footView.setVisibility(View.GONE);
+            }
+        } else {
+            if(footView instanceof  LoadingMoreFooter) {
+                ( (LoadingMoreFooter) footView ).setState(LoadingMoreFooter.STATE_NOMORE);
+            }else{
+                footView.setVisibility(View.GONE);
+            }
+            isnomore = true;
+        }
+        previousTotal = getLayoutManager().getItemCount();
+    }
+
+    public void noMoreLoading() {
+        isLoadingData = false;
+        View footView = mFootViews.get(0);
+        isnomore = true;
+        if(footView instanceof  LoadingMoreFooter) {
+            ( (LoadingMoreFooter) footView ).setState(LoadingMoreFooter.STATE_NOMORE);
+        }else{
+            footView.setVisibility(View.GONE);
+        }
     }
 
     public void refreshComplete() {
@@ -170,11 +186,15 @@ public class XRecyclerView extends RecyclerView {
                 lastVisibleItemPosition = ((LinearLayoutManager) layoutManager).findLastVisibleItemPosition();
             }
             if (layoutManager.getChildCount() > 0
-                    && lastVisibleItemPosition >= layoutManager.getItemCount() - 1) {
-                if (mFootViews.size() > 0) {
-                    mFootViews.get(0).setVisibility(VISIBLE);
-                }
+                    && lastVisibleItemPosition >= layoutManager.getItemCount() - 1 &&  layoutManager.getItemCount() > layoutManager.getChildCount() && !isnomore) {
+
+                View footView = mFootViews.get(0);
                 isLoadingData = true;
+                if(footView instanceof  LoadingMoreFooter) {
+                    ( (LoadingMoreFooter) footView ).setState(LoadingMoreFooter.STATE_LAODING);
+                } else{
+                    footView.setVisibility(View.VISIBLE);
+                }
                 mLoadingListener.onLoadMore();
             }
         }
@@ -202,6 +222,8 @@ public class XRecyclerView extends RecyclerView {
                     if( mRefreshHeader.releaseAction()) {
                         if (mLoadingListener != null) {
                             mLoadingListener.onRefresh();
+                            isnomore = false;
+                            previousTotal = 0;
                         }
                     }
                 }
@@ -220,23 +242,24 @@ public class XRecyclerView extends RecyclerView {
         return max;
     }
 
-    private boolean isOnTop(){
-         LayoutManager layoutManager = getLayoutManager();
-         int firstVisibleItemPosition;
+    private boolean isOnTop() {
+        LayoutManager layoutManager = getLayoutManager();
+        int firstVisibleItemPosition;
         if (layoutManager instanceof GridLayoutManager) {
             firstVisibleItemPosition = ((GridLayoutManager) layoutManager).findFirstVisibleItemPosition();
-        } else if (layoutManager instanceof StaggeredGridLayoutManager) {
+        } else if ( layoutManager instanceof StaggeredGridLayoutManager ) {
             int[] into = new int[((StaggeredGridLayoutManager) layoutManager).getSpanCount()];
             ((StaggeredGridLayoutManager) layoutManager).findFirstVisibleItemPositions(into);
             firstVisibleItemPosition = findMax(into);
         } else {
             firstVisibleItemPosition = ((LinearLayoutManager) layoutManager).findFirstVisibleItemPosition();
         }
-        if ( firstVisibleItemPosition <= 1  ) {
+        if ( firstVisibleItemPosition <= 1 ) {
              return true;
         }
         return false;
-     }
+
+    }
 
     private final RecyclerView.AdapterDataObserver mDataObserver = new RecyclerView.AdapterDataObserver() {
         @Override
@@ -278,8 +301,6 @@ public class XRecyclerView extends RecyclerView {
 
         private ArrayList<View> mFootViews;
 
-        final ArrayList<View> EMPTY_INFO_LIST =
-                new ArrayList<>();
         private int headerPosition = 1;
 
         public WrapAdapter(ArrayList<View> headerViews, ArrayList<View> footViews, RecyclerView.Adapter adapter) {
@@ -298,7 +319,7 @@ public class XRecyclerView extends RecyclerView {
                     @Override
                     public int getSpanSize(int position) {
                         return (getItemViewType(position) == RecyclerView.INVALID_TYPE || getItemViewType(position) == RecyclerView.INVALID_TYPE - 1)
-                                ? gridManager.getSpanCount() : 1;
+                                 ? gridManager.getSpanCount() : 1;
                     }
                 });
             }
@@ -320,12 +341,6 @@ public class XRecyclerView extends RecyclerView {
             return position >= 0 && position < mHeaderViews.size();
         }
 
-        /**
-         * 当前布局是否为Footer
-         *
-         * @param position
-         * @return
-         */
         public boolean isFooter(int position) {
             return position < getItemCount() && position >= getItemCount() - mFootViews.size();
         }
@@ -420,29 +435,14 @@ public class XRecyclerView extends RecyclerView {
         }
     }
 
-    /**
-     * 设置刷新和加载更多数据的监听
-     *
-     * @param listener
-     */
     public void setLoadingListener(LoadingListener listener) {
         mLoadingListener = listener;
     }
-    /**
-     * 刷新和加载更多数据的监听接口
-     */
+
     public interface LoadingListener {
 
-        /**
-         * refresh
-         */
         void onRefresh();
 
-        /**
-         * loading more
-         */
         void onLoadMore();
-
     }
-
 }

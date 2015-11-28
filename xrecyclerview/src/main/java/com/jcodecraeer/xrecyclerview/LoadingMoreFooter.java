@@ -3,6 +3,7 @@ package com.jcodecraeer.xrecyclerview;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.Gravity;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -14,6 +15,10 @@ public class LoadingMoreFooter extends LinearLayout {
 
     private SimpleViewSwithcer progressCon;
     private Context mContext;
+    public final static int STATE_LAODING = 0;
+    public final static int STATE_COMPLETE = 1;
+    public final static int STATE_NOMORE = 2;
+    private TextView mText;
 	public LoadingMoreFooter(Context context) {
 		super(context);
 		initView(context);
@@ -42,14 +47,14 @@ public class LoadingMoreFooter extends LinearLayout {
         progressCon.setView(progressView);
 
         addView(progressCon);
-        TextView text = new TextView(context);
-        text.setText("正在加载...");
+        mText = new TextView(context);
+        mText.setText("正在加载...");
 
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        layoutParams.setMargins((int)getResources().getDimension(R.dimen.textandiconmargin),0,0,0);
+        layoutParams.setMargins( (int)getResources().getDimension(R.dimen.textandiconmargin),0,0,0 );
 
-        text.setLayoutParams(layoutParams);
-        addView(text);
+        mText.setLayoutParams(layoutParams);
+        addView(mText);
     }
 
     public void setProgressStyle(int style) {
@@ -61,5 +66,25 @@ public class LoadingMoreFooter extends LinearLayout {
             progressView.setIndicatorId(style);
             progressCon.setView(progressView);
         }
+    }
+
+    public void  setState(int state) {
+        switch(state) {
+            case STATE_LAODING:
+                progressCon.setVisibility(View.VISIBLE);
+                mText.setText("正在加载...");
+                this.setVisibility(View.VISIBLE);
+                    break;
+            case STATE_COMPLETE:
+                mText.setText("正在加载...");
+                this.setVisibility(View.GONE);
+                break;
+            case STATE_NOMORE:
+                mText.setText("加载完成");
+                progressCon.setVisibility(View.GONE);
+                this.setVisibility(View.VISIBLE);
+                break;
+        }
+
     }
 }

@@ -20,6 +20,7 @@ public class MainActivity extends AppCompatActivity {
     private MyAdapter mAdapter;
     private ArrayList<String> listData;
     private int refreshTime = 0;
+    private int times = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,19 +31,20 @@ public class MainActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(layoutManager);
 
         mRecyclerView.setRefreshProgressStyle(ProgressStyle.BallSpinFadeLoader);
-        mRecyclerView.setLaodingMoreProgressStyle(ProgressStyle.Pacman);
+        mRecyclerView.setLaodingMoreProgressStyle(ProgressStyle.BallRotate);
         mRecyclerView.setArrowImageView(R.drawable.iconfont_downgrey);
 
         View header =   LayoutInflater.from(this).inflate(R.layout.recyclerview_header, (ViewGroup)findViewById(android.R.id.content),false);
         mRecyclerView.addHeaderView(header);
 
-
         mRecyclerView.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
                 refreshTime ++;
+                times = 0;
                 new Handler().postDelayed(new Runnable(){
                     public void run() {
+
                         listData.clear();
                         for(int i = 0; i < 15 ;i++){
                             listData.add("item" + i + "after " + refreshTime + " times of refresh");
@@ -56,24 +58,36 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onLoadMore() {
-                new Handler().postDelayed(new Runnable(){
-                    public void run() {
-                        for(int i = 0; i < 15 ;i++){
-                            listData.add("item" + (i + listData.size()) );
+                if(times < 2){
+                    new Handler().postDelayed(new Runnable(){
+                        public void run() {
+                            mRecyclerView.loadMoreComplete();
+                            for(int i = 0; i < 15 ;i++){
+                                listData.add("item" + (i + listData.size()) );
+                            }
+                            mAdapter.notifyDataSetChanged();
+                            mRecyclerView.refreshComplete();
                         }
-                        mAdapter.notifyDataSetChanged();
-                        mRecyclerView.loadMoreComplete();
-                    }
-                }, 3000);
+                    }, 3000);
+                } else {
+                    new Handler().postDelayed(new Runnable() {
+                        public void run() {
 
+                            mAdapter.notifyDataSetChanged();
+                            mRecyclerView.loadMoreComplete();
+                        }
+                    }, 3000);
+                }
+                times ++;
             }
         });
 
         listData = new  ArrayList<String>();
-        mAdapter = new MyAdapter(listData);
-        for(int i = 0; i < 15 ;i++){
-            listData.add("item" + i);
+        for(int i = 0; i < 10 ;i++){
+            listData.add("item" + (i + listData.size()) );
         }
+        mAdapter = new MyAdapter(listData);
+
         mRecyclerView.setAdapter(mAdapter);
     }
 
