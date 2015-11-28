@@ -7,11 +7,14 @@
     <RelativeLayout
         android:id="@+id/listview_header_content"
         android:layout_width="fill_parent"
-        android:layout_height="60dp" >
+        android:layout_height="80dp"
+        android:paddingTop="10dip"
+        >
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:minWidth="100dip"
             android:layout_centerInParent="true"
             android:gravity="center"
             android:orientation="vertical"
