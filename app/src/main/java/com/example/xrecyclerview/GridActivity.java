@@ -53,7 +53,7 @@ public class GridActivity extends AppCompatActivity {
                         mRecyclerView.refreshComplete();
                     }
 
-                }, 3000);            //refresh data here
+                }, 1000);            //refresh data here
             }
 
             @Override
@@ -68,7 +68,7 @@ public class GridActivity extends AppCompatActivity {
                             mAdapter.notifyDataSetChanged();
                             mRecyclerView.refreshComplete();
                         }
-                    }, 3000);
+                    }, 1000);
                 } else {
                     new Handler().postDelayed(new Runnable() {
                         public void run() {
@@ -76,7 +76,7 @@ public class GridActivity extends AppCompatActivity {
                             mAdapter.notifyDataSetChanged();
                             mRecyclerView.loadMoreComplete();
                         }
-                    }, 3000);
+                    }, 1000);
                 }
                 times ++;
             }
