@@ -3,7 +3,7 @@ package com.example.xrecyclerview;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.GridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -24,10 +24,10 @@ public class GridActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_recyclerview);
         mRecyclerView = (XRecyclerView)this.findViewById(R.id.recyclerview);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        GridLayoutManager layoutManager = new GridLayoutManager(this,3);
+
         mRecyclerView.setLayoutManager(layoutManager);
 
         mRecyclerView.setRefreshProgressStyle(ProgressStyle.BallSpinFadeLoader);
@@ -46,7 +46,7 @@ public class GridActivity extends AppCompatActivity {
                     public void run() {
 
                         listData.clear();
-                        for(int i = 0; i < 15 ;i++){
+                        for(int i = 0; i < 20 ;i++){
                             listData.add("item" + i + "after " + refreshTime + " times of refresh");
                         }
                         mAdapter.notifyDataSetChanged();
@@ -62,7 +62,7 @@ public class GridActivity extends AppCompatActivity {
                     new Handler().postDelayed(new Runnable(){
                         public void run() {
                             mRecyclerView.loadMoreComplete();
-                            for(int i = 0; i < 15 ;i++){
+                            for(int i = 0; i < 20 ;i++){
                                 listData.add("item" + (i + listData.size()) );
                             }
                             mAdapter.notifyDataSetChanged();
@@ -83,7 +83,7 @@ public class GridActivity extends AppCompatActivity {
         });
 
         listData = new  ArrayList<String>();
-        for(int i = 0; i < 10 ;i++){
+        for(int i = 0; i < 20 ;i++){
             listData.add("item" + (i + listData.size()) );
         }
         mAdapter = new MyAdapter(listData);

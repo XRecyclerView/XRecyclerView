@@ -24,7 +24,7 @@ public class LinearActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_recyclerview);
         mRecyclerView = (XRecyclerView)this.findViewById(R.id.recyclerview);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -83,7 +83,7 @@ public class LinearActivity extends AppCompatActivity {
         });
 
         listData = new  ArrayList<String>();
-        for(int i = 0; i < 10 ;i++){
+        for(int i = 0; i < 15 ;i++){
             listData.add("item" + (i + listData.size()) );
         }
         mAdapter = new MyAdapter(listData);

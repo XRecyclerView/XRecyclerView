@@ -1,12 +1,28 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".MainActivity">
+    <Button
+        android:onClick="gotoLinearActivity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dip"
+        android:text="LinearLayoutManager"/>
+    <Button
+        android:onClick="gotoGridActivity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dip"
+        android:text="GridLayoutManager"
+        />
+    <Button
+        android:onClick="gotoStaggeredGridActivity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dip"
+        android:text="StaggeredGridLayoutManager"
+        />
 
-    <com.jcodecraeer.xrecyclerview.XRecyclerView
-        android:id="@+id/recyclerview"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent" />
-
-</RelativeLayout>
+</LinearLayout>

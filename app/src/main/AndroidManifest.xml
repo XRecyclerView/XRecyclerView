@@ -16,6 +16,18 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".GridActivity"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name=".LinearActivity"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name=".StaggeredGridActivity"
+            android:label="@string/app_name" >
+        </activity>
     </application>
 
 </manifest>

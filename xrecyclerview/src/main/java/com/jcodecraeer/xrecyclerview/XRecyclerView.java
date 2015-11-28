@@ -73,17 +73,6 @@ public class XRecyclerView extends RecyclerView {
         mHeaderViews.add(view);
     }
 
-    private void layoutGridAttach(final GridLayoutManager manager) {
-        manager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
-            @Override
-            public int getSpanSize(int position) {
-                return ((WrapAdapter) mWrapAdapter).isHeader(position) ||
-                        ((WrapAdapter) mWrapAdapter).isFooter(position) ? manager.getSpanCount() : 1;
-            }
-        });
-        requestLayout();
-    }
-
     public void addFootView(final View view) {
         mFootViews.clear();
         mFootViews.add(view);
@@ -322,7 +311,7 @@ public class XRecyclerView extends RecyclerView {
                 gridManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
                     @Override
                     public int getSpanSize(int position) {
-                        return (getItemViewType(position) == RecyclerView.INVALID_TYPE || getItemViewType(position) == RecyclerView.INVALID_TYPE - 1)
+                        return (isHeader(position)||  isFooter(position))
                                  ? gridManager.getSpanCount() : 1;
                     }
                 });
