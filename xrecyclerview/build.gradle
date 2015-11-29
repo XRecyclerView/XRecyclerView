@@ -2,7 +2,7 @@ apply plugin: 'com.android.library'
 apply plugin: 'com.github.dcendents.android-maven'
 apply plugin: 'com.jfrog.bintray'
 
-version = "1.2.0"
+version = "1.2.1"
 group = "com.jcodecraeer"
 
 def siteUrl = 'https://github.com/jianghejie/XRecyclerView'
@@ -13,7 +13,7 @@ android {
     buildToolsVersion "23.0.1"
 
     defaultConfig {
-        minSdkVersion 14
+        minSdkVersion 11
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"

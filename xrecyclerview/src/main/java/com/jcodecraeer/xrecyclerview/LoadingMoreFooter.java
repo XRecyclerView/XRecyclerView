@@ -72,15 +72,15 @@ public class LoadingMoreFooter extends LinearLayout {
         switch(state) {
             case STATE_LAODING:
                 progressCon.setVisibility(View.VISIBLE);
-                mText.setText("正在加载...");
+                mText.setText(mContext.getText(R.string.listview_loading));
                 this.setVisibility(View.VISIBLE);
                     break;
             case STATE_COMPLETE:
-                mText.setText("正在加载...");
+                mText.setText(mContext.getText(R.string.listview_loading));
                 this.setVisibility(View.GONE);
                 break;
             case STATE_NOMORE:
-                mText.setText("加载完成");
+                mText.setText(mContext.getText(R.string.nomore_loading));
                 progressCon.setVisibility(View.GONE);
                 this.setVisibility(View.VISIBLE);
                 break;
