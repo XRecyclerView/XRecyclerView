@@ -237,6 +237,16 @@ public class XRecyclerView extends RecyclerView {
         return max;
     }
 
+    private int findMin(int[] firstPositions) {
+        int min = firstPositions[0];
+        for (int value : firstPositions) {
+            if (value < min) {
+                min = value;
+            }
+        }
+        return min;
+    }
+
     private boolean isOnTop() {
         LayoutManager layoutManager = getLayoutManager();
         int firstVisibleItemPosition;
@@ -245,7 +255,7 @@ public class XRecyclerView extends RecyclerView {
         } else if ( layoutManager instanceof StaggeredGridLayoutManager ) {
             int[] into = new int[((StaggeredGridLayoutManager) layoutManager).getSpanCount()];
             ((StaggeredGridLayoutManager) layoutManager).findFirstVisibleItemPositions(into);
-            firstVisibleItemPosition = findMax(into);
+            firstVisibleItemPosition = findMin(into);
         } else {
             firstVisibleItemPosition = ((LinearLayoutManager) layoutManager).findFirstVisibleItemPosition();
         }
@@ -253,7 +263,6 @@ public class XRecyclerView extends RecyclerView {
              return true;
         }
         return false;
-
     }
 
     private final RecyclerView.AdapterDataObserver mDataObserver = new RecyclerView.AdapterDataObserver() {

@@ -48,7 +48,7 @@ public class StaggeredGridActivity extends AppCompatActivity {
                     public void run() {
 
                         listData.clear();
-                        for(int i = 0; i < 20 ;i++){
+                        for(int i = 0; i < 25 ;i++){
                             listData.add("item" + i + "after " + refreshTime + " times of refresh");
                         }
                         mAdapter.notifyDataSetChanged();
@@ -64,7 +64,7 @@ public class StaggeredGridActivity extends AppCompatActivity {
                     new Handler().postDelayed(new Runnable(){
                         public void run() {
                             mRecyclerView.loadMoreComplete();
-                            for(int i = 0; i < 20 ;i++){
+                            for(int i = 0; i < 25 ;i++){
                                 listData.add("item" + (i + listData.size()) );
                             }
                             mAdapter.notifyDataSetChanged();
@@ -85,7 +85,7 @@ public class StaggeredGridActivity extends AppCompatActivity {
         });
 
         listData = new  ArrayList<String>();
-        for(int i = 0; i < 20 ;i++){
+        for(int i = 0; i < 25 ;i++){
             listData.add("item" + (i + listData.size()) );
         }
         mAdapter = new MyAdapter(listData);
