@@ -175,7 +175,11 @@ public class ArrowRefreshHeader extends LinearLayout implements BaseRefreshHeade
 	}
 
 	public int getVisiableHeight() {
-		return mContainer.getHeight();
+        int height = 0;
+        LayoutParams lp = (LayoutParams) mContainer
+                .getLayoutParams();
+        height = lp.height;
+		return height;
 	}
 
     @Override
@@ -217,13 +221,12 @@ public class ArrowRefreshHeader extends LinearLayout implements BaseRefreshHeade
         return isOnRefresh;
     }
 
-
     public void reset() {
         smoothScrollTo(0);
         setState(STATE_NORMAL);
     }
 
-    private void  smoothScrollTo(int destHeight) {
+    private void smoothScrollTo(int destHeight) {
         ValueAnimator animator = ValueAnimator.ofInt(getVisiableHeight(), destHeight);
         animator.setDuration(300).start();
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
