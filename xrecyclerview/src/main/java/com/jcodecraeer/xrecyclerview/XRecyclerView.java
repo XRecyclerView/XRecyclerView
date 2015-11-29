@@ -6,6 +6,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -203,8 +204,9 @@ public class XRecyclerView extends RecyclerView {
                 mLastY = ev.getRawY();
                 if ( isOnTop() && pullRefreshEnabled) {
                     mRefreshHeader.onMove(deltaY / DRAG_RATE);
-                    if(mRefreshHeader.getVisiableHeight() > 5 && mRefreshHeader.getState() < ArrowRefreshHeader.STATE_REFRESHING) {
-                        mRefreshHeader.getState();
+                    if(mRefreshHeader.getVisiableHeight() > 0 && mRefreshHeader.getState() < ArrowRefreshHeader.STATE_REFRESHING && !(getLayoutManager() instanceof StaggeredGridLayoutManager)) {
+                        Log.i("getVisiableHeight", "getVisiableHeight = " + mRefreshHeader.getVisiableHeight());
+                        Log.i("getVisiableHeight", " mRefreshHeader.getState() = " +  mRefreshHeader.getState());
                         return false;
                     }
                 }
