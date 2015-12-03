@@ -204,7 +204,7 @@ public class XRecyclerView extends RecyclerView {
                 mLastY = ev.getRawY();
                 if ( isOnTop() && pullRefreshEnabled) {
                     mRefreshHeader.onMove(deltaY / DRAG_RATE);
-                    if(mRefreshHeader.getVisiableHeight() > 0 && mRefreshHeader.getState() < ArrowRefreshHeader.STATE_REFRESHING && !(getLayoutManager() instanceof StaggeredGridLayoutManager)) {
+                    if(mRefreshHeader.getVisiableHeight() > 0 && mRefreshHeader.getState() < ArrowRefreshHeader.STATE_REFRESHING    ) {
                         Log.i("getVisiableHeight", "getVisiableHeight = " + mRefreshHeader.getVisiableHeight());
                         Log.i("getVisiableHeight", " mRefreshHeader.getState() = " +  mRefreshHeader.getState());
                         return false;
@@ -248,21 +248,31 @@ public class XRecyclerView extends RecyclerView {
     }
 
     private boolean isOnTop() {
-        LayoutManager layoutManager = getLayoutManager();
-        int firstVisibleItemPosition;
-        if (layoutManager instanceof GridLayoutManager) {
-            firstVisibleItemPosition = ((GridLayoutManager) layoutManager).findFirstVisibleItemPosition();
-        } else if ( layoutManager instanceof StaggeredGridLayoutManager ) {
-            int[] into = new int[((StaggeredGridLayoutManager) layoutManager).getSpanCount()];
-            ((StaggeredGridLayoutManager) layoutManager).findFirstVisibleItemPositions(into);
-            firstVisibleItemPosition = findMin(into);
+        if (mHeaderViews == null || mHeaderViews.isEmpty()) {
+            return false;
+        }
+
+        View view = mHeaderViews.get(0);
+        if (view.getParent() != null) {
+            return true;
         } else {
-            firstVisibleItemPosition = ((LinearLayoutManager) layoutManager).findFirstVisibleItemPosition();
+            return false;
         }
-        if ( firstVisibleItemPosition <= 1 ) {
-             return true;
-        }
-        return false;
+//        LayoutManager layoutManager = getLayoutManager();
+//        int firstVisibleItemPosition;
+//        if (layoutManager instanceof GridLayoutManager) {
+//            firstVisibleItemPosition = ((GridLayoutManager) layoutManager).findFirstVisibleItemPosition();
+//        } else if ( layoutManager instanceof StaggeredGridLayoutManager ) {
+//            int[] into = new int[((StaggeredGridLayoutManager) layoutManager).getSpanCount()];
+//            ((StaggeredGridLayoutManager) layoutManager).findFirstVisibleItemPositions(into);
+//            firstVisibleItemPosition = findMin(into);
+//        } else {
+//            firstVisibleItemPosition = ((LinearLayoutManager) layoutManager).findFirstVisibleItemPosition();
+//        }
+//        if ( firstVisibleItemPosition <= 1 ) {
+//             return true;
+//        }
+//        return false;
     }
 
     private final RecyclerView.AdapterDataObserver mDataObserver = new RecyclerView.AdapterDataObserver() {
