@@ -15,7 +15,7 @@ import java.util.ArrayList;
 
 public class XRecyclerView extends RecyclerView {
 
-    private static Context mContext;
+    private  Context mContext;
     private boolean isLoadingData = false;
     private boolean isnomore = false;
     private int mRefreshProgressStyle = ProgressStyle.SysProgress;
