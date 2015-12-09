@@ -10,7 +10,7 @@ Usage
 -----
 ##gradle
 ```groovy
-compile 'com.jcodecraeer:xrecyclerview:1.2.5'
+compile 'com.jcodecraeer:xrecyclerview:1.2.6'
 ```
 just like a standard RecyclerView
 ```java
