@@ -442,6 +442,20 @@ public class XRecyclerView extends RecyclerView {
             return -1;
         }
 
+        @Override
+        public void unregisterAdapterDataObserver(AdapterDataObserver observer) {
+            if (adapter != null) {
+                adapter.unregisterAdapterDataObserver(observer);
+            }
+        }
+
+        @Override
+        public void registerAdapterDataObserver(AdapterDataObserver observer) {
+            if (adapter != null) {
+                adapter.registerAdapterDataObserver(observer);
+            }
+        }
+
         private class SimpleViewHolder extends RecyclerView.ViewHolder {
             public SimpleViewHolder(View itemView) {
                 super(itemView);
