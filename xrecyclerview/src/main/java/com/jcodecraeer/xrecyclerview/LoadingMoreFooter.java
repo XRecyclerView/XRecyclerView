@@ -15,7 +15,7 @@ public class LoadingMoreFooter extends LinearLayout {
 
     private SimpleViewSwithcer progressCon;
     private Context mContext;
-    public final static int STATE_LAODING = 0;
+    public final static int STATE_LOADING = 0;
     public final static int STATE_COMPLETE = 1;
     public final static int STATE_NOMORE = 2;
     private TextView mText;
@@ -70,7 +70,7 @@ public class LoadingMoreFooter extends LinearLayout {
 
     public void  setState(int state) {
         switch(state) {
-            case STATE_LAODING:
+            case STATE_LOADING:
                 progressCon.setVisibility(View.VISIBLE);
                 mText.setText(mContext.getText(R.string.listview_loading));
                 this.setVisibility(View.VISIBLE);
