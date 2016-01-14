@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Adapter;
 
 import java.util.ArrayList;
 
@@ -138,7 +139,7 @@ public class XRecyclerView extends RecyclerView {
         }
     }
 
-    public void setLaodingMoreProgressStyle(int style) {
+    public void setLoadingMoreProgressStyle(int style) {
         mLoadingMoreProgressStyle = style;
         if(mFootViews.size() > 0 && mFootViews.get(0) instanceof LoadingMoreFooter){
             ((LoadingMoreFooter) mFootViews.get(0)).setProgressStyle(style);
@@ -181,7 +182,7 @@ public class XRecyclerView extends RecyclerView {
                 View footView = mFootViews.get(0);
                 isLoadingData = true;
                 if(footView instanceof  LoadingMoreFooter) {
-                    ( (LoadingMoreFooter) footView ).setState(LoadingMoreFooter.STATE_LAODING);
+                    ( (LoadingMoreFooter) footView ).setState(LoadingMoreFooter.STATE_LOADING);
                 } else{
                     footView.setVisibility(View.VISIBLE);
                 }
