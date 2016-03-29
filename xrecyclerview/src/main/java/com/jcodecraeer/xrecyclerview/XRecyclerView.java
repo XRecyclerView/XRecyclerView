@@ -1,5 +1,7 @@
 package com.jcodecraeer.xrecyclerview;
 
+import java.util.ArrayList;
+
 import android.content.Context;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,9 +12,6 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
-
-import java.util.ArrayList;
 
 public class XRecyclerView extends RecyclerView {
 
@@ -504,5 +503,15 @@ public class XRecyclerView extends RecyclerView {
         void onRefresh();
 
         void onLoadMore();
+    }
+    
+    public void setRefreshing(boolean refreshing) {
+        if (refreshing && pullRefreshEnabled && mLoadingListener != null) {
+            mRefreshHeader.setState(ArrowRefreshHeader.STATE_REFRESHING);
+            mRefreshHeader.onMove(mRefreshHeader.getMeasuredHeight());
+            mLoadingListener.onRefresh();
+            isnomore = false;
+            previousTotal = 0;
+        }
     }
 }
