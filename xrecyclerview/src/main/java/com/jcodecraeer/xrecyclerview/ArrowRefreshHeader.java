@@ -162,7 +162,7 @@ public class ArrowRefreshHeader extends LinearLayout implements BaseRefreshHeade
             public void run() {
                 reset();
             }
-        }, 500);
+        }, 200);
 	}
 
 	public void setVisiableHeight(int height) {
@@ -223,7 +223,11 @@ public class ArrowRefreshHeader extends LinearLayout implements BaseRefreshHeade
 
     public void reset() {
         smoothScrollTo(0);
-        setState(STATE_NORMAL);
+        new Handler().postDelayed(new Runnable() {
+            public void run() {
+                setState(STATE_NORMAL);
+            }
+        }, 500);
     }
 
     private void smoothScrollTo(int destHeight) {

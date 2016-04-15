@@ -28,4 +28,10 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public void gotoEmptyViewActivity(View v) {
+        Intent intent = new Intent();
+        intent.setClass(this, EmptyViewActivity.class);
+        startActivity(intent);
+    }
+
 }

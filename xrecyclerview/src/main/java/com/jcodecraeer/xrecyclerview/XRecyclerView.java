@@ -1,5 +1,8 @@
 package com.jcodecraeer.xrecyclerview;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.content.Context;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,11 +15,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Adapter;
 
-import java.util.ArrayList;
-
 public class XRecyclerView extends RecyclerView {
 
-    private  Context mContext;
+    private Context mContext;
     private boolean isLoadingData = false;
     private boolean isnomore = false;
     private int mRefreshProgressStyle = ProgressStyle.SysProgress;
@@ -31,12 +32,15 @@ public class XRecyclerView extends RecyclerView {
     private ArrowRefreshHeader mRefreshHeader;
     private boolean pullRefreshEnabled = true;
     private boolean loadingMoreEnabled = true;
-    private static final int TYPE_REFRESH_HEADER =  -5;
-    private static final int TYPE_HEADER =  -4;
-    private static final int TYPE_NORMAL =  0;
-    private static final int TYPE_FOOTER =  -3;
+    private static final int TYPE_REFRESH_HEADER = -5;
+    private static final int TYPE_NORMAL = 0;
+    private static final int TYPE_FOOTER = -3;
+    private static final int HEADER_INIT_INDEX = 10000;
+    private static List<Integer> sHeaderTypes = new ArrayList<>();
     private int previousTotal = 0;
     private int mPageCount = 0;
+    //adapter没有数据的时候显示,类似于listView的emptyView
+    private View mEmptyView;
 
     public XRecyclerView(Context context) {
         this(context, null);
@@ -53,7 +57,7 @@ public class XRecyclerView extends RecyclerView {
 
     private void init(Context context) {
         mContext = context;
-        if(pullRefreshEnabled) {
+        if (pullRefreshEnabled) {
             ArrowRefreshHeader refreshHeader = new ArrowRefreshHeader(mContext);
             mHeaderViews.add(0, refreshHeader);
             mRefreshHeader = refreshHeader;
@@ -73,6 +77,7 @@ public class XRecyclerView extends RecyclerView {
             mRefreshHeader.setProgressStyle(mRefreshProgressStyle);
         }
         mHeaderViews.add(view);
+        sHeaderTypes.add(HEADER_INIT_INDEX + mHeaderViews.size());
     }
 
     public void addFootView(final View view) {
@@ -83,16 +88,16 @@ public class XRecyclerView extends RecyclerView {
     public void loadMoreComplete() {
         isLoadingData = false;
         View footView = mFootViews.get(0);
-        if(previousTotal <  getLayoutManager().getItemCount()) {
-            if(footView instanceof  LoadingMoreFooter) {
-                ( (LoadingMoreFooter) footView ).setState(LoadingMoreFooter.STATE_COMPLETE);
-            } else{
+        if (previousTotal < getLayoutManager().getItemCount()) {
+            if (footView instanceof LoadingMoreFooter) {
+                ((LoadingMoreFooter) footView).setState(LoadingMoreFooter.STATE_COMPLETE);
+            } else {
                 footView.setVisibility(View.GONE);
             }
         } else {
-            if(footView instanceof  LoadingMoreFooter) {
-                ( (LoadingMoreFooter) footView ).setState(LoadingMoreFooter.STATE_NOMORE);
-            }else{
+            if (footView instanceof LoadingMoreFooter) {
+                ((LoadingMoreFooter) footView).setState(LoadingMoreFooter.STATE_NOMORE);
+            } else {
                 footView.setVisibility(View.GONE);
             }
             isnomore = true;
@@ -104,9 +109,9 @@ public class XRecyclerView extends RecyclerView {
         isLoadingData = false;
         View footView = mFootViews.get(0);
         isnomore = true;
-        if(footView instanceof  LoadingMoreFooter) {
-            ( (LoadingMoreFooter) footView ).setState(LoadingMoreFooter.STATE_NOMORE);
-        }else{
+        if (footView instanceof LoadingMoreFooter) {
+            ((LoadingMoreFooter) footView).setState(LoadingMoreFooter.STATE_NOMORE);
+        } else {
             footView.setVisibility(View.GONE);
         }
     }
@@ -115,17 +120,17 @@ public class XRecyclerView extends RecyclerView {
         mRefreshHeader.refreshComplate();
     }
 
-    public  void setRefreshHeader(ArrowRefreshHeader refreshHeader){
+    public void setRefreshHeader(ArrowRefreshHeader refreshHeader) {
         mRefreshHeader = refreshHeader;
     }
 
-    public void setPullRefreshEnabled(boolean enabled){
+    public void setPullRefreshEnabled(boolean enabled) {
         pullRefreshEnabled = enabled;
     }
 
-    public void setLoadingMoreEnabled(boolean enabled){
+    public void setLoadingMoreEnabled(boolean enabled) {
         loadingMoreEnabled = enabled;
-        if(!enabled) {
+        if (!enabled) {
             if (mFootViews.size() > 0) {
                 mFootViews.get(0).setVisibility(GONE);
             }
@@ -134,30 +139,40 @@ public class XRecyclerView extends RecyclerView {
 
     public void setRefreshProgressStyle(int style) {
         mRefreshProgressStyle = style;
-        if (mRefreshHeader != null){
+        if (mRefreshHeader != null) {
             mRefreshHeader.setProgressStyle(style);
         }
     }
 
     public void setLoadingMoreProgressStyle(int style) {
         mLoadingMoreProgressStyle = style;
-        if(mFootViews.size() > 0 && mFootViews.get(0) instanceof LoadingMoreFooter){
+        if (mFootViews.size() > 0 && mFootViews.get(0) instanceof LoadingMoreFooter) {
             ((LoadingMoreFooter) mFootViews.get(0)).setProgressStyle(style);
         }
     }
 
     public void setArrowImageView(int resid) {
-        if (mRefreshHeader != null){
+        if (mRefreshHeader != null) {
             mRefreshHeader.setArrowImageView(resid);
         }
     }
 
+    public void setEmptyView(View emptyView) {
+        this.mEmptyView = emptyView;
+        mDataObserver.onChanged();
+    }
+
+    public View getEmptyView() {
+        return mEmptyView;
+    }
+
     @Override
     public void setAdapter(Adapter adapter) {
-        mAdapter  = adapter;
+        mAdapter = adapter;
         mWrapAdapter = new WrapAdapter(mHeaderViews, mFootViews, adapter);
         super.setAdapter(mWrapAdapter);
         mAdapter.registerAdapterDataObserver(mDataObserver);
+        mDataObserver.onChanged();
     }
 
     @Override
@@ -177,13 +192,13 @@ public class XRecyclerView extends RecyclerView {
                 lastVisibleItemPosition = ((LinearLayoutManager) layoutManager).findLastVisibleItemPosition();
             }
             if (layoutManager.getChildCount() > 0
-                    && lastVisibleItemPosition >= layoutManager.getItemCount() - 1 &&  layoutManager.getItemCount() > layoutManager.getChildCount() && !isnomore && mRefreshHeader.getState() < ArrowRefreshHeader.STATE_REFRESHING) {
+                    && lastVisibleItemPosition >= layoutManager.getItemCount() - 1 && layoutManager.getItemCount() > layoutManager.getChildCount() && !isnomore && mRefreshHeader.getState() < ArrowRefreshHeader.STATE_REFRESHING) {
 
                 View footView = mFootViews.get(0);
                 isLoadingData = true;
-                if(footView instanceof  LoadingMoreFooter) {
-                    ( (LoadingMoreFooter) footView ).setState(LoadingMoreFooter.STATE_LOADING);
-                } else{
+                if (footView instanceof LoadingMoreFooter) {
+                    ((LoadingMoreFooter) footView).setState(LoadingMoreFooter.STATE_LOADING);
+                } else {
                     footView.setVisibility(View.VISIBLE);
                 }
                 mLoadingListener.onLoadMore();
@@ -203,19 +218,19 @@ public class XRecyclerView extends RecyclerView {
             case MotionEvent.ACTION_MOVE:
                 final float deltaY = ev.getRawY() - mLastY;
                 mLastY = ev.getRawY();
-                if ( isOnTop() && pullRefreshEnabled) {
+                if (isOnTop() && pullRefreshEnabled) {
                     mRefreshHeader.onMove(deltaY / DRAG_RATE);
-                    if(mRefreshHeader.getVisiableHeight() > 0 && mRefreshHeader.getState() < ArrowRefreshHeader.STATE_REFRESHING ) {
+                    if (mRefreshHeader.getVisiableHeight() > 0 && mRefreshHeader.getState() < ArrowRefreshHeader.STATE_REFRESHING) {
                         Log.i("getVisiableHeight", "getVisiableHeight = " + mRefreshHeader.getVisiableHeight());
-                        Log.i("getVisiableHeight", " mRefreshHeader.getState() = " +  mRefreshHeader.getState());
+                        Log.i("getVisiableHeight", " mRefreshHeader.getState() = " + mRefreshHeader.getState());
                         return false;
                     }
                 }
                 break;
             default:
                 mLastY = -1; // reset
-                if ( isOnTop() && pullRefreshEnabled) {
-                    if( mRefreshHeader.releaseAction()) {
+                if (isOnTop() && pullRefreshEnabled) {
+                    if (mRefreshHeader.releaseAction()) {
                         if (mLoadingListener != null) {
                             mLoadingListener.onRefresh();
                             isnomore = false;
@@ -279,7 +294,26 @@ public class XRecyclerView extends RecyclerView {
     private final RecyclerView.AdapterDataObserver mDataObserver = new RecyclerView.AdapterDataObserver() {
         @Override
         public void onChanged() {
-            mWrapAdapter.notifyDataSetChanged();
+            Adapter<?> adapter = getAdapter();
+            if (adapter != null && mEmptyView != null) {
+                int emptyCount = 0;
+                if (pullRefreshEnabled) {
+                    emptyCount++;
+                }
+                if (loadingMoreEnabled) {
+                    emptyCount++;
+                }
+                if (adapter.getItemCount() == emptyCount) {
+                    mEmptyView.setVisibility(View.VISIBLE);
+                    XRecyclerView.this.setVisibility(View.GONE);
+                } else {
+                    mEmptyView.setVisibility(View.GONE);
+                    XRecyclerView.this.setVisibility(View.VISIBLE);
+                }
+            }
+            if (mWrapAdapter != null) {
+                mWrapAdapter.notifyDataSetChanged();
+            }
         }
 
         @Override
@@ -320,21 +354,21 @@ public class XRecyclerView extends RecyclerView {
 
         public WrapAdapter(ArrayList<View> headerViews, ArrayList<View> footViews, RecyclerView.Adapter adapter) {
             this.adapter = adapter;
-                this.mHeaderViews = headerViews;
-                this.mFootViews = footViews;
+            this.mHeaderViews = headerViews;
+            this.mFootViews = footViews;
         }
 
         @Override
         public void onAttachedToRecyclerView(RecyclerView recyclerView) {
             super.onAttachedToRecyclerView(recyclerView);
             RecyclerView.LayoutManager manager = recyclerView.getLayoutManager();
-            if(manager instanceof GridLayoutManager) {
+            if (manager instanceof GridLayoutManager) {
                 final GridLayoutManager gridManager = ((GridLayoutManager) manager);
                 gridManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
                     @Override
                     public int getSpanSize(int position) {
-                        return (isHeader(position)||  isFooter(position))
-                                 ? gridManager.getSpanCount() : 1;
+                        return (isHeader(position) || isFooter(position))
+                                ? gridManager.getSpanCount() : 1;
                     }
                 });
             }
@@ -344,9 +378,9 @@ public class XRecyclerView extends RecyclerView {
         public void onViewAttachedToWindow(RecyclerView.ViewHolder holder) {
             super.onViewAttachedToWindow(holder);
             ViewGroup.LayoutParams lp = holder.itemView.getLayoutParams();
-            if(lp != null
+            if (lp != null
                     && lp instanceof StaggeredGridLayoutManager.LayoutParams
-                    &&  (isHeader( holder.getLayoutPosition()) || isFooter( holder.getLayoutPosition())) ) {
+                    && (isHeader(holder.getLayoutPosition()) || isFooter(holder.getLayoutPosition()))) {
                 StaggeredGridLayoutManager.LayoutParams p = (StaggeredGridLayoutManager.LayoutParams) lp;
                 p.setFullSpan(true);
             }
@@ -356,12 +390,16 @@ public class XRecyclerView extends RecyclerView {
             return position >= 0 && position < mHeaderViews.size();
         }
 
+        public boolean isContentHeader(int position) {
+            return position >= 1 && position < mHeaderViews.size();
+        }
+
         public boolean isFooter(int position) {
             return position < getItemCount() && position >= getItemCount() - mFootViews.size();
         }
 
         public boolean isRefreshHeader(int position) {
-            return position == 0 ;
+            return position == 0;
         }
 
         public int getHeadersCount() {
@@ -375,14 +413,20 @@ public class XRecyclerView extends RecyclerView {
         @Override
         public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             if (viewType == TYPE_REFRESH_HEADER) {
+                mCurrentPosition++;
                 return new SimpleViewHolder(mHeaderViews.get(0));
-            } else if (viewType == TYPE_HEADER) {
-                return new SimpleViewHolder(mHeaderViews.get(headerPosition++ ));
+            } else if (isContentHeader(mCurrentPosition)) {
+                if (viewType == sHeaderTypes.get(mCurrentPosition - 1)) {
+                    mCurrentPosition++;
+                    return new SimpleViewHolder(mHeaderViews.get(headerPosition++));
+                }
             } else if (viewType == TYPE_FOOTER) {
                 return new SimpleViewHolder(mFootViews.get(0));
             }
             return adapter.onCreateViewHolder(parent, viewType);
         }
+
+        private int mCurrentPosition;
 
         @Override
         public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
@@ -411,16 +455,17 @@ public class XRecyclerView extends RecyclerView {
 
         @Override
         public int getItemViewType(int position) {
-            if(isRefreshHeader(position)){
+            if (isRefreshHeader(position)) {
                 return TYPE_REFRESH_HEADER;
             }
             if (isHeader(position)) {
-                return TYPE_HEADER;
+                position = position - 1;
+                return sHeaderTypes.get(position);
             }
-            if(isFooter(position)){
+            if (isFooter(position)) {
                 return TYPE_FOOTER;
             }
-            int adjPosition = position - getHeadersCount();;
+            int adjPosition = position - getHeadersCount();
             int adapterCount;
             if (adapter != null) {
                 adapterCount = adapter.getItemCount();
@@ -473,5 +518,15 @@ public class XRecyclerView extends RecyclerView {
         void onRefresh();
 
         void onLoadMore();
+    }
+
+    public void setRefreshing(boolean refreshing) {
+        if (refreshing && pullRefreshEnabled && mLoadingListener != null) {
+            mRefreshHeader.setState(ArrowRefreshHeader.STATE_REFRESHING);
+            mRefreshHeader.onMove(mRefreshHeader.getMeasuredHeight());
+            mLoadingListener.onRefresh();
+            isnomore = false;
+            previousTotal = 0;
+        }
     }
 }
