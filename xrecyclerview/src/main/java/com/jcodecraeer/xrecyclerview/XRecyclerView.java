@@ -1,8 +1,5 @@
 package com.jcodecraeer.xrecyclerview;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.content.Context;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,7 +10,9 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class XRecyclerView extends RecyclerView {
 
@@ -37,7 +36,6 @@ public class XRecyclerView extends RecyclerView {
     private static final int TYPE_FOOTER = -3;
     private static final int HEADER_INIT_INDEX = 10000;
     private static List<Integer> sHeaderTypes = new ArrayList<>();
-    private int previousTotal = 0;
     private int mPageCount = 0;
     //adapter没有数据的时候显示,类似于listView的emptyView
     private View mEmptyView;
@@ -88,21 +86,23 @@ public class XRecyclerView extends RecyclerView {
     public void loadMoreComplete() {
         isLoadingData = false;
         View footView = mFootViews.get(0);
-        if (previousTotal < getLayoutManager().getItemCount()) {
-            if (footView instanceof LoadingMoreFooter) {
-                ((LoadingMoreFooter) footView).setState(LoadingMoreFooter.STATE_COMPLETE);
-            } else {
-                footView.setVisibility(View.GONE);
-            }
+        if (footView instanceof LoadingMoreFooter) {
+            ((LoadingMoreFooter) footView).setState(LoadingMoreFooter.STATE_COMPLETE);
         } else {
-            if (footView instanceof LoadingMoreFooter) {
-                ((LoadingMoreFooter) footView).setState(LoadingMoreFooter.STATE_NOMORE);
-            } else {
-                footView.setVisibility(View.GONE);
-            }
-            isnomore = true;
+            footView.setVisibility(View.GONE);
         }
-        previousTotal = getLayoutManager().getItemCount();
+
+    }
+
+    public void setIsnomore(boolean isnomore){
+        this.isnomore = isnomore;
+        View footView = mFootViews.get(0);
+        ((LoadingMoreFooter) footView).setState(this.isnomore ? LoadingMoreFooter.STATE_NOMORE:LoadingMoreFooter.STATE_COMPLETE);
+    }
+    public void reset(){
+        setIsnomore(false);
+        loadMoreComplete();
+        refreshComplete();
     }
 
     public void noMoreLoading() {
@@ -233,8 +233,6 @@ public class XRecyclerView extends RecyclerView {
                     if (mRefreshHeader.releaseAction()) {
                         if (mLoadingListener != null) {
                             mLoadingListener.onRefresh();
-                            isnomore = false;
-                            previousTotal = 0;
                         }
                     }
                 }
@@ -525,8 +523,6 @@ public class XRecyclerView extends RecyclerView {
             mRefreshHeader.setState(ArrowRefreshHeader.STATE_REFRESHING);
             mRefreshHeader.onMove(mRefreshHeader.getMeasuredHeight());
             mLoadingListener.onRefresh();
-            isnomore = false;
-            previousTotal = 0;
         }
     }
 }
