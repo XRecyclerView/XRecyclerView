@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.jcodecraeer.xrecyclerview.progressindicator.AVLoadingIndicatorView;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class ArrowRefreshHeader extends LinearLayout implements BaseRefreshHeader{
@@ -156,7 +157,8 @@ public class ArrowRefreshHeader extends LinearLayout implements BaseRefreshHeade
 
     @Override
 	public void refreshComplate(){
-        mHeaderTimeView.setText(friendlyTime(new Date()));
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        mHeaderTimeView.setText(sdf.format(new Date()));
         setState(STATE_DONE);
         new Handler().postDelayed(new Runnable(){
             public void run() {
