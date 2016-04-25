@@ -90,7 +90,7 @@ public class JellyView extends View  implements BaseRefreshHeader{
 
 
     @Override
-    public void refreshComplate(){
+    public void refreshComplete(){
 
     }
 

@@ -13,15 +13,16 @@ import com.jcodecraeer.xrecyclerview.progressindicator.AVLoadingIndicatorView;
 
 public class LoadingMoreFooter extends LinearLayout {
 
-    private SimpleViewSwithcer progressCon;
-    private Context mContext;
+    private SimpleViewSwitcher progressCon;
     public final static int STATE_LOADING = 0;
     public final static int STATE_COMPLETE = 1;
     public final static int STATE_NOMORE = 2;
     private TextView mText;
+
+
 	public LoadingMoreFooter(Context context) {
 		super(context);
-		initView(context);
+		initView();
 	}
 
 	/**
@@ -30,14 +31,13 @@ public class LoadingMoreFooter extends LinearLayout {
 	 */
 	public LoadingMoreFooter(Context context, AttributeSet attrs) {
 		super(context, attrs);
-		initView(context);
+		initView();
 	}
-    public void initView(Context context ){
-        mContext = context;
+    public void initView(){
         setGravity(Gravity.CENTER);
         setLayoutParams(new ViewGroup.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        progressCon = new SimpleViewSwithcer(context);
+        progressCon = new SimpleViewSwitcher(getContext());
         progressCon.setLayoutParams(new ViewGroup.LayoutParams(
                 ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
 
@@ -47,7 +47,7 @@ public class LoadingMoreFooter extends LinearLayout {
         progressCon.setView(progressView);
 
         addView(progressCon);
-        mText = new TextView(context);
+        mText = new TextView(getContext());
         mText.setText("正在加载...");
 
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -59,7 +59,7 @@ public class LoadingMoreFooter extends LinearLayout {
 
     public void setProgressStyle(int style) {
         if(style == ProgressStyle.SysProgress){
-            progressCon.setView(new ProgressBar(mContext, null, android.R.attr.progressBarStyle));
+            progressCon.setView(new ProgressBar(getContext(), null, android.R.attr.progressBarStyle));
         }else{
             AVLoadingIndicatorView progressView = new  AVLoadingIndicatorView(this.getContext());
             progressView.setIndicatorColor(0xffB5B5B5);
@@ -72,15 +72,15 @@ public class LoadingMoreFooter extends LinearLayout {
         switch(state) {
             case STATE_LOADING:
                 progressCon.setVisibility(View.VISIBLE);
-                mText.setText(mContext.getText(R.string.listview_loading));
+                mText.setText(getContext().getText(R.string.listview_loading));
                 this.setVisibility(View.VISIBLE);
                     break;
             case STATE_COMPLETE:
-                mText.setText(mContext.getText(R.string.listview_loading));
+                mText.setText(getContext().getText(R.string.listview_loading));
                 this.setVisibility(View.GONE);
                 break;
             case STATE_NOMORE:
-                mText.setText(mContext.getText(R.string.nomore_loading));
+                mText.setText(getContext().getText(R.string.nomore_loading));
                 progressCon.setVisibility(View.GONE);
                 this.setVisibility(View.VISIBLE);
                 break;
