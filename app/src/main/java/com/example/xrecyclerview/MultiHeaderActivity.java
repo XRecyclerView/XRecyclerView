@@ -1,13 +1,11 @@
 package com.example.xrecyclerview;
 
-import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +15,7 @@ import com.jcodecraeer.xrecyclerview.XRecyclerView;
 
 import java.util.ArrayList;
 
-public class StaggeredGridActivity extends AppCompatActivity {
+public class MultiHeaderActivity extends AppCompatActivity {
     private XRecyclerView mRecyclerView;
     private MyAdapter mAdapter;
     private ArrayList<String> listData;
@@ -32,8 +30,7 @@ public class StaggeredGridActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mRecyclerView = (XRecyclerView)this.findViewById(R.id.recyclerview);
-        StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager( 3,
-                StaggeredGridLayoutManager.VERTICAL);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(layoutManager);
 
@@ -41,8 +38,14 @@ public class StaggeredGridActivity extends AppCompatActivity {
         mRecyclerView.setLoadingMoreProgressStyle(ProgressStyle.BallRotate);
         mRecyclerView.setArrowImageView(R.drawable.iconfont_downgrey);
 
-        View header =   LayoutInflater.from(this).inflate(R.layout.recyclerview_header, (ViewGroup)findViewById(android.R.id.content),false);
+        View header = LayoutInflater.from(this).inflate(R.layout.recyclerview_header, (ViewGroup)findViewById(android.R.id.content),false);
         mRecyclerView.addHeaderView(header);
+        View header1 = LayoutInflater.from(this).inflate(R.layout.recyclerview_header, (ViewGroup)findViewById(android.R.id.content),false);
+        mRecyclerView.addHeaderView(header1);
+        header1.setBackgroundColor(0xff556B2F);
+        View header2 = LayoutInflater.from(this).inflate(R.layout.recyclerview_header, (ViewGroup)findViewById(android.R.id.content),false);
+        mRecyclerView.addHeaderView(header2);
+        header2.setBackgroundColor(0xff1874CD);
 
         mRecyclerView.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
@@ -51,8 +54,9 @@ public class StaggeredGridActivity extends AppCompatActivity {
                 times = 0;
                 new Handler().postDelayed(new Runnable(){
                     public void run() {
+
                         listData.clear();
-                        for(int i = 0; i < 25 ;i++){
+                        for(int i = 0; i < 15 ;i++){
                             listData.add("item" + i + "after " + refreshTime + " times of refresh");
                         }
                         mAdapter.notifyDataSetChanged();
@@ -67,9 +71,8 @@ public class StaggeredGridActivity extends AppCompatActivity {
                 if(times < 2){
                     new Handler().postDelayed(new Runnable(){
                         public void run() {
-                            mRecyclerView.loadMoreComplete();
-                            for(int i = 0; i < 25 ;i++){
-                                listData.add("item" + (i + listData.size()) );
+                            for(int i = 0; i < 15 ;i++){
+                                listData.add("item" + (1 + listData.size() ) );
                             }
                             mRecyclerView.loadMoreComplete();
                             mAdapter.notifyDataSetChanged();
@@ -91,19 +94,13 @@ public class StaggeredGridActivity extends AppCompatActivity {
         });
 
         listData = new  ArrayList<String>();
-        for(int i = 0; i < 25 ;i++){
+        for(int i = 0; i < 15 ;i++){
             listData.add("item" + i);
         }
         mAdapter = new MyAdapter(listData);
 
         mRecyclerView.setAdapter(mAdapter);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
+        mRecyclerView.setRefreshing(true);
     }
 
     @Override
@@ -115,5 +112,4 @@ public class StaggeredGridActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-
 }

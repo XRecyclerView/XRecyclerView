@@ -32,5 +32,26 @@
         android:layout_marginBottom="10dip"
         android:text="emptyViewSupport"
         />
+    <Button
+        android:onClick="gotoCollapsingToolbarLayoutActivity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dip"
+        android:text="CollapsingToolbarLayoutTest"
+        />
+    <Button
+        android:onClick="gotoDisableExampleActivity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dip"
+        android:text="DisableExampleActivity"
+        />
+    <Button
+        android:onClick="gotoMultiHeaderActivity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dip"
+        android:text="MultiHeaderActivity"
+        />
 
 </LinearLayout>

@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -25,6 +26,10 @@ public class LinearActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recyclerview);
+        final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         mRecyclerView = (XRecyclerView)this.findViewById(R.id.recyclerview);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -34,7 +39,7 @@ public class LinearActivity extends AppCompatActivity {
         mRecyclerView.setLoadingMoreProgressStyle(ProgressStyle.BallRotate);
         mRecyclerView.setArrowImageView(R.drawable.iconfont_downgrey);
 
-        View header =   LayoutInflater.from(this).inflate(R.layout.recyclerview_header, (ViewGroup)findViewById(android.R.id.content),false);
+        View header = LayoutInflater.from(this).inflate(R.layout.recyclerview_header, (ViewGroup)findViewById(android.R.id.content),false);
         mRecyclerView.addHeaderView(header);
 
         mRecyclerView.setLoadingListener(new XRecyclerView.LoadingListener() {
@@ -61,20 +66,21 @@ public class LinearActivity extends AppCompatActivity {
                 if(times < 2){
                     new Handler().postDelayed(new Runnable(){
                         public void run() {
-                            mRecyclerView.loadMoreComplete();
                             for(int i = 0; i < 15 ;i++){
-                                listData.add("item" + (i + listData.size()) );
+                                listData.add("item" + (1 + listData.size() ) );
                             }
+                            mRecyclerView.loadMoreComplete();
                             mAdapter.notifyDataSetChanged();
-                            mRecyclerView.refreshComplete();
                         }
                     }, 1000);
                 } else {
                     new Handler().postDelayed(new Runnable() {
                         public void run() {
-
+                            for(int i = 0; i < 9 ;i++){
+                                listData.add("item" + (1 + listData.size() ) );
+                            }
+                            mRecyclerView.setNoMore(true);
                             mAdapter.notifyDataSetChanged();
-                            mRecyclerView.loadMoreComplete();
                         }
                     }, 1000);
                 }
@@ -84,7 +90,7 @@ public class LinearActivity extends AppCompatActivity {
 
         listData = new  ArrayList<String>();
         for(int i = 0; i < 15 ;i++){
-            listData.add("item" + (i + listData.size()) );
+            listData.add("item" + i);
         }
         mAdapter = new MyAdapter(listData);
 
@@ -93,26 +99,12 @@ public class LinearActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
-
-
 }

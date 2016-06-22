@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -26,17 +27,17 @@ public class GridActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recyclerview);
+        final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         mRecyclerView = (XRecyclerView)this.findViewById(R.id.recyclerview);
         GridLayoutManager layoutManager = new GridLayoutManager(this,3);
-
         mRecyclerView.setLayoutManager(layoutManager);
 
         mRecyclerView.setRefreshProgressStyle(ProgressStyle.BallSpinFadeLoader);
         mRecyclerView.setLoadingMoreProgressStyle(ProgressStyle.BallRotate);
         mRecyclerView.setArrowImageView(R.drawable.iconfont_downgrey);
-
-        View header =   LayoutInflater.from(this).inflate(R.layout.recyclerview_header, (ViewGroup)findViewById(android.R.id.content),false);
-        mRecyclerView.addHeaderView(header);
 
         mRecyclerView.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
@@ -66,16 +67,18 @@ public class GridActivity extends AppCompatActivity {
                             for(int i = 0; i < 20 ;i++){
                                 listData.add("item" + (i + listData.size()) );
                             }
+                            mRecyclerView.loadMoreComplete();
                             mAdapter.notifyDataSetChanged();
-                            mRecyclerView.refreshComplete();
                         }
                     }, 1000);
                 } else {
                     new Handler().postDelayed(new Runnable() {
                         public void run() {
-
+                            for(int i = 0; i < 9 ;i++){
+                                listData.add("item" + (i + listData.size()) );
+                            }
                             mAdapter.notifyDataSetChanged();
-                            mRecyclerView.loadMoreComplete();
+                            mRecyclerView.setNoMore(true);
                         }
                     }, 1000);
                 }
@@ -85,7 +88,7 @@ public class GridActivity extends AppCompatActivity {
 
         listData = new  ArrayList<String>();
         for(int i = 0; i < 20 ;i++){
-            listData.add("item" + (i + listData.size()) );
+            listData.add("item" + i);
         }
         mAdapter = new MyAdapter(listData);
 
@@ -101,18 +104,12 @@ public class GridActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
-
 
 }

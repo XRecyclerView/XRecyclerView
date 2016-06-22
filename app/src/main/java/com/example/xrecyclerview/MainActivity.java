@@ -34,4 +34,22 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public void gotoCollapsingToolbarLayoutActivity(View v) {
+        Intent intent = new Intent();
+        intent.setClass(this, CollapsingToolbarLayoutActivity.class);
+        startActivity(intent);
+    }
+
+    public void gotoDisableExampleActivity(View v) {
+        Intent intent = new Intent();
+        intent.setClass(this, DisableExampleActivity.class);
+        startActivity(intent);
+    }
+
+    public void gotoMultiHeaderActivity(View v) {
+        Intent intent = new Intent();
+        intent.setClass(this, MultiHeaderActivity.class);
+        startActivity(intent);
+    }
+
 }

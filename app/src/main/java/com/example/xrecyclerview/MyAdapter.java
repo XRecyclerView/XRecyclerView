@@ -6,7 +6,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.jcodecraeer.xrecyclerview.ItemTouchHelperAdapter;
+
 import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * Created by jianghejie on 15/11/26.
