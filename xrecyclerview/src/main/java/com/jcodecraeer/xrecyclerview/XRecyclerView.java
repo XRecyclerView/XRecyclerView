@@ -8,10 +8,13 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
+import android.widget.LinearLayout;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,6 +42,8 @@ public class XRecyclerView extends RecyclerView {
     private View mFootView;
     private final RecyclerView.AdapterDataObserver mDataObserver = new DataObserver();
     private AppBarStateChangeListener.State appbarState = AppBarStateChangeListener.State.EXPANDED;
+    private int mOrientation = -1;// HORIZONTAL = 0; VERTICAL = 1;
+
     public XRecyclerView(Context context) {
         this(context, null);
     }
@@ -47,14 +52,43 @@ public class XRecyclerView extends RecyclerView {
         this(context, attrs, 0);
     }
 
+    private static final String TAG = XRecyclerView.class.getSimpleName();
+
     public XRecyclerView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-        init();
+//        init();
     }
 
+    @Override
+    public void requestLayout() {
+        super.requestLayout();
+        print("requestLayout");
+        LayoutManager layoutManager = getLayoutManager();
+        if (layoutManager instanceof LinearLayoutManager) {
+            LinearLayoutManager manager = (LinearLayoutManager)layoutManager;
+            int orientation = manager.getOrientation();
+            print("layoutManager instanceof LinearLayoutManager, orientation " + orientation);
+            if (orientation != mOrientation) {
+                mOrientation = orientation;
+                init();
+            }
+        } else {
+            print("LayoutManager " + layoutManager);
+        }
+    }
+
+    void print(String msg) {
+        StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
+        String method = "";
+        if (stackTrace.length > 3) {
+            method = stackTrace[3].getMethodName();
+        }
+        Log.e(TAG, "### [" + method + "] " + msg + " ");
+    }
     private void init() {
+        print("init  " + mOrientation + " pullRefreshEnabled " + pullRefreshEnabled);
         if (pullRefreshEnabled) {
-            mRefreshHeader = new ArrowRefreshHeader(getContext());
+            mRefreshHeader = new ArrowRefreshHeader(getContext(), mOrientation == LinearLayout.VERTICAL);
             mRefreshHeader.setProgressStyle(mRefreshProgressStyle);
         }
         LoadingMoreFooter footView = new LoadingMoreFooter(getContext());

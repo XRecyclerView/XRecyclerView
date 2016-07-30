@@ -36,8 +36,11 @@ public class ArrowRefreshHeader extends LinearLayout implements BaseRefreshHeade
 
 	public int mMeasuredHeight;
 
-	public ArrowRefreshHeader(Context context) {
+    private boolean mIsVertical;
+
+	public ArrowRefreshHeader(Context context, boolean isVertical) {
 		super(context);
+        mIsVertical = isVertical;
 		initView();
 	}
 
