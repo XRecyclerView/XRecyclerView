@@ -17,6 +17,11 @@ public class MainActivity extends AppCompatActivity {
         intent.setClass(this,LinearActivity.class);
         startActivity(intent);
     }
+    public void gotoLinearActivity_H(View v) {
+        Intent intent = new Intent();
+        intent.setClass(this,LinearActivity_H.class);
+        startActivity(intent);
+    }
     public void gotoGridActivity(View v) {
         Intent intent = new Intent();
         intent.setClass(this,GridActivity.class);
