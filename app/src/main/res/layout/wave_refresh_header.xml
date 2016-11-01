@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:gravity="center"
+              android:background="#eeeeee"
+              android:orientation="vertical">
+
+    <com.example.xrecyclerview.waveview.WaveView
+        android:id="@+id/wave_view"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:layout_margin="5dp"
+        app:above_wave_color="@android:color/holo_green_dark"
+        app:blow_wave_color="@android:color/holo_green_dark"
+        app:wave_height="large"
+        app:wave_hz="fast"
+        app:wave_length="large"
+        >
+
+    </com.example.xrecyclerview.waveview.WaveView>
+
+</LinearLayout>
