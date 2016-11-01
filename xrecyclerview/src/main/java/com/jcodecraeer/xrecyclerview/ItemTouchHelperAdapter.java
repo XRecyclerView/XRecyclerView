@@ -9,11 +9,11 @@ import android.support.v7.widget.RecyclerView;
 public interface ItemTouchHelperAdapter {
 
     /**
-     * Called when an item has been dragged far enough to trigger a move. This is called every time
+     * Called when an item has been dragged far enough to trigger a onMoveHead. This is called every time
      * an item is shifted, and <strong>not</strong> at the end of a "drop" event.<br/>
      * <br/>
      * Implementations should call {@link RecyclerView.Adapter#notifyItemMoved(int, int)} after
-     * adjusting the underlying data to reflect this move.
+     * adjusting the underlying data to reflect this onMoveHead.
      *
      * @param fromPosition The start position of the moved item.
      * @param toPosition   Then resolved position of the moved item.

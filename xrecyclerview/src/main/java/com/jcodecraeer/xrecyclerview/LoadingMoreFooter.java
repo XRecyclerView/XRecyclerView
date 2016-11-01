@@ -1,7 +1,11 @@
 package com.jcodecraeer.xrecyclerview;
 
 import android.content.Context;
+import android.content.res.Resources;
+import android.support.annotation.ColorInt;
+import android.support.annotation.ColorRes;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
@@ -20,6 +24,8 @@ public class LoadingMoreFooter extends LinearLayout {
     public final static int STATE_NOMORE = 2;
     private TextView mText;
 
+    private String mLoadingText;
+    private String mNoMoreText;
 
 	public LoadingMoreFooter(Context context) {
 		super(context);
@@ -49,7 +55,10 @@ public class LoadingMoreFooter extends LinearLayout {
 
         addView(progressCon);
         mText = new TextView(getContext());
-        mText.setText("正在加载...");
+        Resources res = getResources();
+        mLoadingText = res.getString(R.string.listview_loading);
+        mNoMoreText = res.getString(R.string.nomore_loading);
+        mText.setText(mLoadingText);
 
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         layoutParams.setMargins( (int)getResources().getDimension(R.dimen.textandiconmargin),0,0,0 );
@@ -73,18 +82,38 @@ public class LoadingMoreFooter extends LinearLayout {
         switch(state) {
             case STATE_LOADING:
                 progressCon.setVisibility(View.VISIBLE);
-                mText.setText(getContext().getText(R.string.listview_loading));
+                mText.setText(mLoadingText);
                 this.setVisibility(View.VISIBLE);
                     break;
             case STATE_COMPLETE:
-                mText.setText(getContext().getText(R.string.listview_loading));
+                mText.setText(mLoadingText);
                 this.setVisibility(View.GONE);
                 break;
             case STATE_NOMORE:
-                mText.setText(getContext().getText(R.string.nomore_loading));
+                mText.setText(mNoMoreText);
                 progressCon.setVisibility(View.GONE);
                 this.setVisibility(View.VISIBLE);
                 break;
         }
+    }
+
+    public void setTextColorRes(@ColorRes int color){
+        mText.setTextColor(getContext().getResources().getColor(color));
+    }
+
+    public void setTextColor(int color){
+        mText.setTextColor(color);
+    }
+
+    public TextView getTextView(){
+        return mText;
+    }
+
+    public void setLoadingText(String loadingText) {
+        this.mLoadingText = loadingText;
+    }
+
+    public void setNoMoreText(String noMoreText) {
+        this.mNoMoreText = noMoreText;
     }
 }

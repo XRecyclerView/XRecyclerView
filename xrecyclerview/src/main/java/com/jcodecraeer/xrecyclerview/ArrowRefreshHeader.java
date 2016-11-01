@@ -19,6 +19,9 @@ import com.jcodecraeer.xrecyclerview.progressindicator.AVLoadingIndicatorView;
 
 import java.util.Date;
 
+/**
+ * @deprecated
+ */
 public class ArrowRefreshHeader extends LinearLayout implements BaseRefreshHeader {
 
 	private LinearLayout mContainer;
