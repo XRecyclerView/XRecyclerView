@@ -8,10 +8,13 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
+import android.widget.LinearLayout;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,6 +26,7 @@ public class XRecyclerView extends RecyclerView {
     private ArrayList<View> mHeaderViews = new ArrayList<>();
     private WrapAdapter mWrapAdapter;
     private float mLastY = -1;
+    private float mLastX = -1;
     private static final float DRAG_RATE = 3;
     private LoadingListener mLoadingListener;
     private ArrowRefreshHeader mRefreshHeader;
@@ -39,6 +43,8 @@ public class XRecyclerView extends RecyclerView {
     private View mFootView;
     private final RecyclerView.AdapterDataObserver mDataObserver = new DataObserver();
     private AppBarStateChangeListener.State appbarState = AppBarStateChangeListener.State.EXPANDED;
+    private boolean mIsVertical;// 竖直滑动还是水平滑动的标记
+
     public XRecyclerView(Context context) {
         this(context, null);
     }
@@ -47,17 +53,27 @@ public class XRecyclerView extends RecyclerView {
         this(context, attrs, 0);
     }
 
+    private static final String TAG = XRecyclerView.class.getSimpleName();
+
     public XRecyclerView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
+//        init();
+    }
+
+    @Override
+    public void setLayoutManager(LayoutManager layout) {
+        super.setLayoutManager(layout);
+        mIsVertical = getLayoutManager().canScrollVertically();
         init();
     }
 
     private void init() {
+        LogUtil.e("init " + mIsVertical + " pullRefreshEnabled " + pullRefreshEnabled);
         if (pullRefreshEnabled) {
-            mRefreshHeader = new ArrowRefreshHeader(getContext());
+            mRefreshHeader = new ArrowRefreshHeader(getContext(), mIsVertical);
             mRefreshHeader.setProgressStyle(mRefreshProgressStyle);
         }
-        LoadingMoreFooter footView = new LoadingMoreFooter(getContext());
+        LoadingMoreFooter footView = new LoadingMoreFooter(getContext(), mIsVertical);
         footView.setProgressStyle(mLoadingMoreProgressStyle);
         mFootView = footView;
         mFootView.setVisibility(GONE);
@@ -208,35 +224,74 @@ public class XRecyclerView extends RecyclerView {
 
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
-        if (mLastY == -1) {
-            mLastY = ev.getRawY();
-        }
-        switch (ev.getAction()) {
-            case MotionEvent.ACTION_DOWN:
+        if (mIsVertical) {
+            // 竖直方向
+            if (mLastY == -1) {
                 mLastY = ev.getRawY();
-                break;
-            case MotionEvent.ACTION_MOVE:
-                final float deltaY = ev.getRawY() - mLastY;
-                mLastY = ev.getRawY();
-                if (isOnTop() && pullRefreshEnabled && appbarState == AppBarStateChangeListener.State.EXPANDED) {
-                    mRefreshHeader.onMove(deltaY / DRAG_RATE);
-                    if (mRefreshHeader.getVisibleHeight() > 0 && mRefreshHeader.getState() < ArrowRefreshHeader.STATE_REFRESHING) {
-                        return false;
-                    }
-                }
-                break;
-            default:
-                mLastY = -1; // reset
-                if (isOnTop() && pullRefreshEnabled && appbarState == AppBarStateChangeListener.State.EXPANDED) {
-                    if (mRefreshHeader.releaseAction()) {
-                        if (mLoadingListener != null) {
-                            mLoadingListener.onRefresh();
+            }
+            switch (ev.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    mLastY = ev.getRawY();
+                    break;
+                case MotionEvent.ACTION_MOVE:
+                    final float deltaY = ev.getRawY() - mLastY;
+                    mLastY = ev.getRawY();
+                    if (isOnTop() && pullRefreshEnabled) {
+                        mRefreshHeader.onMove(deltaY / DRAG_RATE);
+                        if (mRefreshHeader.getVisibleHeight() > 0 && mRefreshHeader.getState() < ArrowRefreshHeader.STATE_REFRESHING) {
+                            //                        Log.i("getVisibleHeight", "getVisibleHeight = " + mRefreshHeader.getVisibleHeight());
+                            //                        Log.i("getVisibleHeight", " mRefreshHeader.getState() = " + mRefreshHeader.getState());
+                            return false;
                         }
                     }
-                }
-                break;
+                    break;
+                default:
+                    mLastY = -1; // reset
+                    if (isOnTop() && pullRefreshEnabled) {
+                        if (mRefreshHeader.releaseAction()) {
+                            if (mLoadingListener != null) {
+                                mLoadingListener.onRefresh();
+                            }
+                        }
+                    }
+                    break;
+            }
+            return super.onTouchEvent(ev);
+        } else {
+            // 水平方向
+            if (mLastX == -1) {
+                mLastX = ev.getRawX();
+            }
+            switch (ev.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    mLastX = ev.getRawX();
+                    break;
+                case MotionEvent.ACTION_MOVE:
+                    final float deltaX = ev.getRawX() - mLastX;
+                    // Log.e("######", "onTouchEvent: ev.getRawX " + ev.getRawX());
+                    mLastX = ev.getRawX();
+                    if (isOnTop() && pullRefreshEnabled) {
+                        mRefreshHeader.onMove(deltaX / DRAG_RATE);
+                        if (mRefreshHeader.getVisibleWidth() > 0 && mRefreshHeader.getState() < ArrowRefreshHeader.STATE_REFRESHING) {
+                            // Log.i("getVisibleHeight", "getVisibleHeight = " + mRefreshHeader.getVisibleHeight());
+                            // Log.i("getVisibleHeight", " mRefreshHeader.getState() = " + mRefreshHeader.getState());
+                            return false;
+                        }
+                    }
+                    break;
+                default:
+                    mLastX = -1; // reset
+                    if (isOnTop() && pullRefreshEnabled) {
+                        if (mRefreshHeader.releaseAction()) {
+                            if (mLoadingListener != null) {
+                                mLoadingListener.onRefresh();
+                            }
+                        }
+                    }
+                    break;
+            }
+            return super.onTouchEvent(ev);
         }
-        return super.onTouchEvent(ev);
     }
 
     private int findMax(int[] lastPositions) {
@@ -500,7 +555,11 @@ public class XRecyclerView extends RecyclerView {
     public void setRefreshing(boolean refreshing) {
         if (refreshing && pullRefreshEnabled && mLoadingListener != null) {
             mRefreshHeader.setState(ArrowRefreshHeader.STATE_REFRESHING);
-            mRefreshHeader.onMove(mRefreshHeader.getMeasuredHeight());
+            if (mIsVertical) {
+                mRefreshHeader.onMove(mRefreshHeader.getMeasuredHeight());
+            } else {
+                mRefreshHeader.onMove(mRefreshHeader.getMeasuredWidth());
+            }
             mLoadingListener.onRefresh();
         }
     }

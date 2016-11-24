@@ -21,6 +21,10 @@
             android:label="@string/app_name"
             android:theme="@style/SupportTheme" />
         <activity
+            android:name=".LinearActivity_H"
+            android:label="@string/app_name"
+            android:theme="@style/SupportTheme" />
+        <activity
             android:name=".GridActivity"
             android:label="@string/app_name"
             android:theme="@style/SupportTheme" />

@@ -19,25 +19,34 @@ public class LoadingMoreFooter extends LinearLayout {
     public final static int STATE_COMPLETE = 1;
     public final static int STATE_NOMORE = 2;
     private TextView mText;
+    private boolean  mIsVertical;
 
+    public LoadingMoreFooter(Context context, boolean isVertical) {
+        super(context);
+        mIsVertical = isVertical;
+        initView();
+    }
 
-	public LoadingMoreFooter(Context context) {
-		super(context);
-		initView();
-	}
-
-	/**
-	 * @param context
-	 * @param attrs
-	 */
-	public LoadingMoreFooter(Context context, AttributeSet attrs) {
-		super(context, attrs);
-		initView();
-	}
+    /**
+     * @param context
+     * @param attrs
+     */
+    public LoadingMoreFooter(Context context, AttributeSet attrs) {
+        super(context, attrs);
+        initView();
+    }
     public void initView(){
         setGravity(Gravity.CENTER);
-        setLayoutParams(new RecyclerView.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        if (mIsVertical) {
+            setLayoutParams(new ViewGroup.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+            setPadding(0, 0, 0, 4);// 距离下边一点距离
+        } else {
+            setOrientation(VERTICAL);
+            setLayoutParams(new ViewGroup.LayoutParams(
+                    ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT));
+            setPadding(0, 0, 4, 0);// 距离右边一点距离
+        }
         progressCon = new SimpleViewSwitcher(getContext());
         progressCon.setLayoutParams(new ViewGroup.LayoutParams(
                 ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
@@ -52,7 +61,9 @@ public class LoadingMoreFooter extends LinearLayout {
         mText.setText("正在加载...");
 
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        layoutParams.setMargins( (int)getResources().getDimension(R.dimen.textandiconmargin),0,0,0 );
+        if (mIsVertical) {
+            layoutParams.setMargins((int)getResources().getDimension(R.dimen.textandiconmargin), 0, 0, 0);
+        }
 
         mText.setLayoutParams(layoutParams);
         addView(mText);
