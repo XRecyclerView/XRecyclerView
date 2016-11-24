@@ -52,4 +52,16 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public void gotoCustomRefreshHeaderActivity(View v){
+        Intent intent = new Intent();
+        intent.setClass(this, CustomRefreshHeaderActivity.class);
+        startActivity(intent);
+    }
+
+    public void gotoWaveRefreshHeaderActivity(View v){
+        Intent intent = new Intent();
+        intent.setClass(this, WaveRefreshHeaderActivity.class);
+        startActivity(intent);
+    }
+
 }

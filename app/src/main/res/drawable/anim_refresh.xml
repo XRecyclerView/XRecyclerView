@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animation-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:duration="100" android:drawable="@drawable/ic_loading_1" />
+    <item android:duration="100" android:drawable="@drawable/ic_loading_2" />
+    <item android:duration="100" android:drawable="@drawable/ic_loading_3" />
+    <item android:duration="100" android:drawable="@drawable/ic_loading_4" />
+    <item android:duration="100" android:drawable="@drawable/ic_loading_5" />
+    <item android:duration="100" android:drawable="@drawable/ic_loading_6" />
+
+</animation-list>

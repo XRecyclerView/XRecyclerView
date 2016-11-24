@@ -10,12 +10,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.jcodecraeer.xrecyclerview.ProgressStyle;
+import com.example.xrecyclerview.header.CustomRefreshHeader;
+import com.example.xrecyclerview.header.WaveRefreshHeader;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 
 import java.util.ArrayList;
 
-public class LinearActivity extends AppCompatActivity {
+public class WaveRefreshHeaderActivity extends AppCompatActivity {
     private XRecyclerView mRecyclerView;
     private MyAdapter mAdapter;
     private ArrayList<String> listData;
@@ -34,12 +35,13 @@ public class LinearActivity extends AppCompatActivity {
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(layoutManager);
 
-        mRecyclerView.setRefreshProgressStyle(ProgressStyle.BallSpinFadeLoader);
-        mRecyclerView.setLoadingMoreProgressStyle(ProgressStyle.BallRotate);
-        mRecyclerView.setArrowImageView(R.drawable.iconfont_downgrey);
 
         View header = LayoutInflater.from(this).inflate(R.layout.recyclerview_header, (ViewGroup)findViewById(android.R.id.content),false);
         mRecyclerView.addHeaderView(header);
+
+        WaveRefreshHeader refreshHeader = new WaveRefreshHeader(this);
+        mRecyclerView.setRefreshHeader(refreshHeader);
+
         mRecyclerView.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
@@ -56,7 +58,7 @@ public class LinearActivity extends AppCompatActivity {
                         mRecyclerView.refreshComplete();
                     }
 
-                }, 1000);            //refresh data here
+                }, 5000);            //refresh data here
             }
 
             @Override

@@ -1,6 +1,7 @@
 package com.jcodecraeer.xrecyclerview;
 
 import android.content.Context;
+import android.support.annotation.ColorRes;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.widget.GridLayoutManager;
@@ -12,6 +13,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,7 +27,7 @@ public class XRecyclerView extends RecyclerView {
     private float mLastY = -1;
     private static final float DRAG_RATE = 3;
     private LoadingListener mLoadingListener;
-    private ArrowRefreshHeader mRefreshHeader;
+    private XBaseRefreshHeader mRefreshHeader;
     private boolean pullRefreshEnabled = true;
     private boolean loadingMoreEnabled = true;
     //下面的ItemViewType是保留值(ReservedItemViewType),如果用户的adapter与它们重复将会强制抛出异常。不过为了简化,我们检测到重复时对用户的提示是ItemViewType必须小于10000
@@ -54,7 +56,7 @@ public class XRecyclerView extends RecyclerView {
 
     private void init() {
         if (pullRefreshEnabled) {
-            mRefreshHeader = new ArrowRefreshHeader(getContext());
+            mRefreshHeader = new XRefreshHeader(getContext());
             mRefreshHeader.setProgressStyle(mRefreshProgressStyle);
         }
         LoadingMoreFooter footView = new LoadingMoreFooter(getContext());
@@ -124,7 +126,7 @@ public class XRecyclerView extends RecyclerView {
         setNoMore(false);
     }
 
-    public void setRefreshHeader(ArrowRefreshHeader refreshHeader) {
+    public void setRefreshHeader(XBaseRefreshHeader refreshHeader) {
         mRefreshHeader = refreshHeader;
     }
 
@@ -170,6 +172,30 @@ public class XRecyclerView extends RecyclerView {
         return mEmptyView;
     }
 
+    public void setFootTextColorRes(@ColorRes int color){
+        if (mFootView instanceof LoadingMoreFooter){
+            ((LoadingMoreFooter)mFootView).setTextColorRes(color);
+        }
+    }
+
+    public void setFootTextColor(int color){
+        if (mFootView instanceof LoadingMoreFooter){
+            ((LoadingMoreFooter)mFootView).setTextColor(color);
+        }
+    }
+
+    public void setFootLoadingText(String loadingText) {
+        if (mFootView instanceof LoadingMoreFooter){
+            ((LoadingMoreFooter)mFootView).setLoadingText(loadingText);
+        }
+    }
+
+    public void setFootNoMoreText(String noMoreText) {
+        if (mFootView instanceof LoadingMoreFooter){
+            ((LoadingMoreFooter)mFootView).setNoMoreText(noMoreText);
+        }
+    }
+
     @Override
     public void setAdapter(Adapter adapter) {
         mWrapAdapter = new WrapAdapter(adapter);
@@ -194,7 +220,7 @@ public class XRecyclerView extends RecyclerView {
                 lastVisibleItemPosition = ((LinearLayoutManager) layoutManager).findLastVisibleItemPosition();
             }
             if (layoutManager.getChildCount() > 0
-                    && lastVisibleItemPosition >= layoutManager.getItemCount() - 1 && layoutManager.getItemCount() > layoutManager.getChildCount() && !isNoMore && mRefreshHeader.getState() < ArrowRefreshHeader.STATE_REFRESHING) {
+                    && lastVisibleItemPosition >= layoutManager.getItemCount() - 1 && layoutManager.getItemCount() > layoutManager.getChildCount() && !isNoMore && mRefreshHeader.getState() < BaseRefreshHeader.STATE_REFRESHING) {
                 isLoadingData = true;
                 if (mFootView instanceof LoadingMoreFooter) {
                     ((LoadingMoreFooter) mFootView).setState(LoadingMoreFooter.STATE_LOADING);
@@ -220,7 +246,7 @@ public class XRecyclerView extends RecyclerView {
                 mLastY = ev.getRawY();
                 if (isOnTop() && pullRefreshEnabled && appbarState == AppBarStateChangeListener.State.EXPANDED) {
                     mRefreshHeader.onMove(deltaY / DRAG_RATE);
-                    if (mRefreshHeader.getVisibleHeight() > 0 && mRefreshHeader.getState() < ArrowRefreshHeader.STATE_REFRESHING) {
+                    if (mRefreshHeader.getVisibleHeight() > 0 && mRefreshHeader.getState() < BaseRefreshHeader.STATE_REFRESHING) {
                         return false;
                     }
                 }
@@ -229,7 +255,13 @@ public class XRecyclerView extends RecyclerView {
                 mLastY = -1; // reset
                 if (isOnTop() && pullRefreshEnabled && appbarState == AppBarStateChangeListener.State.EXPANDED) {
                     if (mRefreshHeader.releaseAction()) {
-                        if (mLoadingListener != null) {
+
+                        //如果此时正在上拉加载更多，网络慢的情况下，不允许下拉刷新
+                        if (isLoadingData && loadingMoreEnabled){
+                            mRefreshHeader.refreshComplete();
+                            return false;
+                        }
+                        else if (mLoadingListener != null) {
                             mLoadingListener.onRefresh();
                         }
                     }
@@ -499,7 +531,7 @@ public class XRecyclerView extends RecyclerView {
 
     public void setRefreshing(boolean refreshing) {
         if (refreshing && pullRefreshEnabled && mLoadingListener != null) {
-            mRefreshHeader.setState(ArrowRefreshHeader.STATE_REFRESHING);
+            mRefreshHeader.setState(BaseRefreshHeader.STATE_REFRESHING);
             mRefreshHeader.onMove(mRefreshHeader.getMeasuredHeight());
             mLoadingListener.onRefresh();
         }

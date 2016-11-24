@@ -41,6 +41,15 @@
             android:name=".MultiHeaderActivity"
             android:theme="@style/SupportTheme"
             ></activity>
+
+        <activity
+            android:name=".CustomRefreshHeaderActivity"
+            android:theme="@style/SupportTheme"
+            ></activity>
+        <activity
+            android:name=".WaveRefreshHeaderActivity"
+            android:theme="@style/SupportTheme"
+            ></activity>
     </application>
 
 </manifest>
