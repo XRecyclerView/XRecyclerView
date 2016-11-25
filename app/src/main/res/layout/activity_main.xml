@@ -53,5 +53,13 @@
         android:layout_marginBottom="10dip"
         android:text="MultiHeaderActivity"
         />
+    <Button
+        android:onClick="gotoItemDecorationActivity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dip"
+        android:text="ItemDecorationActivity"
+        />
+
 
 </LinearLayout>

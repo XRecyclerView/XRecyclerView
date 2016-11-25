@@ -51,5 +51,11 @@ public class MainActivity extends AppCompatActivity {
         intent.setClass(this, MultiHeaderActivity.class);
         startActivity(intent);
     }
+    public void gotoItemDecorationActivity(View v) {
+        Intent intent = new Intent();
+        intent.setClass(this, ItemDecorationActivity.class);
+        startActivity(intent);
+    }
+
 
 }

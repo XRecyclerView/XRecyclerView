@@ -28,7 +28,7 @@ public class EmptyViewActivity extends AppCompatActivity {
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(layoutManager);
-
+        mRecyclerView.setPullRefreshEnabled(false);
         mEmptyView = findViewById(R.id.text_empty);
 
         mRecyclerView.setEmptyView(mEmptyView);
