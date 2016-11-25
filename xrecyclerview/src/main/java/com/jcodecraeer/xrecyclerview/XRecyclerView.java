@@ -475,12 +475,12 @@ public class XRecyclerView extends RecyclerView {
                     }
                 });
             }
-           // adapter.onAttachedToRecyclerView(recyclerView);
+            adapter.onAttachedToRecyclerView(recyclerView);
         }
 
         @Override
         public void onDetachedFromRecyclerView(RecyclerView recyclerView) {
-            //adapter.onDetachedFromRecyclerView(recyclerView);
+            adapter.onDetachedFromRecyclerView(recyclerView);
         }
 
         @Override
