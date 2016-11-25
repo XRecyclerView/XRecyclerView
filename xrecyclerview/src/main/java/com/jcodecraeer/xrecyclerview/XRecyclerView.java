@@ -188,6 +188,23 @@ public class XRecyclerView extends RecyclerView {
     }
 
     @Override
+    public void setLayoutManager(LayoutManager layout) {
+        super.setLayoutManager(layout);
+        if(mWrapAdapter != null){
+            if (layout instanceof GridLayoutManager) {
+                final GridLayoutManager gridManager = ((GridLayoutManager) layout);
+                gridManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+                    @Override
+                    public int getSpanSize(int position) {
+                        return (mWrapAdapter.isHeader(position) || mWrapAdapter.isFooter(position) || mWrapAdapter.isRefreshHeader(position))
+                                ? gridManager.getSpanCount() : 1;
+                    }
+                });
+            }
+        }
+    }
+
+    @Override
     public void onScrollStateChanged(int state) {
         super.onScrollStateChanged(state);
         if (state == RecyclerView.SCROLL_STATE_IDLE && mLoadingListener != null && !isLoadingData && loadingMoreEnabled) {
@@ -458,12 +475,12 @@ public class XRecyclerView extends RecyclerView {
                     }
                 });
             }
-            adapter.onAttachedToRecyclerView(recyclerView);
+           // adapter.onAttachedToRecyclerView(recyclerView);
         }
 
         @Override
         public void onDetachedFromRecyclerView(RecyclerView recyclerView) {
-            adapter.onDetachedFromRecyclerView(recyclerView);
+            //adapter.onDetachedFromRecyclerView(recyclerView);
         }
 
         @Override

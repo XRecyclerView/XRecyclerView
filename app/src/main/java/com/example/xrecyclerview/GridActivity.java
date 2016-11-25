@@ -93,6 +93,7 @@ public class GridActivity extends AppCompatActivity {
         mAdapter = new MyAdapter(listData);
 
         mRecyclerView.setAdapter(mAdapter);
+
     }
 
     @Override
