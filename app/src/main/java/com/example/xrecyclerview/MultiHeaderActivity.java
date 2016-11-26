@@ -102,7 +102,7 @@ public class MultiHeaderActivity extends AppCompatActivity {
         mAdapter = new MyAdapter(listData);
 
         mRecyclerView.setAdapter(mAdapter);
-        mRecyclerView.setRefreshing(true);
+        mRecyclerView.refresh();
     }
 
     @Override

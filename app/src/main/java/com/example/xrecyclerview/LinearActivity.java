@@ -94,7 +94,14 @@ public class LinearActivity extends AppCompatActivity {
         mAdapter = new MyAdapter(listData);
 
         mRecyclerView.setAdapter(mAdapter);
-        mRecyclerView.setRefreshing(true);
+        mRecyclerView.refresh();
+        new Handler().postDelayed(new Runnable(){
+            public void run() {
+
+                mRecyclerView.refresh();
+            }
+
+        }, 8000);
     }
 
     @Override

@@ -10,7 +10,7 @@ Usage
 -----
 ##gradle
 ```groovy
-compile 'com.jcodecraeer:xrecyclerview:1.3.0'
+compile 'com.jcodecraeer:xrecyclerview:1.3.1'
 ```
 just like a standard RecyclerView
 ```java
@@ -51,6 +51,11 @@ to notify that the refreshing work is done.
 here is what we get:
 
 ![default](https://github.com/jianghejie/XRecyclerView/blob/master/art/default.gif)
+
+##call refresh() manually(I change the previous setRefreshing() method to refresh() )
+```java
+mRecyclerView.refresh();
+```
 
 ###custom refresh and loading more style
 pull refresh and loading more style is highly customizable.

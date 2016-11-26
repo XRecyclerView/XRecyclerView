@@ -121,7 +121,12 @@ public class XRecyclerView extends RecyclerView {
             mFootView.setVisibility(View.GONE);
         }
     }
-
+    public void refresh() {
+        if (pullRefreshEnabled && mLoadingListener != null) {
+            mRefreshHeader.setState(ArrowRefreshHeader.STATE_REFRESHING);
+            mLoadingListener.onRefresh();
+        }
+    }
     public void reset(){
         setNoMore(false);
         loadMoreComplete();
@@ -187,6 +192,12 @@ public class XRecyclerView extends RecyclerView {
         mDataObserver.onChanged();
     }
 
+    //避免用户自己调用getAdapter() 引起的ClassCastException
+    @Override
+    public Adapter getAdapter() {
+        return mWrapAdapter.getOriginalAdapter();
+    }
+
     @Override
     public void setLayoutManager(LayoutManager layout) {
         super.setLayoutManager(layout);
@@ -200,6 +211,7 @@ public class XRecyclerView extends RecyclerView {
                                 ? gridManager.getSpanCount() : 1;
                     }
                 });
+
             }
         }
     }
@@ -337,6 +349,10 @@ public class XRecyclerView extends RecyclerView {
 
         public WrapAdapter(RecyclerView.Adapter adapter) {
             this.adapter = adapter;
+        }
+
+        public RecyclerView.Adapter getOriginalAdapter(){
+            return this.adapter;
         }
 
         public boolean isHeader(int position) {
@@ -537,14 +553,6 @@ public class XRecyclerView extends RecyclerView {
         void onRefresh();
 
         void onLoadMore();
-    }
-
-    public void setRefreshing(boolean refreshing) {
-        if (refreshing && pullRefreshEnabled && mLoadingListener != null) {
-            mRefreshHeader.setState(ArrowRefreshHeader.STATE_REFRESHING);
-            mRefreshHeader.onMove(mRefreshHeader.getMeasuredHeight());
-            mLoadingListener.onRefresh();
-        }
     }
 
     @Override
