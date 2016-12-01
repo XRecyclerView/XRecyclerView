@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -38,6 +39,7 @@ public class EmptyViewActivity extends AppCompatActivity {
         mAdapter = new MyAdapter(listData);
 
         mRecyclerView.setAdapter(mAdapter);
+
     }
 
     @Override

@@ -88,20 +88,9 @@ public class LinearActivity extends AppCompatActivity {
         });
 
         listData = new  ArrayList<String>();
-        for(int i = 0; i < 15 ;i++){
-            listData.add("item" + i);
-        }
         mAdapter = new MyAdapter(listData);
-
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.refresh();
-        new Handler().postDelayed(new Runnable(){
-            public void run() {
-
-                mRecyclerView.refresh();
-            }
-
-        }, 8000);
     }
 
     @Override
