@@ -5,7 +5,7 @@ Screenshots
 -----------
 ![demo](https://github.com/jianghejie/XRecyclerView/blob/master/art/demo.gif)
 
-on real device it is much more smoother.
+on real device it is much more smoother. qq 群478803619
 Usage
 -----
 ##gradle
