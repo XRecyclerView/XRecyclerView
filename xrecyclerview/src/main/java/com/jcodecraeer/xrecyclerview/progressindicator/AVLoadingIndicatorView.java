@@ -154,7 +154,6 @@ public class AVLoadingIndicatorView extends View{
 
     private boolean mHasAnimation;
 
-
     public AVLoadingIndicatorView(Context context) {
         super(context);
         init(null, 0);

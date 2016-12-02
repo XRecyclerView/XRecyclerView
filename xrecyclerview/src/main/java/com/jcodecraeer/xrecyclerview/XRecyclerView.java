@@ -69,6 +69,13 @@ public class XRecyclerView extends RecyclerView {
         mFootView.setVisibility(GONE);
     }
 
+    public void setFootViewText(String loading, String noMore) {
+        if(mFootView instanceof LoadingMoreFooter){
+            ((LoadingMoreFooter) mFootView).setLoadingHint(loading);
+            ((LoadingMoreFooter) mFootView).setNoMoreHint(noMore);
+        }
+    }
+
     public void addHeaderView(View view) {
         sHeaderTypes.add(HEADER_INIT_INDEX + mHeaderViews.size());
         mHeaderViews.add(view);
