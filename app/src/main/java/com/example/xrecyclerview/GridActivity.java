@@ -33,6 +33,13 @@ public class GridActivity extends AppCompatActivity {
 
         mRecyclerView = (XRecyclerView)this.findViewById(R.id.recyclerview);
         GridLayoutManager layoutManager = new GridLayoutManager(this,3);
+        layoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+            @Override
+            public int getSpanSize(int position) {
+
+                return position < 3? 3 : 1;//前三个item 一行一个 后面的一行三个
+            }
+        });
         mRecyclerView.setLayoutManager(layoutManager);
 
         mRecyclerView.setRefreshProgressStyle(ProgressStyle.BallSpinFadeLoader);
