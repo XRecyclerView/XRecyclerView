@@ -11,12 +11,10 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
-import android.widget.ScrollView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -707,5 +705,47 @@ public class XRecyclerView extends RecyclerView {
                 mDivider.draw(canvas);
             }
         }
+    }
+
+    /** add by LinGuanHong below */
+    private int scrollDyCounter = 0;
+
+    @Override
+    public void scrollToPosition(int position) {
+        super.scrollToPosition(position);
+        /** if we scroll to position 0, the scrollDyCounter should be reset */
+        if(position == 0){
+            scrollDyCounter = 0;
+        }
+    }
+
+    @Override
+    public void onScrolled(int dx, int dy) {
+        super.onScrolled(dx, dy);
+        if(scrollAlphaChangeListener == null){
+            return;
+        }
+        int height = scrollAlphaChangeListener.setLimitHeight();
+        scrollDyCounter = scrollDyCounter + dy;
+        if (scrollDyCounter <= 0) {
+            scrollAlphaChangeListener.onAlphaChange(0);
+        }else if(scrollDyCounter <= height && scrollDyCounter > 0){
+            float scale = (float) scrollDyCounter / height; /** 255/height = x/255 */
+            float alpha = (255 * scale);
+            scrollAlphaChangeListener.onAlphaChange((int) alpha);
+        }else {
+            scrollAlphaChangeListener.onAlphaChange(255);
+        }
+    }
+
+    private ScrollAlphaChangeListener scrollAlphaChangeListener;
+    public void setScrollAlphaChangeListener(
+            ScrollAlphaChangeListener scrollAlphaChangeListener
+    ){
+        this.scrollAlphaChangeListener = scrollAlphaChangeListener;
+    }
+    public interface ScrollAlphaChangeListener{
+        void onAlphaChange(int alpha);  /** you can handle the alpha insert it */
+        int setLimitHeight(); /** set a height for the begging of the alpha start to change */
     }
 }

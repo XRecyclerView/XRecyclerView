@@ -17,6 +17,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".AlphaChangeActivity"
+            android:label="@string/app_name"
+            android:theme="@style/SupportTheme" />
+
         <activity
             android:name=".LinearActivity"
             android:label="@string/app_name"
