@@ -58,4 +58,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    public void gotoItemAlphaChangeActivity(View view) {
+        Intent intent = new Intent();
+        intent.setClass(this, AlphaChangeActivity.class);
+        startActivity(intent);
+    }
 }

@@ -9,12 +9,12 @@ def siteUrl = 'https://github.com/jianghejie/XRecyclerView'
 def gitUrl = 'https://github.com/jianghejie/XRecyclerView.git'
 
 android {
-    compileSdkVersion 23
-    buildToolsVersion "23.0.3"
+    compileSdkVersion 24
+    buildToolsVersion "24.0.2"
 
     defaultConfig {
         minSdkVersion 11
-        targetSdkVersion 23
+        targetSdkVersion 24
         versionCode 1
         versionName "1.0"
     }

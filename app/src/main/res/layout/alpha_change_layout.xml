@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:background="#ffffff"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <com.jcodecraeer.xrecyclerview.XRecyclerView
+        android:id="@+id/recyclerview"
+        android:background="#ffffff"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <RelativeLayout
+        android:id="@+id/alpha_title"
+        android:background="#181818"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="60dp">
+
+        <Button
+            android:id="@+id/back"
+            android:text="back"
+            android:layout_centerVertical="true"
+            android:textColor="#ffffff"
+            android:background="@null"
+            android:layout_width="40dp"
+            android:layout_height="40dp" />
+
+        <Button
+            android:id="@+id/back_to_top"
+            android:text="backToTop"
+            android:textColor="#ffffff"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:background="@null"
+            android:layout_width="100dp"
+            android:layout_height="40dp" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

@@ -61,5 +61,12 @@
         android:text="ItemDecorationActivity"
         />
 
+    <Button
+        android:onClick="gotoItemAlphaChangeActivity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dip"
+        android:text="AlphaChangeActivity"
+        />
 
 </LinearLayout>
