@@ -121,11 +121,28 @@ public class XRecyclerView extends RecyclerView {
         isLoadingData = false;
         isNoMore = noMore;
         if (mFootView instanceof LoadingMoreFooter) {
-            ((LoadingMoreFooter) mFootView).setState(isNoMore ? LoadingMoreFooter.STATE_NOMORE:LoadingMoreFooter.STATE_COMPLETE);
+            ((LoadingMoreFooter) mFootView).setState(isNoMore ? LoadingMoreFooter.STATE_NO_MORE :LoadingMoreFooter.STATE_COMPLETE);
         } else {
             mFootView.setVisibility(View.GONE);
         }
     }
+
+    public void setNoMoreView(View noMoreView) {
+        if (mFootView instanceof LoadingMoreFooter) {
+            ((LoadingMoreFooter) mFootView).setNoMoreView(noMoreView);
+        } else {
+            throw new IllegalStateException("your custom FootView must extends LoadingMoreFooter if you want to set your noMoreView by calling setNoMoreView");
+        }
+    }
+
+    public void setNoMoreText(String noMoreText) {
+        if (mFootView instanceof LoadingMoreFooter) {
+            ((LoadingMoreFooter) mFootView).setNoMoreText(noMoreText);
+        } else {
+            throw new IllegalStateException("your custom FootView must extends LoadingMoreFooter if you want to set your noMoreText by calling setNoMoreText");
+        }
+    }
+
     public void refresh() {
         if (pullRefreshEnabled && mLoadingListener != null) {
             mRefreshHeader.setState(ArrowRefreshHeader.STATE_REFRESHING);

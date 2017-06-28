@@ -17,11 +17,13 @@ public class LoadingMoreFooter extends LinearLayout {
     private SimpleViewSwitcher progressCon;
     public final static int STATE_LOADING = 0;
     public final static int STATE_COMPLETE = 1;
-    public final static int STATE_NOMORE = 2;
+    public final static int STATE_NO_MORE = 2;
     private TextView mText;
     private String loadingHint;
     private String noMoreHint;
     private String loadingDoneHint;
+    private View mNoMoreView;
+    private TextView mNoMoreTextView;
 
 	public LoadingMoreFooter(Context context) {
 		super(context);
@@ -61,8 +63,8 @@ public class LoadingMoreFooter extends LinearLayout {
         progressView.setIndicatorColor(0xffB5B5B5);
         progressView.setIndicatorId(ProgressStyle.BallSpinFadeLoader);
         progressCon.setView(progressView);
-
         addView(progressCon);
+
         mText = new TextView(getContext());
         mText.setText("正在加载...");
         loadingHint = (String)getContext().getText(R.string.listview_loading);
@@ -70,9 +72,27 @@ public class LoadingMoreFooter extends LinearLayout {
         loadingDoneHint = (String)getContext().getText(R.string.loading_done);
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         layoutParams.setMargins( (int)getResources().getDimension(R.dimen.textandiconmargin),0,0,0 );
-
         mText.setLayoutParams(layoutParams);
         addView(mText);
+
+        mNoMoreView = View.inflate(getContext(), R.layout.view_no_more, null);
+        mNoMoreTextView = (TextView) mNoMoreView.findViewById(R.id.no_more_tv);
+        mNoMoreView.setVisibility(GONE);
+        addView(mNoMoreView);
+    }
+
+    public void setNoMoreView(View noMoreView) {
+        if (noMoreView != null) {
+            removeView(mNoMoreView);
+            mNoMoreView = noMoreView;
+            addView(mNoMoreView);
+        }
+    }
+
+    public void setNoMoreText(String text) {
+        if (mNoMoreTextView != null) {
+            mNoMoreTextView.setText(text);
+        }
     }
 
     public void setProgressStyle(int style) {
@@ -89,17 +109,22 @@ public class LoadingMoreFooter extends LinearLayout {
     public void  setState(int state) {
         switch(state) {
             case STATE_LOADING:
+                mText.setVisibility(VISIBLE);
                 progressCon.setVisibility(View.VISIBLE);
                 mText.setText(loadingHint);
+                mNoMoreView.setVisibility(GONE);
                 this.setVisibility(View.VISIBLE);
                     break;
             case STATE_COMPLETE:
+                mText.setVisibility(VISIBLE);
                 mText.setText(loadingDoneHint);
+                mNoMoreView.setVisibility(GONE);
                 this.setVisibility(View.GONE);
                 break;
-            case STATE_NOMORE:
-                mText.setText(noMoreHint);
+            case STATE_NO_MORE:
+                mText.setVisibility(GONE);
                 progressCon.setVisibility(View.GONE);
+                mNoMoreView.setVisibility(VISIBLE);
                 this.setVisibility(View.VISIBLE);
                 break;
         }
