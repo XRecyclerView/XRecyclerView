@@ -44,6 +44,9 @@ public class StaggeredGridActivity extends AppCompatActivity {
         View header =   LayoutInflater.from(this).inflate(R.layout.recyclerview_header, (ViewGroup)findViewById(android.R.id.content),false);
         mRecyclerView.addHeaderView(header);
 
+        View customNoMoreView = View.inflate(this, R.layout.view_custom_no_more, null);
+        mRecyclerView.setNoMoreView(customNoMoreView);
+
         mRecyclerView.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
