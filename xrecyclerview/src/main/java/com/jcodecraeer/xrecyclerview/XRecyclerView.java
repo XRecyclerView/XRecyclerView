@@ -12,6 +12,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,6 +40,7 @@ public class XRecyclerView extends RecyclerView {
     private View mFootView;
     private final RecyclerView.AdapterDataObserver mDataObserver = new DataObserver();
     private AppBarStateChangeListener.State appbarState = AppBarStateChangeListener.State.EXPANDED;
+
     public XRecyclerView(Context context) {
         this(context, null);
     }
@@ -70,7 +72,7 @@ public class XRecyclerView extends RecyclerView {
 
     //根据header的ViewType判断是哪个header
     private View getHeaderViewByType(int itemType) {
-        if(!isHeaderType(itemType)) {
+        if (!isHeaderType(itemType)) {
             return null;
         }
         return mHeaderViews.get(itemType - HEADER_INIT_INDEX);
@@ -78,12 +80,12 @@ public class XRecyclerView extends RecyclerView {
 
     //判断一个type是否为HeaderType
     private boolean isHeaderType(int itemViewType) {
-        return  mHeaderViews.size() > 0 &&  sHeaderTypes.contains(itemViewType);
+        return mHeaderViews.size() > 0 && sHeaderTypes.contains(itemViewType);
     }
 
     //判断是否是XRecyclerView保留的itemViewType
     private boolean isReservedItemViewType(int itemViewType) {
-        if(itemViewType == TYPE_REFRESH_HEADER || itemViewType == TYPE_FOOTER || sHeaderTypes.contains(itemViewType)) {
+        if (itemViewType == TYPE_REFRESH_HEADER || itemViewType == TYPE_FOOTER || sHeaderTypes.contains(itemViewType)) {
             return true;
         } else {
             return false;
@@ -103,17 +105,17 @@ public class XRecyclerView extends RecyclerView {
         }
     }
 
-    public void setNoMore(boolean noMore){
+    public void setNoMore(boolean noMore) {
         isLoadingData = false;
         isNoMore = noMore;
         if (mFootView instanceof LoadingMoreFooter) {
-            ((LoadingMoreFooter) mFootView).setState(isNoMore ? LoadingMoreFooter.STATE_NOMORE:LoadingMoreFooter.STATE_COMPLETE);
+            ((LoadingMoreFooter) mFootView).setState(isNoMore ? LoadingMoreFooter.STATE_NOMORE : LoadingMoreFooter.STATE_COMPLETE);
         } else {
             mFootView.setVisibility(View.GONE);
         }
     }
 
-    public void reset(){
+    public void reset() {
         setNoMore(false);
         loadMoreComplete();
         refreshComplete();
@@ -136,7 +138,7 @@ public class XRecyclerView extends RecyclerView {
         loadingMoreEnabled = enabled;
         if (!enabled) {
             if (mFootView instanceof LoadingMoreFooter) {
-                ((LoadingMoreFooter)mFootView).setState(LoadingMoreFooter.STATE_COMPLETE);
+                ((LoadingMoreFooter) mFootView).setState(LoadingMoreFooter.STATE_COMPLETE);
             }
         }
     }
@@ -306,7 +308,9 @@ public class XRecyclerView extends RecyclerView {
         public void onItemRangeMoved(int fromPosition, int toPosition, int itemCount) {
             mWrapAdapter.notifyItemMoved(fromPosition, toPosition);
         }
-    };
+    }
+
+    ;
 
     public class WrapAdapter extends RecyclerView.Adapter<ViewHolder> {
 
@@ -321,9 +325,9 @@ public class XRecyclerView extends RecyclerView {
         }
 
         public boolean isFooter(int position) {
-            if(loadingMoreEnabled) {
+            if (loadingMoreEnabled) {
                 return position == getItemCount() - 1;
-            }else {
+            } else {
                 return false;
             }
         }
@@ -366,13 +370,13 @@ public class XRecyclerView extends RecyclerView {
 
         @Override
         public int getItemCount() {
-            if(loadingMoreEnabled) {
+            if (loadingMoreEnabled) {
                 if (adapter != null) {
                     return getHeadersCount() + adapter.getItemCount() + 2;
                 } else {
                     return getHeadersCount() + 2;
                 }
-            }else {
+            } else {
                 if (adapter != null) {
                     return getHeadersCount() + adapter.getItemCount() + 1;
                 } else {
@@ -384,8 +388,8 @@ public class XRecyclerView extends RecyclerView {
         @Override
         public int getItemViewType(int position) {
             int adjPosition = position - (getHeadersCount() + 1);
-            if(isReservedItemViewType(adapter.getItemViewType(adjPosition))) {
-                throw new IllegalStateException("XRecyclerView require itemViewType in adapter should be less than 10000 " );
+            if (isReservedItemViewType(adapter.getItemViewType(adjPosition))) {
+                throw new IllegalStateException("XRecyclerView require itemViewType in adapter should be less than 10000 ");
             }
             if (isRefreshHeader(position)) {
                 return TYPE_REFRESH_HEADER;
@@ -447,7 +451,7 @@ public class XRecyclerView extends RecyclerView {
             ViewGroup.LayoutParams lp = holder.itemView.getLayoutParams();
             if (lp != null
                     && lp instanceof StaggeredGridLayoutManager.LayoutParams
-                    && (isHeader(holder.getLayoutPosition()) ||isRefreshHeader(holder.getLayoutPosition()) || isFooter(holder.getLayoutPosition()))) {
+                    && (isHeader(holder.getLayoutPosition()) || isRefreshHeader(holder.getLayoutPosition()) || isFooter(holder.getLayoutPosition()))) {
                 StaggeredGridLayoutManager.LayoutParams p = (StaggeredGridLayoutManager.LayoutParams) lp;
                 p.setFullSpan(true);
             }
@@ -517,17 +521,17 @@ public class XRecyclerView extends RecyclerView {
             }
             p = p.getParent();
         }
-        if(p instanceof CoordinatorLayout) {
-            CoordinatorLayout coordinatorLayout = (CoordinatorLayout)p;
+        if (p instanceof CoordinatorLayout) {
+            CoordinatorLayout coordinatorLayout = (CoordinatorLayout) p;
             final int childCount = coordinatorLayout.getChildCount();
             for (int i = childCount - 1; i >= 0; i--) {
                 final View child = coordinatorLayout.getChildAt(i);
-                if(child instanceof AppBarLayout) {
-                    appBarLayout = (AppBarLayout)child;
+                if (child instanceof AppBarLayout) {
+                    appBarLayout = (AppBarLayout) child;
                     break;
                 }
             }
-            if(appBarLayout != null) {
+            if (appBarLayout != null) {
                 appBarLayout.addOnOffsetChangedListener(new AppBarStateChangeListener() {
                     @Override
                     public void onStateChanged(AppBarLayout appBarLayout, State state) {
@@ -535,6 +539,15 @@ public class XRecyclerView extends RecyclerView {
                     }
                 });
             }
+        }
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        // 解决内存溢出问题
+        if (mFootView instanceof ViewGroup) {
+            ((ViewGroup) mFootView).removeAllViews();
         }
     }
 }
