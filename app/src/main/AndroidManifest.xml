@@ -51,6 +51,10 @@
             android:name=".ItemDecorationActivity"
             android:theme="@style/SupportTheme"></activity>
 
+        <activity
+            android:name=".LinearStickheaderActivity"
+            android:theme="@style/SupportTheme"></activity>
+
     </application>
 
 </manifest>

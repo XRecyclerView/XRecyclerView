@@ -57,10 +57,16 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-
     public void gotoItemAlphaChangeActivity(View view) {
         Intent intent = new Intent();
         intent.setClass(this, AlphaChangeActivity.class);
         startActivity(intent);
     }
+
+    public void gotoLinearStickheaderActivity(View v) {
+        Intent intent = new Intent();
+        intent.setClass(this, LinearStickheaderActivity.class);
+        startActivity(intent);
+    }
+
 }
