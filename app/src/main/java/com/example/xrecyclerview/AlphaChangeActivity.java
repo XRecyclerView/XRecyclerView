@@ -8,6 +8,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.RelativeLayout;
 
+import com.jcodecraeer.xrecyclerview.ArrowRefreshHeader;
 import com.jcodecraeer.xrecyclerview.ProgressStyle;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 
@@ -38,6 +39,14 @@ public class AlphaChangeActivity extends AppCompatActivity {
         mRecyclerView.setRefreshProgressStyle(ProgressStyle.BallSpinFadeLoader);
         mRecyclerView.setLoadingMoreProgressStyle(ProgressStyle.BallRotate);
         mRecyclerView.setArrowImageView(R.drawable.iconfont_downgrey);
+        mRecyclerView.setRefreshHeader(new ArrowRefreshHeader(this)
+        {
+            @Override
+            protected String getHeaderHint()
+            {
+                return "Custom Header hint";
+            }
+        });
 
         /** ----- alpha change listen test start ----- */
         final RelativeLayout alpha_title
