@@ -35,10 +35,11 @@ public class ArrowRefreshHeader extends LinearLayout implements BaseRefreshHeade
 	private static final int ROTATE_ANIM_DURATION = 180;
 
 	public int mMeasuredHeight;
+    private Context mContext;
 
-	public ArrowRefreshHeader(Context context) {
+    public ArrowRefreshHeader(Context context) {
 		super(context);
-		initView();
+		initView(context);
 	}
 
 	/**
@@ -47,10 +48,12 @@ public class ArrowRefreshHeader extends LinearLayout implements BaseRefreshHeade
 	 */
 	public ArrowRefreshHeader(Context context, AttributeSet attrs) {
 		super(context, attrs);
-		initView();
+		initView(context);
 	}
 
-	private void initView() {
+	private void initView(Context context) {
+        this.mContext = context;
+
 		// 初始情况，设置下拉刷新view高度为0
 		mContainer = (LinearLayout) LayoutInflater.from(getContext()).inflate(
 				R.layout.listview_header, null);
@@ -117,8 +120,8 @@ public class ArrowRefreshHeader extends LinearLayout implements BaseRefreshHeade
 			mArrowImageView.setVisibility(View.VISIBLE);
 			mProgressBar.setVisibility(View.INVISIBLE);
 		}
-		
-		switch(state){
+
+        switch(state){
             case STATE_NORMAL:
                 if (mState == STATE_RELEASE_TO_REFRESH) {
                     mArrowImageView.startAnimation(mRotateDownAnim);
@@ -126,23 +129,23 @@ public class ArrowRefreshHeader extends LinearLayout implements BaseRefreshHeade
                 if (mState == STATE_REFRESHING) {
                     mArrowImageView.clearAnimation();
                 }
-                mStatusTextView.setText(R.string.listview_header_hint_normal);
+                mStatusTextView.setText(getHeaderHint());
                 break;
             case STATE_RELEASE_TO_REFRESH:
                 if (mState != STATE_RELEASE_TO_REFRESH) {
                     mArrowImageView.clearAnimation();
                     mArrowImageView.startAnimation(mRotateUpAnim);
-                    mStatusTextView.setText(R.string.listview_header_hint_release);
+                    mStatusTextView.setText(getHeaderReleasedHint());
                 }
                 break;
             case     STATE_REFRESHING:
-                mStatusTextView.setText(R.string.refreshing);
+                mStatusTextView.setText(getHeaderRefreshingText());
                 break;
             case    STATE_DONE:
-                mStatusTextView.setText(R.string.refresh_done);
+                mStatusTextView.setText(getHeaderRefreshDoneText());
                 break;
             default:
-		}
+        }
 		
 		mState = state;
 	}
@@ -262,6 +265,26 @@ public class ArrowRefreshHeader extends LinearLayout implements BaseRefreshHeade
             return ct / 2592000 + "月前";
         }
         return ct / 31104000 + "年前";
+    }
+
+    protected String getHeaderHint()
+    {
+        return mContext.getString(R.string.listview_header_hint_normal);
+    }
+
+    protected String getHeaderReleasedHint()
+    {
+        return mContext.getString(R.string.listview_header_hint_release);
+    }
+
+    protected String getHeaderRefreshingText()
+    {
+        return mContext.getString(R.string.refreshing);
+    }
+
+    protected String getHeaderRefreshDoneText()
+    {
+        return mContext.getString(R.string.refresh_done);
     }
 
 }
