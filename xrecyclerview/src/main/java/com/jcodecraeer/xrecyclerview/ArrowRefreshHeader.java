@@ -21,11 +21,11 @@ import java.util.Date;
 
 public class ArrowRefreshHeader extends LinearLayout implements BaseRefreshHeader {
 
-	private LinearLayout mContainer;
+    protected ViewGroup mContainer;
 	private ImageView mArrowImageView;
 	private SimpleViewSwitcher mProgressBar;
 	private TextView mStatusTextView;
-	private int mState = STATE_NORMAL;
+	protected int mState = STATE_NORMAL;
 
 	private TextView mHeaderTimeView;
 
@@ -50,9 +50,9 @@ public class ArrowRefreshHeader extends LinearLayout implements BaseRefreshHeade
 		initView();
 	}
 
-	private void initView() {
+    public void initView() {
 		// 初始情况，设置下拉刷新view高度为0
-		mContainer = (LinearLayout) LayoutInflater.from(getContext()).inflate(
+		mContainer = (ViewGroup) LayoutInflater.from(getContext()).inflate(
 				R.layout.listview_header, null);
         LayoutParams lp = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
         lp.setMargins(0, 0, 0, 0);
@@ -224,7 +224,7 @@ public class ArrowRefreshHeader extends LinearLayout implements BaseRefreshHeade
         }, 500);
     }
 
-    private void smoothScrollTo(int destHeight) {
+    protected void smoothScrollTo(int destHeight) {
         ValueAnimator animator = ValueAnimator.ofInt(getVisibleHeight(), destHeight);
         animator.setDuration(300).start();
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
