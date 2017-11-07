@@ -6,7 +6,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,6 +40,9 @@ public class LinearActivity extends AppCompatActivity {
 
         View header = LayoutInflater.from(this).inflate(R.layout.recyclerview_header, (ViewGroup)findViewById(android.R.id.content),false);
         mRecyclerView.addHeaderView(header);
+
+        mRecyclerView.getDefaultFootView().setLoadingHint("自定义加载中提示");
+        mRecyclerView.getDefaultFootView().setNoMoreHint("自定义加载完毕提示");
 
         mRecyclerView.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override

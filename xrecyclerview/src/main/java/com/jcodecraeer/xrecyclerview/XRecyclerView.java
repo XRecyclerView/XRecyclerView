@@ -67,6 +67,20 @@ public class XRecyclerView extends RecyclerView {
         mFootView.setVisibility(GONE);
     }
 
+    public LoadingMoreFooter getDefaultFootView(){
+        if(mFootView == null){
+            return null;
+        }
+        if(mFootView instanceof LoadingMoreFooter){
+            return ((LoadingMoreFooter) mFootView);
+        }
+        return null;
+    }
+
+    public View getFootView(){
+        return mFootView;
+    }
+
     public void setFootViewText(String loading, String noMore) {
         if(mFootView instanceof LoadingMoreFooter){
             ((LoadingMoreFooter) mFootView).setLoadingHint(loading);
