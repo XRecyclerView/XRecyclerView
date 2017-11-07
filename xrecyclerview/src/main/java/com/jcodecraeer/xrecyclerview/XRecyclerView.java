@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
+import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.widget.GridLayoutManager;
@@ -28,6 +29,7 @@ public class XRecyclerView extends RecyclerView {
     private WrapAdapter mWrapAdapter;
     private float mLastY = -1;
     private static final float DRAG_RATE = 3;
+    private CustomFooterViewCallBack footerViewCallBack;
     private LoadingListener mLoadingListener;
     private ArrowRefreshHeader mRefreshHeader;
     private boolean pullRefreshEnabled = true;
@@ -118,8 +120,13 @@ public class XRecyclerView extends RecyclerView {
         }
     }
 
-    public void setFootView(final View view) {
+    @SuppressWarnings("all")
+    public void setFootView(@NonNull final View view,@NonNull CustomFooterViewCallBack footerViewCallBack) {
+        if(view == null || footerViewCallBack == null){
+            return;
+        }
         mFootView = view;
+        this.footerViewCallBack = footerViewCallBack;
     }
 
     public void loadMoreComplete() {
@@ -127,7 +134,9 @@ public class XRecyclerView extends RecyclerView {
         if (mFootView instanceof LoadingMoreFooter) {
             ((LoadingMoreFooter) mFootView).setState(LoadingMoreFooter.STATE_COMPLETE);
         } else {
-            mFootView.setVisibility(View.GONE);
+            if(footerViewCallBack != null){
+                footerViewCallBack.onLoadMoreComplete(mFootView);
+            }
         }
     }
 
@@ -137,7 +146,9 @@ public class XRecyclerView extends RecyclerView {
         if (mFootView instanceof LoadingMoreFooter) {
             ((LoadingMoreFooter) mFootView).setState(isNoMore ? LoadingMoreFooter.STATE_NOMORE:LoadingMoreFooter.STATE_COMPLETE);
         } else {
-            mFootView.setVisibility(View.GONE);
+            if(footerViewCallBack != null){
+                footerViewCallBack.onSetNoMore(mFootView,noMore);
+            }
         }
     }
     public void refresh() {
@@ -259,7 +270,9 @@ public class XRecyclerView extends RecyclerView {
                 if (mFootView instanceof LoadingMoreFooter) {
                     ((LoadingMoreFooter) mFootView).setState(LoadingMoreFooter.STATE_LOADING);
                 } else {
-                    mFootView.setVisibility(View.VISIBLE);
+                    if(footerViewCallBack != null){
+                        footerViewCallBack.onLoadingMore(mFootView);
+                    }
                 }
                 mLoadingListener.onLoadMore();
             }

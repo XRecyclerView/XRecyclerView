@@ -44,6 +44,26 @@ public class LinearActivity extends AppCompatActivity {
         mRecyclerView.getDefaultFootView().setLoadingHint("自定义加载中提示");
         mRecyclerView.getDefaultFootView().setNoMoreHint("自定义加载完毕提示");
 
+        // if you use setFooterView,the default footerView will unUseful
+//        TextView tv = new TextView(this);
+//        tv.setText("自定义 footer");
+//        mRecyclerView.setFootView(tv, new CustomFooterViewCallBack() {
+//            @Override
+//            public void onLoadingMore(View yourFooterView) {
+//
+//            }
+//
+//            @Override
+//            public void onLoadMoreComplete(View yourFooterView) {
+//
+//            }
+//
+//            @Override
+//            public void onSetNoMore(View yourFooterView, boolean noMore) {
+//
+//            }
+//        });
+
         mRecyclerView.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
