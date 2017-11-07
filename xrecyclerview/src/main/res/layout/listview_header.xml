@@ -53,14 +53,14 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="35dp"
             android:layout_marginRight="10dp"
-            android:layout_toLeftOf="@id/listview_header_text"
+            android:layout_toLeftOf="@+id/listview_header_text"
             android:src="@drawable/ic_pulltorefresh_arrow" />
 
         <com.jcodecraeer.xrecyclerview.SimpleViewSwitcher
             android:id="@+id/listview_header_progressbar"
             android:layout_width="30dip"
             android:layout_height="30dip"
-            android:layout_toLeftOf="@id/listview_header_text"
+            android:layout_toLeftOf="@+id/listview_header_text"
             android:layout_centerVertical="true"
             android:layout_marginLeft="40dp"
             android:layout_marginRight="10dp"
