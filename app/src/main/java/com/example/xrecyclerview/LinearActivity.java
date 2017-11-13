@@ -5,6 +5,7 @@ import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -111,6 +112,16 @@ public class LinearActivity extends AppCompatActivity {
 
         listData = new  ArrayList<String>();
         mAdapter = new MyAdapter(listData);
+        mAdapter.setClickCallBack(
+                new MyAdapter.ItemClickCallBack() {
+                    @Override
+                    public void onItemClick(int pos) {
+                        // a demo for notifyItemRemoved
+                        listData.remove(pos);
+                        mRecyclerView.notifyItemRemoved(listData,pos);
+                    }
+                }
+        );
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.refresh();
     }
@@ -125,3 +136,13 @@ public class LinearActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 }
+
+
+
+
+
+
+
+
+
+

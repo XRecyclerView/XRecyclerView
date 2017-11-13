@@ -244,10 +244,54 @@ public class XRecyclerView extends RecyclerView {
                                 ? gridManager.getSpanCount() : 1;
                     }
                 });
-
             }
         }
     }
+
+    /** ===================== try to adjust the position for XR when you call those functions below ====================== */
+    // which cause "Called attach on a child which is not detached" exception info.
+    // {reason analyze @link:http://www.cnblogs.com/linguanh/p/5348510.html}
+    // by lgh on 2017-11-13 23:55
+
+    // example: listData.remove(position); You can also see a demo on LinearActivity
+    public<T> void notifyItemRemoved(List<T> listData,int position) {
+        if(mWrapAdapter.adapter == null)
+            return;
+        int adjPos = position + getHeaders_includingRefreshCount();
+        mWrapAdapter.adapter.notifyItemRemoved(adjPos);
+        if(adjPos != listData.size()){
+            // call this just for the reset the position for the list data
+            mWrapAdapter.adapter.notifyItemRangeChanged(adjPos, listData.size() - adjPos,new Object());
+        }
+    }
+
+    public void notifyItemInserted(int position) {
+        if(mWrapAdapter.adapter == null)
+            return;
+        int adjPos = position + getHeaders_includingRefreshCount();
+        mWrapAdapter.adapter.notifyItemInserted(adjPos);
+    }
+
+    public void notifyItemChanged(int position) {
+        if(mWrapAdapter.adapter == null)
+            return;
+        int adjPos = position + getHeaders_includingRefreshCount();
+        mWrapAdapter.adapter.notifyItemChanged(adjPos);
+    }
+
+    public void notifyItemChanged(int position,Object o) {
+        if(mWrapAdapter.adapter == null)
+            return;
+        int adjPos = position + getHeaders_includingRefreshCount();
+        mWrapAdapter.adapter.notifyItemChanged(adjPos,o);
+    }
+
+    private int getHeaders_includingRefreshCount(){
+        return mWrapAdapter.getHeadersCount()+1;
+    }
+
+
+    /** ======================================================= end ======================================================= */
 
     @Override
     public void onScrollStateChanged(int state) {
@@ -436,12 +480,14 @@ public class XRecyclerView extends RecyclerView {
                 }
             }
         }
+
         // some times we need to override this
         @Override
         public void onBindViewHolder(RecyclerView.ViewHolder holder, int position,List<Object> payloads) {
             if (isHeader(position) || isRefreshHeader(position)) {
                 return;
             }
+
             int adjPosition = position - (getHeadersCount() + 1);
             int adapterCount;
             if (adapter != null) {
@@ -459,18 +505,11 @@ public class XRecyclerView extends RecyclerView {
 
         @Override
         public int getItemCount() {
-            if(loadingMoreEnabled) {
-                if (adapter != null) {
-                    return getHeadersCount() + adapter.getItemCount() + 2;
-                } else {
-                    return getHeadersCount() + 2;
-                }
-            }else {
-                if (adapter != null) {
-                    return getHeadersCount() + adapter.getItemCount() + 1;
-                } else {
-                    return getHeadersCount() + 1;
-                }
+            int adjLen = (loadingMoreEnabled?2:1);
+            if (adapter != null) {
+                return getHeadersCount() + adapter.getItemCount() + adjLen;
+            } else {
+                return getHeadersCount() + adjLen;
             }
         }
 
