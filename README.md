@@ -39,6 +39,13 @@ you can use
 ```java
 mRecyclerView.loadMoreComplete();
 ```
+
+to control when the item number of the screen is list.size-2,we call the onLoadMore
+
+```java
+mRecyclerView.setLimitNumberToCallLoadMore(2); // default is 1
+```
+
 to notify that the loading more work is done.
 and
 
