@@ -45,6 +45,11 @@ public class XRecyclerView extends RecyclerView {
     private View mFootView;
     private final RecyclerView.AdapterDataObserver mDataObserver = new DataObserver();
     private AppBarStateChangeListener.State appbarState = AppBarStateChangeListener.State.EXPANDED;
+
+    // limit number to call load more
+    // 控制多出多少条的时候调用 onLoadMore
+    private int limitNumberToCallLoadMore = 1;
+
     public XRecyclerView(Context context) {
         this(context, null);
     }
@@ -77,6 +82,11 @@ public class XRecyclerView extends RecyclerView {
             return ((LoadingMoreFooter) mFootView);
         }
         return null;
+    }
+
+    // set the number to control call load more,see the demo on linearActivity
+    public void setLimitNumberToCallLoadMore(int limitNumberToCallLoadMore) {
+        this.limitNumberToCallLoadMore = limitNumberToCallLoadMore;
     }
 
     public View getFootView(){
@@ -290,7 +300,6 @@ public class XRecyclerView extends RecyclerView {
         return mWrapAdapter.getHeadersCount()+1;
     }
 
-
     /** ======================================================= end ======================================================= */
 
     @Override
@@ -308,8 +317,16 @@ public class XRecyclerView extends RecyclerView {
             } else {
                 lastVisibleItemPosition = ((LinearLayoutManager) layoutManager).findLastVisibleItemPosition();
             }
-            if (layoutManager.getChildCount() > 0
-                    && lastVisibleItemPosition >= layoutManager.getItemCount() - 1 && layoutManager.getItemCount() > layoutManager.getChildCount() && !isNoMore && mRefreshHeader.getState() < ArrowRefreshHeader.STATE_REFRESHING) {
+            int adjAdapterItemCount = layoutManager.getItemCount()+getHeaders_includingRefreshCount();
+
+            if (
+                    layoutManager.getChildCount() > 0
+                    && lastVisibleItemPosition >= adjAdapterItemCount - limitNumberToCallLoadMore
+                    && adjAdapterItemCount >= layoutManager.getChildCount()
+                    && !isNoMore
+                    && mRefreshHeader.getState() < ArrowRefreshHeader.STATE_REFRESHING
+            )
+            {
                 isLoadingData = true;
                 if (mFootView instanceof LoadingMoreFooter) {
                     ((LoadingMoreFooter) mFootView).setState(LoadingMoreFooter.STATE_LOADING);

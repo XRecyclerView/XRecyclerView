@@ -65,6 +65,11 @@ public class LinearActivity extends AppCompatActivity {
 //            }
 //        });
 
+        final int itemLimit = 5;
+
+        // When the item number of the screen number is list.size-2,we call the onLoadMore
+        mRecyclerView.setLimitNumberToCallLoadMore(2);
+
         mRecyclerView.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
@@ -73,7 +78,7 @@ public class LinearActivity extends AppCompatActivity {
                 new Handler().postDelayed(new Runnable(){
                     public void run() {
                         listData.clear();
-                        for(int i = 0; i < 15 ;i++){
+                        for(int i = 0; i < itemLimit ;i++){
                             listData.add("item" + i + "after " + refreshTime + " times of refresh");
                         }
                         mAdapter.notifyDataSetChanged();
@@ -85,10 +90,11 @@ public class LinearActivity extends AppCompatActivity {
 
             @Override
             public void onLoadMore() {
+                Log.e("aaaaa","call onLoadMore");
                 if(times < 2){
                     new Handler().postDelayed(new Runnable(){
                         public void run() {
-                            for(int i = 0; i < 15 ;i++){
+                            for(int i = 0; i < itemLimit ;i++){
                                 listData.add("item" + (1 + listData.size() ) );
                             }
                             mRecyclerView.loadMoreComplete();
@@ -98,7 +104,7 @@ public class LinearActivity extends AppCompatActivity {
                 } else {
                     new Handler().postDelayed(new Runnable() {
                         public void run() {
-                            for(int i = 0; i < 9 ;i++){
+                            for(int i = 0; i < itemLimit ;i++){
                                 listData.add("item" + (1 + listData.size() ) );
                             }
                             mRecyclerView.setNoMore(true);
