@@ -8,8 +8,9 @@ Screenshots
 on real device it is much more smoother. 
 Usage
 -----
-##gradle
+## gradle
 ```groovy
+// Not the latest, mainly clone 
 compile 'com.jcodecraeer:xrecyclerview:1.3.2'
 ```
 just like a standard RecyclerView
@@ -19,7 +20,7 @@ layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
 mRecyclerView.setLayoutManager(layoutManager);
 mRecyclerView.setAdapter(mAdapter);
 ```
-##pull to refresh and load more
+## pull to refresh and load more
 the pull to refresh and load more featrue is enabled by default. we provide a callback to trigger the refresh and LoadMore event.
 ```java
  mRecyclerView.setLoadingListener(new XRecyclerView.LoadingListener() {
@@ -34,6 +35,13 @@ the pull to refresh and load more featrue is enabled by default. we provide a ca
     }
 });
 ```
+
+call notifyItemRemoved or notifyItemInserted, remember to use the functions inside XRecyclerView
+```java
+listData.remove(pos);
+mRecyclerView.notifyItemRemoved(listData,pos);
+```
+
 and of course you have to tell our RecyclerView when the refreshing or loading more work is done.
 you can use
 ```java
@@ -59,13 +67,15 @@ here is what we get:
 
 ![default](https://github.com/jianghejie/XRecyclerView/blob/master/art/default.gif)
 
-##call refresh() manually(I change the previous setRefreshing() method to refresh() )
+## call refresh() manually(I change the previous setRefreshing() method to refresh() )
+
 ```java
 mRecyclerView.refresh();
 ```
 
-###custom refresh and loading more style
+### custom refresh and loading more style
 pull refresh and loading more style is highly customizable.
+
 #### custom loading style
 the loading effect we use the  [AVLoadingIndicatorView](https://github.com/81813780/AVLoadingIndicatorView) . and it is built in(make a little change).
 we provide all the effect in AVLoadingIndicatorView library besides we add a system style.
@@ -140,7 +150,7 @@ just call
 mRecyclerView.setArrowImageView(R.drawable.iconfont_downgrey);
 ```
 ![customarrow](https://github.com/jianghejie/XRecyclerView/blob/master/art/customarrow.gif)
-###disable refresh and load more featrue
+### disable refresh and load more featrue
 if you don't want the refresh and load more featrue(in that case,you probably dont'n need the lib neither),you can call
 ```java
 mRecyclerView.setPullRefreshEnabled(false);
