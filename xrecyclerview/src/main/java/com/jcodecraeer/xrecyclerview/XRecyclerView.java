@@ -7,6 +7,7 @@ import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
+import android.support.v4.view.MotionEventCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -17,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -354,6 +356,18 @@ public class XRecyclerView extends RecyclerView {
                 mLastY = ev.getRawY();
                 if (isOnTop() && pullRefreshEnabled && appbarState == AppBarStateChangeListener.State.EXPANDED) {
                     mRefreshHeader.onMove(deltaY / DRAG_RATE);
+                    if (deltaY > 0) {
+                        int mScrollPointerId = (int) getFieldValue(this, "mScrollPointerId");
+                        int mLastTouchX = (int) getFieldValue(this, "mLastTouchX");
+                        //int mLastTouchY = (int) getFieldValue(this, "mLastTouchY");
+                        int[] mScrollConsumed = (int[]) getFieldValue(this, "mScrollConsumed");
+                        int[] mScrollOffset = (int[]) getFieldValue(this, "mScrollOffset");
+                        final int index = MotionEventCompat.findPointerIndex(ev, mScrollPointerId);
+                        final int x = (int) (MotionEventCompat.getX(ev, index) + 0.5f);
+                        final int y = (int) (MotionEventCompat.getY(ev, index) + 0.5f);
+                        int dx = mLastTouchX - x;
+                        dispatchNestedPreScroll(dx, -(int) deltaY, mScrollConsumed, mScrollOffset);
+                    }
                     if (mRefreshHeader.getVisibleHeight() > 0 && mRefreshHeader.getState() < ArrowRefreshHeader.STATE_REFRESHING) {
                         return false;
                     }
@@ -830,5 +844,59 @@ public class XRecyclerView extends RecyclerView {
     public interface ScrollAlphaChangeListener{
         void onAlphaChange(int alpha);  /** you can handle the alpha insert it */
         int setLimitHeight(); /** set a height for the begging of the alpha start to change */
+    }
+
+
+    /**
+     *
+     * obtain DeclaredField value
+     *
+     * @param object    : subclass object
+     * @param fieldName : super class field name
+     * @return : super class field value
+     */
+
+    public static Object getFieldValue(Object object, String fieldName) {
+
+        //根据 对象和属性名通过反射 调用上面的方法获取 Field对象
+        Field field = getDeclaredField(object, fieldName);
+
+        //抑制Java对其的检查
+        field.setAccessible(true);
+
+        try {
+            //获取 object 中 field 所代表的属性值
+            return field.get(object);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    /**
+     *  obtain DeclaredField
+     *
+     * @param object    : 子类对象
+     * @param fieldName : 父类中的属性名
+     * @return 父类中的属性对象
+     */
+
+    public static Field getDeclaredField(Object object, String fieldName) {
+        Field field = null;
+
+        Class<?> clazz = object.getClass();
+
+        for (; clazz != Object.class; clazz = clazz.getSuperclass()) {
+            try {
+                field = clazz.getDeclaredField(fieldName);
+                return field;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        return null;
     }
 }
