@@ -10,8 +10,8 @@ Usage
 -----
 ## gradle
 ```groovy
-// Not the latest, mainly clone 
-compile 'com.jcodecraeer:xrecyclerview:1.4.2'
+// 1.5.2 is the main
+compile 'com.jcodecraeer:xrecyclerview:1.5.2'
 ```
 just like a standard RecyclerView
 ```java
