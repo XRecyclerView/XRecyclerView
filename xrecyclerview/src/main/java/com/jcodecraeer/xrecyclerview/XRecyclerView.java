@@ -11,12 +11,10 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
-import android.widget.ScrollView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,7 +60,7 @@ public class XRecyclerView extends RecyclerView {
         init();
     }
 
-    private void init() {
+    public void init() {
         if (pullRefreshEnabled) {
             mRefreshHeader = new ArrowRefreshHeader(getContext());
             mRefreshHeader.setProgressStyle(mRefreshProgressStyle);
@@ -78,6 +76,14 @@ public class XRecyclerView extends RecyclerView {
             ((LoadingMoreFooter) mFootView).setLoadingHint(loading);
             ((LoadingMoreFooter) mFootView).setNoMoreHint(noMore);
         }
+    }
+
+    /**
+     * 正常情况下是 LoadingMoreFooter
+     * @return
+     */
+    public View getFootView() {
+        return mFootView;
     }
 
     public void addHeaderView(View view) {

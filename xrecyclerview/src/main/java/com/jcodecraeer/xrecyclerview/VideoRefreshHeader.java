@@ -17,10 +17,10 @@ import android.widget.ImageView;
 public class VideoRefreshHeader extends ArrowRefreshHeader {
 
     private ImageView imageView;
+    private AnimationDrawable animationDrawable;
 
     public VideoRefreshHeader(Context context) {
         super(context);
-
     }
 
     public VideoRefreshHeader(Context context, AttributeSet attrs) {
@@ -44,9 +44,23 @@ public class VideoRefreshHeader extends ArrowRefreshHeader {
         mMeasuredHeight = getMeasuredHeight();
 
         imageView = (ImageView) findViewById(R.id.x_iv_video_listview_header);
-        AnimationDrawable animationDrawable = (AnimationDrawable) imageView.getDrawable();
+        imageView.setImageResource(loadingRes());
+        animationDrawable = (AnimationDrawable) imageView.getDrawable();
         animationDrawable.start();
     }
+
+
+    public int loadingRes() {
+        return R.drawable.x_anim_video_loading;
+    }
+
+    public void setLoadingRes(int res) {
+        if (animationDrawable != null) animationDrawable.stop();
+        imageView.setImageResource(res);
+        animationDrawable = (AnimationDrawable) imageView.getDrawable();
+        animationDrawable.start();
+    }
+
 
     @Override
     public void setState(int state) {

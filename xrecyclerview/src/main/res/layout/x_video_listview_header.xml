@@ -9,7 +9,6 @@
         android:id="@+id/x_iv_video_listview_header"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:layout_margin="20dp"
-        android:src="@drawable/x_anim_video_loading" />
+        android:layout_margin="20dp" />
 
 </LinearLayout>
