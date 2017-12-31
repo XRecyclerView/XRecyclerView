@@ -2,7 +2,7 @@ apply plugin: 'com.android.library'
 apply plugin: 'com.github.dcendents.android-maven'
 apply plugin: 'com.jfrog.bintray'
 
-version = "1.5.3"
+version = "1.5.5"
 group = "com.jcodecraeer"
 
 def siteUrl = 'https://github.com/jianghejie/XRecyclerView'

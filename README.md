@@ -10,8 +10,8 @@ Usage
 -----
 ## gradle
 ```groovy
-// 1.5.3 is the main
-compile 'com.jcodecraeer:xrecyclerview:1.5.3'
+// 1.5.5 is the main
+compile 'com.jcodecraeer:xrecyclerview:1.5.5'
 ```
 just like a standard RecyclerView
 ```java
@@ -34,6 +34,14 @@ the pull to refresh and load more featrue is enabled by default. we provide a ca
        // load more data here
     }
 });
+```
+new function of 1.5.5 version,fixed a memory leak problem,use the code below to release XR's memory
+```java
+// any time,when you finish your activity or fragment,call this below
+if(mRecyclerView != null){
+    mRecyclerView.destroy(); // this will totally release XR's memory
+    mRecyclerView = null;
+}
 ```
 
 new function of 1.5.3 version,you can use XR in the sticky scroll model now,like the code below,the demo activity is 'LinearStickyScrollActivity'

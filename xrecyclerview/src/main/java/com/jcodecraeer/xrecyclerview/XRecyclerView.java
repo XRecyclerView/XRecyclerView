@@ -40,7 +40,7 @@ public class XRecyclerView extends RecyclerView {
     private static final int TYPE_FOOTER = 10001;
     private static final int HEADER_INIT_INDEX = 10002;
     private static List<Integer> sHeaderTypes = new ArrayList<>();//每个header必须有不同的type,不然滚动的时候顺序会变化
-    private int mPageCount = 0;
+
     //adapter没有数据的时候显示,类似于listView的emptyView
     private View mEmptyView;
     private View mFootView;
@@ -75,6 +75,22 @@ public class XRecyclerView extends RecyclerView {
         mFootView.setVisibility(GONE);
     }
 
+    // call it when you finish the activity
+    public void destroy(){
+        if(mHeaderViews != null){
+            mHeaderViews.clear();
+            mHeaderViews = null;
+        }
+        if(mFootView instanceof LoadingMoreFooter){
+            ((LoadingMoreFooter) mFootView).destroy();
+            mFootView = null;
+        }
+        if(mRefreshHeader != null){
+            mRefreshHeader.destroy();
+            mRefreshHeader = null;
+        }
+    }
+
     public LoadingMoreFooter getDefaultFootView(){
         if(mFootView == null){
             return null;
@@ -102,6 +118,8 @@ public class XRecyclerView extends RecyclerView {
     }
 
     public void addHeaderView(View view) {
+        if(mHeaderViews == null || sHeaderTypes == null)
+            return;
         sHeaderTypes.add(HEADER_INIT_INDEX + mHeaderViews.size());
         mHeaderViews.add(view);
         if (mWrapAdapter != null) {
@@ -114,12 +132,16 @@ public class XRecyclerView extends RecyclerView {
         if(!isHeaderType(itemType)) {
             return null;
         }
+        if(mHeaderViews == null)
+            return null;
         return mHeaderViews.get(itemType - HEADER_INIT_INDEX);
     }
 
     //判断一个type是否为HeaderType
     private boolean isHeaderType(int itemViewType) {
-        return  mHeaderViews.size() > 0 &&  sHeaderTypes.contains(itemViewType);
+        if(mHeaderViews == null || sHeaderTypes == null)
+            return false;
+        return mHeaderViews.size() > 0 &&  sHeaderTypes.contains(itemViewType);
     }
 
     //判断是否是XRecyclerView保留的itemViewType
@@ -469,6 +491,8 @@ public class XRecyclerView extends RecyclerView {
         }
 
         public int getHeadersCount() {
+            if(mHeaderViews == null)
+                return 0;
             return mHeaderViews.size();
         }
 

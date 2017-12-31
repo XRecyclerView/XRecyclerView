@@ -24,6 +24,16 @@ public class LinearActivity extends AppCompatActivity {
     private int times = 0;
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        // release memory
+        if(mRecyclerView != null){
+            mRecyclerView.destroy();
+            mRecyclerView = null;
+        }
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recyclerview);
@@ -83,7 +93,8 @@ public class LinearActivity extends AppCompatActivity {
                             listData.add("item" + i + "after " + refreshTime + " times of refresh");
                         }
                         mAdapter.notifyDataSetChanged();
-                        mRecyclerView.refreshComplete();
+                        if(mRecyclerView != null)
+                            mRecyclerView.refreshComplete();
                     }
 
                 }, 1000);            //refresh data here
@@ -98,8 +109,10 @@ public class LinearActivity extends AppCompatActivity {
                             for(int i = 0; i < itemLimit ;i++){
                                 listData.add("item" + (1 + listData.size() ) );
                             }
-                            mRecyclerView.loadMoreComplete();
-                            mAdapter.notifyDataSetChanged();
+                            if(mRecyclerView != null) {
+                                mRecyclerView.loadMoreComplete();
+                                mAdapter.notifyDataSetChanged();
+                            }
                         }
                     }, 1000);
                 } else {
@@ -108,8 +121,10 @@ public class LinearActivity extends AppCompatActivity {
                             for(int i = 0; i < itemLimit ;i++){
                                 listData.add("item" + (1 + listData.size() ) );
                             }
-                            mRecyclerView.setNoMore(true);
-                            mAdapter.notifyDataSetChanged();
+                            if(mRecyclerView != null) {
+                                mRecyclerView.setNoMore(true);
+                                mAdapter.notifyDataSetChanged();
+                            }
                         }
                     }, 1000);
                 }

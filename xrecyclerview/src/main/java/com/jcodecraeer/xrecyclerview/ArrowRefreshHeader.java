@@ -35,6 +35,23 @@ public class ArrowRefreshHeader extends LinearLayout implements BaseRefreshHeade
 	private static final int ROTATE_ANIM_DURATION = 180;
 
 	public int mMeasuredHeight;
+    private AVLoadingIndicatorView progressView;
+
+	public void destroy(){
+        mProgressBar = null;
+        if(progressView != null){
+            progressView.destroy();
+            progressView = null;
+        }
+	    if(mRotateUpAnim != null){
+            mRotateUpAnim.cancel();
+            mRotateUpAnim = null;
+        }
+        if(mRotateDownAnim != null){
+            mRotateDownAnim.cancel();
+            mRotateDownAnim = null;
+        }
+    }
 
 	public ArrowRefreshHeader(Context context) {
 		super(context);
@@ -67,11 +84,11 @@ public class ArrowRefreshHeader extends LinearLayout implements BaseRefreshHeade
 
         //init the progress view
 		mProgressBar = (SimpleViewSwitcher)findViewById(R.id.listview_header_progressbar);
-        AVLoadingIndicatorView progressView = new  AVLoadingIndicatorView(getContext());
+        progressView = new  AVLoadingIndicatorView(getContext());
         progressView.setIndicatorColor(0xffB5B5B5);
         progressView.setIndicatorId(ProgressStyle.BallSpinFadeLoader);
-        mProgressBar.setView(progressView);
-
+        if(mProgressBar != null)
+            mProgressBar.setView(progressView);
 
 		mRotateUpAnim = new RotateAnimation(0.0f, -180.0f,
 				Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
@@ -89,9 +106,10 @@ public class ArrowRefreshHeader extends LinearLayout implements BaseRefreshHeade
 
     public void setProgressStyle(int style) {
         if(style == ProgressStyle.SysProgress){
-            mProgressBar.setView(new ProgressBar(getContext(), null, android.R.attr.progressBarStyle));
+            if(mProgressBar != null)
+                mProgressBar.setView(new ProgressBar(getContext(), null, android.R.attr.progressBarStyle));
         }else{
-            AVLoadingIndicatorView progressView = new  AVLoadingIndicatorView(this.getContext());
+            progressView = new  AVLoadingIndicatorView(this.getContext());
             progressView.setIndicatorColor(0xffB5B5B5);
             progressView.setIndicatorId(style);
             mProgressBar.setView(progressView);
@@ -108,14 +126,18 @@ public class ArrowRefreshHeader extends LinearLayout implements BaseRefreshHeade
 		if (state == STATE_REFRESHING) {	// 显示进度
 			mArrowImageView.clearAnimation();
 			mArrowImageView.setVisibility(View.INVISIBLE);
-			mProgressBar.setVisibility(View.VISIBLE);
+            if(mProgressBar != null)
+			    mProgressBar.setVisibility(View.VISIBLE);
             smoothScrollTo(mMeasuredHeight);
 		} else if(state == STATE_DONE) {
             mArrowImageView.setVisibility(View.INVISIBLE);
-            mProgressBar.setVisibility(View.INVISIBLE);
+            if(mProgressBar != null)
+                mProgressBar.setVisibility(View.INVISIBLE);
         } else {	// 显示箭头图片
 			mArrowImageView.setVisibility(View.VISIBLE);
-			mProgressBar.setVisibility(View.INVISIBLE);
+			if(mProgressBar != null){
+                mProgressBar.setVisibility(View.INVISIBLE);
+            }
 		}
 		
 		switch(state){
