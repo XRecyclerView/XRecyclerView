@@ -35,6 +35,12 @@
             android:name=".StaggeredGridActivity"
             android:label="@string/app_name"
             android:theme="@style/SupportTheme" />
+
+        <activity
+            android:name=".LinearStickyScrollActivity"
+            android:label="@string/app_name"
+            android:theme="@style/SupportTheme"/>
+
         <activity
             android:name=".EmptyViewActivity"
             android:label="@string/app_name" />

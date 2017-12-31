@@ -12,6 +12,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -318,7 +319,7 @@ public class XRecyclerView extends RecyclerView {
                 lastVisibleItemPosition = ((LinearLayoutManager) layoutManager).findLastVisibleItemPosition();
             }
             int adjAdapterItemCount = layoutManager.getItemCount()+getHeaders_includingRefreshCount();
-
+            Log.e("aaaaa","adjAdapterItemCount "+adjAdapterItemCount +" getItemCount "+layoutManager.getItemCount());
             if (
                     layoutManager.getChildCount() > 0
                     && lastVisibleItemPosition >= adjAdapterItemCount - limitNumberToCallLoadMore

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.jcodecraeer.xrecyclerview.StickyScrollLinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/StickyScrollLinearLayout"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/topView"
+        android:text="StickyScroll\nXRecyclerView"
+        android:gravity="center"
+        android:textSize="25sp"
+        android:background="#5abdc7"
+        android:layout_width="match_parent"
+        android:layout_height="200dp" />
+
+    <TextView
+        android:id="@+id/tabView"
+        android:text="I am the fucking TabView,\nyou can make me become a ViewGroup"
+        android:background="#f3ce69"
+        android:textStyle="bold"
+        android:padding="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <LinearLayout
+        android:id="@+id/contentView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.jcodecraeer.xrecyclerview.XRecyclerView
+            android:id="@+id/XRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+        </com.jcodecraeer.xrecyclerview.XRecyclerView>
+
+    </LinearLayout>
+
+</com.jcodecraeer.xrecyclerview.StickyScrollLinearLayout>

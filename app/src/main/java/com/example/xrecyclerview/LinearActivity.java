@@ -22,6 +22,7 @@ public class LinearActivity extends AppCompatActivity {
     private ArrayList<String> listData;
     private int refreshTime = 0;
     private int times = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
