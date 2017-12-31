@@ -35,10 +35,10 @@ public class LinearStickyScrollActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.linear_sticky_layout);
         initXR();
-        final View topV = findViewById(R.id.topView);
-        final View tabV = findViewById(R.id.tabView);
-        final View content = findViewById(R.id.contentView);
 
+        final View topView = findViewById(R.id.topView);
+        final View tabView = findViewById(R.id.tabView);
+        final View content = findViewById(R.id.contentView);
         final StickyScrollLinearLayout s =
                 (StickyScrollLinearLayout) findViewById(R.id.StickyScrollLinearLayout);
         s.addOnLayoutChangeListener(
@@ -53,12 +53,12 @@ public class LinearStickyScrollActivity extends AppCompatActivity {
                                 new StickyScrollLinearLayout.StickyScrollInitInterface() {
                                     @Override
                                     public View setTopView() {
-                                        return topV;
+                                        return topView;
                                     }
 
                                     @Override
                                     public View setTabView() {
-                                        return tabV;
+                                        return tabView;
                                     }
 
                                     @Override
