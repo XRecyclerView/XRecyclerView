@@ -11,7 +11,7 @@ Usage
 ## gradle
 ```groovy
 // 1.5.2 is the main
-compile 'com.jcodecraeer:xrecyclerview:1.5.2'
+compile 'com.jcodecraeer:xrecyclerview:1.5.3'
 ```
 just like a standard RecyclerView
 ```java
@@ -34,6 +34,44 @@ the pull to refresh and load more featrue is enabled by default. we provide a ca
        // load more data here
     }
 });
+```
+
+new function of 1.5.3 version,you can use XR in the sticky scroll model now,like the code below,the demo activity is 'LinearStickyScrollActivity'
+```java
+final View topView = findViewById(R.id.topView);
+final View tabView = findViewById(R.id.tabView);
+final View content = findViewById(R.id.contentView);
+
+final StickyScrollLinearLayout s = findViewById(R.id.StickyScrollLinearLayout);
+s.addOnLayoutChangeListener(
+        new View.OnLayoutChangeListener() {
+            @Override
+            public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
+                if(s.getContentView() != null)
+                    return;
+                // 放在这里是为了等初始化结束后再添加，防止 height 获取 =0
+                // add from here just in cause they height==0
+                s.setInitInterface(
+                        new StickyScrollLinearLayout.StickyScrollInitInterface() {
+                            @Override
+                            public View setTopView() {
+                                return topView;
+                            }
+
+                            @Override
+                            public View setTabView() {
+                                return tabView;
+                            }
+
+                            @Override
+                            public View setContentView() {
+                                return content;
+                            }
+                        }
+                );
+            }
+        }
+);
 ```
 
 call notifyItemRemoved or notifyItemInserted, remember to use the functions inside XRecyclerView
