@@ -10,7 +10,7 @@ Usage
 -----
 ## gradle
 ```groovy
-// 1.5.2 is the main
+// 1.5.3 is the main
 compile 'com.jcodecraeer:xrecyclerview:1.5.3'
 ```
 just like a standard RecyclerView
