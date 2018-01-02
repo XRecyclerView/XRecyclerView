@@ -58,7 +58,7 @@ s.addOnLayoutChangeListener(
                 if(s.getContentView() != null)
                     return;
                 // 放在这里是为了等初始化结束后再添加，防止 height 获取 =0
-                // add from here just in cause they height==0
+                // add from here just in case they height==0
                 s.setInitInterface(
                         new StickyScrollLinearLayout.StickyScrollInitInterface() {
                             @Override
