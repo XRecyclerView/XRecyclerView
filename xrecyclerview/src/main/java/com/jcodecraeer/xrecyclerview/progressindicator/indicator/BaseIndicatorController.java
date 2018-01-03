@@ -32,15 +32,23 @@ public abstract class BaseIndicatorController {
 
 
     public int getWidth(){
+        if(mTarget == null){
+            return 0;
+        }
         return mTarget.getWidth();
     }
 
     public int getHeight(){
+        if(mTarget == null){
+            return 0;
+        }
         return mTarget.getHeight();
     }
 
     public void postInvalidate(){
-        mTarget.postInvalidate();
+        if(mTarget != null){
+            mTarget.postInvalidate();
+        }
     }
 
     /**
