@@ -10,8 +10,8 @@ Usage
 -----
 ## gradle
 ```groovy
-// 1.5.6 is the main
-compile 'com.jcodecraeer:xrecyclerview:1.5.6'
+// 1.5.7 is the main
+compile 'com.jcodecraeer:xrecyclerview:1.5.7'
 ```
 just like a standard RecyclerView
 ```java
@@ -35,6 +35,20 @@ the pull to refresh and load more featrue is enabled by default. we provide a ca
     }
 });
 ```
+new function of 1.5.7 version.
+```java
+mRecyclerView
+    .getDefaultRefreshHeaderView() // get default refresh header view
+    .setRefreshTimeVisible(true);  // make refresh time visible,false means hiding
+
+// if you are not sure that you are 100% going to
+// have no data load back from server anymore,do not use this
+@Deprecated
+public void setEmptyView(View emptyView) {
+    ...
+}
+```
+
 new function of 1.5.6 version,fixed a memory leak problem,use the code below to release XR's memory
 ```java
 // any time,when you finish your activity or fragment,call this below

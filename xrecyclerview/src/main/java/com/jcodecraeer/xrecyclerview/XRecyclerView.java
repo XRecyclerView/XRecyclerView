@@ -75,7 +75,11 @@ public class XRecyclerView extends RecyclerView {
         mFootView.setVisibility(GONE);
     }
 
-    // call it when you finish the activity
+    /**
+     * call it when you finish the activity,
+     * when you call this,better don't call some kind of functions like
+     * RefreshHeader,because the reference of mHeaderViews is NULL.
+     */
     public void destroy(){
         if(mHeaderViews != null){
             mHeaderViews.clear();
@@ -89,6 +93,13 @@ public class XRecyclerView extends RecyclerView {
             mRefreshHeader.destroy();
             mRefreshHeader = null;
         }
+    }
+
+    public ArrowRefreshHeader getDefaultRefreshHeaderView(){
+        if(mRefreshHeader == null){
+            return null;
+        }
+        return mRefreshHeader;
     }
 
     public LoadingMoreFooter getDefaultFootView(){
@@ -197,7 +208,8 @@ public class XRecyclerView extends RecyclerView {
     }
 
     public void refreshComplete() {
-        mRefreshHeader.refreshComplete();
+        if(mRefreshHeader != null)
+            mRefreshHeader.refreshComplete();
         setNoMore(false);
     }
 
@@ -238,6 +250,9 @@ public class XRecyclerView extends RecyclerView {
         }
     }
 
+    // if you can't sure that you are 100% going to
+    // have no data load back from server anymore,do not use this
+    @Deprecated
     public void setEmptyView(View emptyView) {
         this.mEmptyView = emptyView;
         mDataObserver.onChanged();
@@ -429,7 +444,6 @@ public class XRecyclerView extends RecyclerView {
                     mEmptyView.setVisibility(View.VISIBLE);
                     XRecyclerView.this.setVisibility(View.GONE);
                 } else {
-
                     mEmptyView.setVisibility(View.GONE);
                     XRecyclerView.this.setVisibility(View.VISIBLE);
                 }

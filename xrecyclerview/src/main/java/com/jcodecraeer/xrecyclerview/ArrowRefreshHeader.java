@@ -28,6 +28,7 @@ public class ArrowRefreshHeader extends LinearLayout implements BaseRefreshHeade
 	private int mState = STATE_NORMAL;
 
 	private TextView mHeaderTimeView;
+	private LinearLayout mHeaderRefreshTimeContainer;
 
 	private Animation mRotateUpAnim;
 	private Animation mRotateDownAnim;
@@ -67,10 +68,19 @@ public class ArrowRefreshHeader extends LinearLayout implements BaseRefreshHeade
 		initView();
 	}
 
+	public void setRefreshTimeVisible(boolean show){
+	    if(mHeaderRefreshTimeContainer != null)
+            mHeaderRefreshTimeContainer.setVisibility(show?VISIBLE:GONE);
+    }
+
 	private void initView() {
 		// 初始情况，设置下拉刷新view高度为0
 		mContainer = (LinearLayout) LayoutInflater.from(getContext()).inflate(
 				R.layout.listview_header, null);
+
+        mHeaderRefreshTimeContainer
+                = (LinearLayout) mContainer.findViewById(R.id.header_refresh_time_container);
+
         LayoutParams lp = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
         lp.setMargins(0, 0, 0, 0);
 		this.setLayoutParams(lp);
@@ -109,7 +119,7 @@ public class ArrowRefreshHeader extends LinearLayout implements BaseRefreshHeade
             if(mProgressBar != null)
                 mProgressBar.setView(new ProgressBar(getContext(), null, android.R.attr.progressBarStyle));
         }else{
-            progressView = new  AVLoadingIndicatorView(this.getContext());
+            progressView = new AVLoadingIndicatorView(this.getContext());
             progressView.setIndicatorColor(0xffB5B5B5);
             progressView.setIndicatorId(style);
             mProgressBar.setView(progressView);

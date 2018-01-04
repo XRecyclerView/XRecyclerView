@@ -27,6 +27,7 @@
                 android:text="@string/listview_header_hint_normal" />
 
             <LinearLayout
+                android:id="@+id/header_refresh_time_container"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:visibility="gone"
