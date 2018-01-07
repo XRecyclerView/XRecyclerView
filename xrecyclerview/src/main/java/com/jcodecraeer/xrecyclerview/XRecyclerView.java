@@ -21,6 +21,8 @@ import android.view.ViewParent;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.jcodecraeer.xrecyclerview.BaseRefreshHeader.STATE_DONE;
+
 public class XRecyclerView extends RecyclerView {
     private boolean isLoadingData = false;
     private boolean isNoMore = false;
@@ -357,12 +359,17 @@ public class XRecyclerView extends RecyclerView {
             }
             int adjAdapterItemCount = layoutManager.getItemCount()+getHeaders_includingRefreshCount();
             Log.e("aaaaa","adjAdapterItemCount "+adjAdapterItemCount +" getItemCount "+layoutManager.getItemCount());
+
+            int status = STATE_DONE;
+
+            if(mRefreshHeader != null)
+                status = mRefreshHeader.getState();
             if (
                     layoutManager.getChildCount() > 0
                     && lastVisibleItemPosition >= adjAdapterItemCount - limitNumberToCallLoadMore
                     && adjAdapterItemCount >= layoutManager.getChildCount()
                     && !isNoMore
-                    && mRefreshHeader.getState() < ArrowRefreshHeader.STATE_REFRESHING
+                    && status < ArrowRefreshHeader.STATE_REFRESHING
             )
             {
                 isLoadingData = true;
@@ -391,6 +398,8 @@ public class XRecyclerView extends RecyclerView {
                 final float deltaY = ev.getRawY() - mLastY;
                 mLastY = ev.getRawY();
                 if (isOnTop() && pullRefreshEnabled && appbarState == AppBarStateChangeListener.State.EXPANDED) {
+                    if(mRefreshHeader == null)
+                        break;
                     mRefreshHeader.onMove(deltaY / DRAG_RATE);
                     if (mRefreshHeader.getVisibleHeight() > 0 && mRefreshHeader.getState() < ArrowRefreshHeader.STATE_REFRESHING) {
                         return false;
@@ -400,7 +409,7 @@ public class XRecyclerView extends RecyclerView {
             default:
                 mLastY = -1; // reset
                 if (isOnTop() && pullRefreshEnabled && appbarState == AppBarStateChangeListener.State.EXPANDED) {
-                    if (mRefreshHeader.releaseAction()) {
+                    if (mRefreshHeader != null && mRefreshHeader.releaseAction()) {
                         if (mLoadingListener != null) {
                             mLoadingListener.onRefresh();
                         }
@@ -422,6 +431,8 @@ public class XRecyclerView extends RecyclerView {
     }
 
     private boolean isOnTop() {
+        if(mRefreshHeader == null)
+            return false;
         if (mRefreshHeader.getParent() != null) {
             return true;
         } else {
