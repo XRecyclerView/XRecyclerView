@@ -2,6 +2,7 @@ package com.jcodecraeer.xrecyclerview;
 
 import android.animation.ValueAnimator;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Handler;
 import android.util.AttributeSet;
 import android.view.Gravity;
@@ -21,6 +22,8 @@ import java.util.Date;
 
 public class ArrowRefreshHeader extends LinearLayout implements BaseRefreshHeader {
 
+    private static final String XR_REFRESH_KEY = "XR_REFRESH_KEY";
+    private static final String XR_REFRESH_TIME_KEY = "XR_REFRESH_TIME_KEY";
 	private LinearLayout mContainer;
 	private ImageView mArrowImageView;
 	private SimpleViewSwitcher mProgressBar;
@@ -149,7 +152,7 @@ public class ArrowRefreshHeader extends LinearLayout implements BaseRefreshHeade
                 mProgressBar.setVisibility(View.INVISIBLE);
             }
 		}
-		
+        mHeaderTimeView.setText(friendlyTime(getLastRefreshTime()));
 		switch(state){
             case STATE_NORMAL:
                 if (mState == STATE_RELEASE_TO_REFRESH) {
@@ -167,10 +170,10 @@ public class ArrowRefreshHeader extends LinearLayout implements BaseRefreshHeade
                     mStatusTextView.setText(R.string.listview_header_hint_release);
                 }
                 break;
-            case     STATE_REFRESHING:
+            case STATE_REFRESHING:
                 mStatusTextView.setText(R.string.refreshing);
                 break;
-            case    STATE_DONE:
+            case STATE_DONE:
                 mStatusTextView.setText(R.string.refresh_done);
                 break;
             default:
@@ -183,9 +186,24 @@ public class ArrowRefreshHeader extends LinearLayout implements BaseRefreshHeade
         return mState;
     }
 
+    private long getLastRefreshTime(){
+        SharedPreferences s =
+                getContext()
+                    .getSharedPreferences(XR_REFRESH_KEY,Context.MODE_APPEND);
+        return s.getLong(XR_REFRESH_TIME_KEY,new Date().getTime());
+    }
+
+    private void saveLastRefreshTime(long refreshTime){
+        SharedPreferences s =
+                getContext()
+                    .getSharedPreferences(XR_REFRESH_KEY,Context.MODE_APPEND);
+        s.edit().putLong(XR_REFRESH_TIME_KEY,refreshTime).commit();
+    }
+
     @Override
 	public void refreshComplete(){
-        mHeaderTimeView.setText(friendlyTime(new Date()));
+        mHeaderTimeView.setText(friendlyTime(getLastRefreshTime()));
+        saveLastRefreshTime(System.currentTimeMillis());
         setState(STATE_DONE);
         new Handler().postDelayed(new Runnable(){
             public void run() {
@@ -269,9 +287,14 @@ public class ArrowRefreshHeader extends LinearLayout implements BaseRefreshHeade
         animator.start();
     }
 
+
     public static String friendlyTime(Date time) {
+        return friendlyTime(time.getTime());
+    }
+
+    public static String friendlyTime(long time) {
         //获取time距离当前的秒数
-        int ct = (int)((System.currentTimeMillis() - time.getTime())/1000);
+        int ct = (int)((System.currentTimeMillis() - time)/1000);
 
         if(ct == 0) {
             return "刚刚";
