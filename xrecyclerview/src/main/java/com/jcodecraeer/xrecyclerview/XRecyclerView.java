@@ -500,6 +500,8 @@ public class XRecyclerView extends RecyclerView {
         }
 
         public boolean isHeader(int position) {
+            if(mHeaderViews == null)
+                return false;
             return position >= 1 && position < mHeaderViews.size() + 1;
         }
 
