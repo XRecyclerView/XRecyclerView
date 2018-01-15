@@ -312,12 +312,14 @@ public class XRecyclerView extends RecyclerView {
         mWrapAdapter.adapter.notifyItemRemoved(adjPos);
         mWrapAdapter.adapter.notifyItemRangeChanged(headerSize, listData.size(),new Object());
     }
-
-    public void notifyItemInserted(int position) {
+    
+    public<T> void notifyItemInserted(List<T> listData,int position) {
         if(mWrapAdapter.adapter == null)
             return;
-        int adjPos = position + getHeaders_includingRefreshCount();
+        int headerSize = getHeaders_includingRefreshCount();
+        int adjPos = position + headerSize;
         mWrapAdapter.adapter.notifyItemInserted(adjPos);
+        mWrapAdapter.adapter.notifyItemRangeChanged(headerSize, listData.size(),new Object());
     }
 
     public void notifyItemChanged(int position) {
