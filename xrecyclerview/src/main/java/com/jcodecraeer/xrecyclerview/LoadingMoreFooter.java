@@ -18,10 +18,13 @@ public class LoadingMoreFooter extends LinearLayout {
     public final static int STATE_LOADING = 0;
     public final static int STATE_COMPLETE = 1;
     public final static int STATE_NOMORE = 2;
+
     private TextView mText;
     private String loadingHint;
     private String noMoreHint;
     private String loadingDoneHint;
+
+    private AVLoadingIndicatorView progressView;
 
 	public LoadingMoreFooter(Context context) {
 		super(context);
@@ -36,6 +39,14 @@ public class LoadingMoreFooter extends LinearLayout {
 		super(context, attrs);
 		initView();
 	}
+
+	public void destroy(){
+	    progressCon = null;
+	    if(progressView != null){
+            progressView.destroy();
+            progressView = null;
+        }
+    }
 
     public void setLoadingHint(String hint) {
         loadingHint = hint;
@@ -57,17 +68,25 @@ public class LoadingMoreFooter extends LinearLayout {
         progressCon.setLayoutParams(new ViewGroup.LayoutParams(
                 ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
 
-        AVLoadingIndicatorView progressView = new  AVLoadingIndicatorView(this.getContext());
+        progressView = new  AVLoadingIndicatorView(this.getContext());
         progressView.setIndicatorColor(0xffB5B5B5);
         progressView.setIndicatorId(ProgressStyle.BallSpinFadeLoader);
         progressCon.setView(progressView);
 
         addView(progressCon);
         mText = new TextView(getContext());
-        mText.setText("正在加载...");
-        loadingHint = (String)getContext().getText(R.string.listview_loading);
-        noMoreHint = (String)getContext().getText(R.string.nomore_loading);
-        loadingDoneHint = (String)getContext().getText(R.string.loading_done);
+        mText.setText(getContext().getString(R.string.listview_loading));
+
+        if(loadingHint == null || loadingHint.equals("")){
+            loadingHint = (String)getContext().getText(R.string.listview_loading);
+        }
+        if(noMoreHint == null || noMoreHint.equals("")){
+            noMoreHint = (String)getContext().getText(R.string.nomore_loading);
+        }
+        if(loadingDoneHint == null || loadingDoneHint.equals("")){
+            loadingDoneHint = (String)getContext().getText(R.string.loading_done);
+        }
+
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         layoutParams.setMargins( (int)getResources().getDimension(R.dimen.textandiconmargin),0,0,0 );
 
@@ -79,7 +98,7 @@ public class LoadingMoreFooter extends LinearLayout {
         if(style == ProgressStyle.SysProgress){
             progressCon.setView(new ProgressBar(getContext(), null, android.R.attr.progressBarStyle));
         }else{
-            AVLoadingIndicatorView progressView = new  AVLoadingIndicatorView(this.getContext());
+            progressView = new  AVLoadingIndicatorView(this.getContext());
             progressView.setIndicatorColor(0xffB5B5B5);
             progressView.setIndicatorId(style);
             progressCon.setView(progressView);

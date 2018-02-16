@@ -12,6 +12,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
     }
+
+    public void gotoStickyScrollLinearActivity(View v){
+        Intent intent = new Intent();
+        intent.setClass(this,LinearStickyScrollActivity.class);
+        startActivity(intent);
+    }
+
     public void gotoLinearActivity(View v) {
         Intent intent = new Intent();
         intent.setClass(this,LinearActivity.class);

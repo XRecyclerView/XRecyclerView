@@ -22,14 +22,13 @@ qq 群478803619
 
 ![demo](https://github.com/jianghejie/XRecyclerView/blob/master/art/demo.gif)
 
-On real device it is much more smoother. 
-
 ## Usage
 
 ### Gradle
 
 ```groovy
-compile 'com.jcodecraeer:xrecyclerview:1.3.2'
+// 1.5.9 is the main
+compile 'com.jcodecraeer:xrecyclerview:1.5.9'
 ```
 
 Just like a standard RecyclerView
@@ -40,7 +39,6 @@ layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
 mRecyclerView.setLayoutManager(layoutManager);
 mRecyclerView.setAdapter(mAdapter);
 ```
-
 ## Features
 
 ### Pull to Refresh and Load More
@@ -60,6 +58,72 @@ The pull to refresh and load more feature is enabled by default. We provide a ca
     }
 });
 ```
+new function of 1.5.7 version.
+```java
+mRecyclerView
+    .getDefaultRefreshHeaderView() // get default refresh header view
+    .setRefreshTimeVisible(true);  // make refresh time visible,false means hiding
+
+// if you are not sure that you are 100% going to
+// have no data load back from server anymore,do not use this
+@Deprecated
+public void setEmptyView(View emptyView) {
+    ...
+}
+```
+
+new function of 1.5.6 version,fixed a memory leak problem,use the code below to release XR's memory
+```java
+// any time,when you finish your activity or fragment,call this below
+if(mRecyclerView != null){
+    mRecyclerView.destroy(); // this will totally release XR's memory
+    mRecyclerView = null;
+}
+```
+
+new function of 1.5.3 version,you can use XR in the sticky scroll model now,like the code below,the demo activity is 'LinearStickyScrollActivity'
+```java
+final View topView = findViewById(R.id.topView);
+final View tabView = findViewById(R.id.tabView);
+final View content = findViewById(R.id.contentView);
+
+final StickyScrollLinearLayout s = findViewById(R.id.StickyScrollLinearLayout);
+s.addOnLayoutChangeListener(
+        new View.OnLayoutChangeListener() {
+            @Override
+            public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
+                if(s.getContentView() != null)
+                    return;
+                // 放在这里是为了等初始化结束后再添加，防止 height 获取 =0
+                // add from here just in case they height==0
+                s.setInitInterface(
+                        new StickyScrollLinearLayout.StickyScrollInitInterface() {
+                            @Override
+                            public View setTopView() {
+                                return topView;
+                            }
+
+                            @Override
+                            public View setTabView() {
+                                return tabView;
+                            }
+
+                            @Override
+                            public View setContentView() {
+                                return content;
+                            }
+                        }
+                );
+            }
+        }
+);
+```
+
+call notifyItemRemoved or notifyItemInserted, remember to use the functions inside XRecyclerView
+```java
+listData.remove(pos);
+mRecyclerView.notifyItemRemoved(listData,pos);
+```
 
 and of course you have to tell our RecyclerView when the refreshing or loading more work is done.
 you can use
@@ -67,8 +131,14 @@ you can use
 ```java
 mRecyclerView.loadMoreComplete();
 ```
+to control when the item number of the screen is list.size-2,we call the onLoadMore
 
-to notify that the loading more work is done. And
+```java
+mRecyclerView.setLimitNumberToCallLoadMore(2); // default is 1
+```
+
+to notify that the loading more work is done.
+and
 
 ```java
  mRecyclerView.refreshComplete();
@@ -92,10 +162,10 @@ mRecyclerView.refresh();
 
 Pull refresh and loading more style is highly customizable.
 
-#### Custom Loading Style
-
-The loading effect we use the  [AVLoadingIndicatorView](https://github.com/81813780/AVLoadingIndicatorView) and it is built in (make a little change). We provide all the effect in AVLoadingIndicatorView library besides we add a system style. You can call 
-
+#### Custom loading style
+The loading effect we use the  [AVLoadingIndicatorView](https://github.com/81813780/AVLoadingIndicatorView) . and it is built in(make a little change).
+We provide all the effect in AVLoadingIndicatorView library besides we add a system style.
+You can call 
 ```java
 mRecyclerView.setRefreshProgressStyle(int style);
 ```
@@ -219,7 +289,7 @@ mRecyclerView.addHeaderView(header1);
 # License
 
 ```
-    Copyright 2017 jianghejie
+    Copyright 2015 jianghejie
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
