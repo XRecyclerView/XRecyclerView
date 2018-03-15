@@ -53,6 +53,9 @@ public class XRecyclerView extends RecyclerView {
     // 控制多出多少条的时候调用 onLoadMore
     private int limitNumberToCallLoadMore = 1;
 
+    //用户自己外部设置的SpanSizeLookup
+    private GridLayoutManager.SpanSizeLookup userSpanSizeLookup;
+
     public XRecyclerView(Context context) {
         this(context, null);
     }
@@ -286,16 +289,31 @@ public class XRecyclerView extends RecyclerView {
         super.setLayoutManager(layout);
         if(mWrapAdapter != null){
             if (layout instanceof GridLayoutManager) {
-                final GridLayoutManager gridManager = ((GridLayoutManager) layout);
-                gridManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
-                    @Override
-                    public int getSpanSize(int position) {
-                        return (mWrapAdapter.isHeader(position) || mWrapAdapter.isFooter(position) || mWrapAdapter.isRefreshHeader(position))
-                                ? gridManager.getSpanCount() : 1;
-                    }
-                });
+                setSpanSizeLookup((GridLayoutManager) layout, mWrapAdapter);
             }
         }
+    }
+
+    //先检查是否是刷新header或者header或者footer，如果调用者自己设置了layoutmanager，走调用者自己设置的逻辑
+    private void setSpanSizeLookup(final GridLayoutManager gridManager, final XRecyclerView.WrapAdapter mWrapAdapter){
+        if(userSpanSizeLookup == null){
+            userSpanSizeLookup = gridManager.getSpanSizeLookup();
+        }
+
+        gridManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+            @Override
+            public int getSpanSize(int position) {
+                if((mWrapAdapter.isHeader(position) || mWrapAdapter.isFooter(position) || mWrapAdapter.isRefreshHeader(position))){
+                    return gridManager.getSpanCount();
+                }else if(userSpanSizeLookup != null){
+                    int adjPosition = position - (mWrapAdapter.getHeadersCount() + 1);
+                    int spanSize = userSpanSizeLookup.getSpanSize(adjPosition);
+                    return spanSize;
+                }else{
+                    return 1;
+                }
+            }
+        });
     }
 
     /** ===================== try to adjust the position for XR when you call those functions below ====================== */
@@ -625,14 +643,7 @@ public class XRecyclerView extends RecyclerView {
             super.onAttachedToRecyclerView(recyclerView);
             RecyclerView.LayoutManager manager = recyclerView.getLayoutManager();
             if (manager instanceof GridLayoutManager) {
-                final GridLayoutManager gridManager = ((GridLayoutManager) manager);
-                gridManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
-                    @Override
-                    public int getSpanSize(int position) {
-                        return (isHeader(position) || isFooter(position) || isRefreshHeader(position))
-                                ? gridManager.getSpanCount() : 1;
-                    }
-                });
+                setSpanSizeLookup((GridLayoutManager) manager, mWrapAdapter);
             }
             adapter.onAttachedToRecyclerView(recyclerView);
         }
