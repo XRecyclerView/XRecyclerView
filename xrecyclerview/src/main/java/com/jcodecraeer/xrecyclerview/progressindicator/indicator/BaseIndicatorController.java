@@ -104,14 +104,10 @@ public abstract class BaseIndicatorController {
                     }
                     break;
                 case END:
-                    if (isRunning){
-                        animator.end();
-                    }
+                    animator.end();
                     break;
                 case CANCEL:
-                    if (isRunning){
-                        animator.cancel();
-                    }
+                    animator.cancel();
                     break;
             }
         }
