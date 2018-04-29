@@ -42,6 +42,9 @@ public class XRecyclerView extends RecyclerView {
     private View mEmptyView;
     private View mFootView;
     private final RecyclerView.AdapterDataObserver mDataObserver = new DataObserver();
+    //adapter是否注册了DataObserver的监听
+    private List<Integer> regAdapterHashCode = new ArrayList<>();
+
     private AppBarStateChangeListener.State appbarState = AppBarStateChangeListener.State.EXPANDED;
 
     //调用者的SpanSizeLookup
@@ -80,6 +83,7 @@ public class XRecyclerView extends RecyclerView {
 
     /**
      * 正常情况下是 LoadingMoreFooter
+     *
      * @return
      */
     public View getFootView() {
@@ -207,7 +211,13 @@ public class XRecyclerView extends RecyclerView {
     public void setAdapter(Adapter adapter) {
         mWrapAdapter = new WrapAdapter(adapter);
         super.setAdapter(mWrapAdapter);
+
+        if (regAdapterHashCode.contains(adapter.hashCode())) {
+            adapter.unregisterAdapterDataObserver(mDataObserver);
+        }
         adapter.registerAdapterDataObserver(mDataObserver);
+        regAdapterHashCode.add(adapter.hashCode());
+
         mDataObserver.onChanged();
     }
 
