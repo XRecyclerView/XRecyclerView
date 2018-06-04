@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
+import com.example.xrecyclerview.newslist.ViewPagerActivity;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -68,6 +70,13 @@ public class MainActivity extends AppCompatActivity {
     public void gotoItemAlphaChangeActivity(View view) {
         Intent intent = new Intent();
         intent.setClass(this, AlphaChangeActivity.class);
+        startActivity(intent);
+    }
+
+    public void gotoViewPagerActivity(View view) {
+
+        Intent intent = new Intent();
+        intent.setClass(this, ViewPagerActivity.class);
         startActivity(intent);
     }
 }

@@ -57,6 +57,10 @@
             android:name=".ItemDecorationActivity"
             android:theme="@style/SupportTheme"></activity>
 
+        <activity
+            android:name=".newslist.ViewPagerActivity"
+            android:theme="@style/SupportTheme"></activity>
+
     </application>
 
 </manifest>
