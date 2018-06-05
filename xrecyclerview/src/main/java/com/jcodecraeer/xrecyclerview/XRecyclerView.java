@@ -526,11 +526,17 @@ public class XRecyclerView extends RecyclerView {
         @Override
         public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             if (viewType == TYPE_REFRESH_HEADER) {
-                return new SimpleViewHolder(mRefreshHeader);
+                SimpleViewHolder refreshHolder = new SimpleViewHolder(mRefreshHeader);
+                refreshHolder.setIsRecyclable(false);
+                return refreshHolder;
             } else if (isHeaderType(viewType)) {
-                return new SimpleViewHolder(getHeaderViewByType(viewType));
+                SimpleViewHolder headerHolder = new SimpleViewHolder(getHeaderViewByType(viewType));
+                headerHolder.setIsRecyclable(false);
+                return headerHolder;
             } else if (viewType == TYPE_FOOTER) {
-                return new SimpleViewHolder(mFootView);
+                SimpleViewHolder footerHolder = new SimpleViewHolder(mFootView);
+                footerHolder.setIsRecyclable(false);
+                return footerHolder;
             }
             return adapter.onCreateViewHolder(parent, viewType);
         }
