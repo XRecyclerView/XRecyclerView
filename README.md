@@ -127,7 +127,7 @@ here is what we get:
 
 ![default](https://github.com/jianghejie/XRecyclerView/blob/master/art/default.gif)
 
-## call refresh() manually(I change the previous setRefreshing() method to refresh() )
+## call refresh() manually(I change the previous setRefreshing() method to refresh()
 
 ```java
 mRecyclerView.refresh();
@@ -148,7 +148,6 @@ and
 mRecyclerView.setLaodingMoreProgressStyle(int style);
 ```
 to set the RefreshProgressStyle and  LaodingMoreProgressStyle respectively.
-
 for example
 ```java
 mRecyclerView.setRefreshProgressStyle(ProgressStyle.BallSpinFadeLoader);
@@ -210,6 +209,18 @@ just call
 mRecyclerView.setArrowImageView(R.drawable.iconfont_downgrey);
 ```
 ![customarrow](https://github.com/jianghejie/XRecyclerView/blob/master/art/customarrow.gif)
+
+also you can use these methods to just control the refresh header and loadMoreFooter icons and text color
+for refresh header view
+```java
+mRecyclerView.setRefreshHeaderTxtColor(int color);
+mRecyclerView.setRefreshHeaderArrowFilterColor(int color);
+```
+for loadMore footer view
+```java
+mRecyclerView.setLoadMoreFooterTxtColor(int color);
+mRecyclerView.setLoadMoreFooterProgressIndicatorColor(int color);
+```
 ### disable refresh and load more featrue
 if you don't want the refresh and load more featrue(in that case,you probably dont'n need the lib neither),you can call
 ```java
