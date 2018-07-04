@@ -221,6 +221,7 @@ for loadMore footer view
 mRecyclerView.setLoadMoreFooterTxtColor(int color);
 mRecyclerView.setLoadMoreFooterProgressIndicatorColor(int color);
 ```
+also we have xml tags in `XRecyclerView` for these.
 ### disable refresh and load more featrue
 if you don't want the refresh and load more featrue(in that case,you probably dont'n need the lib neither),you can call
 ```java
