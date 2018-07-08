@@ -2,6 +2,7 @@
 please refer to [XRecyclerView](https://github.com/XRecyclerView/XRecyclerView) for a full wiki
 
 Usage of this custom fork which fixes some issues in the original library
+[![](https://jitpack.io/v/beshoy-samy/XRecyclerView.svg)](https://jitpack.io/#beshoy-samy/XRecyclerView)
 -----
 ## gradle
 # in build.gradle project module
@@ -15,7 +16,7 @@ Usage of this custom fork which fixes some issues in the original library
 ```
 # in build.gradle app module
 ```groovy
-	implementation 'com.github.beshoy-samy:XRecyclerView:custom.v1'
+	implementation 'com.github.beshoy-samy:XRecyclerView:custom.v1.1'
 ```
 # GridLayoutSpanPositionListener
 if you want to have custom span count for some positions 
