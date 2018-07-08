@@ -54,6 +54,8 @@ public class XRecyclerView extends RecyclerView {
     // limit number to call load more
     // 控制多出多少条的时候调用 onLoadMore
     private int limitNumberToCallLoadMore = 1;
+    // listener for grid span count
+    private GridLayoutSpanPositionListener gridLayoutSpanPositionListener;
 
     public XRecyclerView(Context context) {
         this(context, null);
@@ -114,6 +116,15 @@ public class XRecyclerView extends RecyclerView {
      */
     public void setRefreshHeaderArrowFilterColor(int color) {
         mRefreshHeader.setArrowColorFilter(color);
+    }
+
+    /**
+     * Used if you want to have custom span count for different positions
+     *
+     * @param gridLayoutSpanPositionListener implement this listener
+     */
+    public void setGridLayoutSpanPositionListener(GridLayoutSpanPositionListener gridLayoutSpanPositionListener) {
+        this.gridLayoutSpanPositionListener = gridLayoutSpanPositionListener;
     }
 
     /**
@@ -352,7 +363,8 @@ public class XRecyclerView extends RecyclerView {
                     @Override
                     public int getSpanSize(int position) {
                         return (mWrapAdapter.isHeader(position) || mWrapAdapter.isFooter(position) || mWrapAdapter.isRefreshHeader(position))
-                                ? gridManager.getSpanCount() : 1;
+                                ? gridLayoutSpanPositionListener == null ? gridManager.getSpanCount()
+                                : gridLayoutSpanPositionListener.getSpanCountForPosition(position) : 1;
                     }
                 });
             }
