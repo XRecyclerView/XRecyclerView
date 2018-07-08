@@ -707,7 +707,8 @@ public class XRecyclerView extends RecyclerView {
                     @Override
                     public int getSpanSize(int position) {
                         return (isHeader(position) || isFooter(position) || isRefreshHeader(position))
-                                ? gridManager.getSpanCount() : 1;
+                                ? gridLayoutSpanPositionListener == null ? gridManager.getSpanCount()
+                                : gridLayoutSpanPositionListener.getSpanCountForPosition(position) : 1;
                     }
                 });
             }
