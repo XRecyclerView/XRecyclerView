@@ -144,8 +144,10 @@ public class XRecyclerView extends RecyclerView {
         if(mHeaderViews == null || sHeaderTypes == null || v == null)
             return;
         for (View view : mHeaderViews) {
-            if (view == v)
+            if (view == v) {
                 mHeaderViews.remove(view);
+                break;
+            }
         }
         if (mWrapAdapter != null) {
             mWrapAdapter.notifyDataSetChanged();
