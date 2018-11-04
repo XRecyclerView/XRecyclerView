@@ -140,6 +140,27 @@ public class XRecyclerView extends RecyclerView {
         }
     }
 
+    public void removeHeaderView(@NonNull View v){
+        if(mHeaderViews == null || sHeaderTypes == null || v == null)
+            return;
+        for (View view : mHeaderViews) {
+            if (view == v)
+                mHeaderViews.remove(view);
+        }
+        if (mWrapAdapter != null) {
+            mWrapAdapter.notifyDataSetChanged();
+        }
+    }
+
+    public void removeAllHeaderView(){
+        if(mHeaderViews == null || sHeaderTypes == null)
+            return;
+        mHeaderViews.clear();
+        if (mWrapAdapter != null) {
+            mWrapAdapter.notifyDataSetChanged();
+        }
+    }
+
     //根据header的ViewType判断是哪个header
     private View getHeaderViewByType(int itemType) {
         if(!isHeaderType(itemType)) {
