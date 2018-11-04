@@ -175,6 +175,13 @@ public class XRecyclerView extends RecyclerView {
         this.footerViewCallBack = footerViewCallBack;
     }
 
+    // Fix issues (多个地方使用该控件的时候，所有刷新时间都相同 #359)
+    public void setRefreshTimeSpKeyName(String keyName){
+        if(mRefreshHeader != null){
+            mRefreshHeader.setXrRefreshTimeKey(keyName);
+        }
+    }
+
     public void loadMoreComplete() {
         isLoadingData = false;
         if (mFootView instanceof LoadingMoreFooter) {
@@ -358,7 +365,7 @@ public class XRecyclerView extends RecyclerView {
                 lastVisibleItemPosition = ((LinearLayoutManager) layoutManager).findLastVisibleItemPosition();
             }
             int adjAdapterItemCount = layoutManager.getItemCount()+getHeaders_includingRefreshCount();
-            Log.e("aaaaa","adjAdapterItemCount "+adjAdapterItemCount +" getItemCount "+layoutManager.getItemCount());
+            //Log.e("aaaaa","adjAdapterItemCount "+adjAdapterItemCount +" getItemCount "+layoutManager.getItemCount());
 
             int status = STATE_DONE;
 

@@ -41,6 +41,8 @@ public class ArrowRefreshHeader extends LinearLayout implements BaseRefreshHeade
 	public int mMeasuredHeight;
     private AVLoadingIndicatorView progressView;
 
+    private String customRefreshPsKey = null;
+
 	public void destroy(){
         mProgressBar = null;
         if(progressView != null){
@@ -74,6 +76,12 @@ public class ArrowRefreshHeader extends LinearLayout implements BaseRefreshHeade
 	public void setRefreshTimeVisible(boolean show){
 	    if(mHeaderRefreshTimeContainer != null)
             mHeaderRefreshTimeContainer.setVisibility(show?VISIBLE:GONE);
+    }
+
+    public void setXrRefreshTimeKey(String keyName){
+	    if(keyName != null){
+	        customRefreshPsKey = keyName;
+        }
     }
 
 	private void initView() {
@@ -187,16 +195,24 @@ public class ArrowRefreshHeader extends LinearLayout implements BaseRefreshHeade
     }
 
     private long getLastRefreshTime(){
+        String spKeyName = XR_REFRESH_KEY;
+        if(customRefreshPsKey != null){
+            spKeyName = customRefreshPsKey;
+        }
         SharedPreferences s =
                 getContext()
-                    .getSharedPreferences(XR_REFRESH_KEY,Context.MODE_APPEND);
+                    .getSharedPreferences(spKeyName,Context.MODE_APPEND);
         return s.getLong(XR_REFRESH_TIME_KEY,new Date().getTime());
     }
 
     private void saveLastRefreshTime(long refreshTime){
+        String spKeyName = XR_REFRESH_KEY;
+        if(customRefreshPsKey != null){
+            spKeyName = customRefreshPsKey;
+        }
         SharedPreferences s =
                 getContext()
-                    .getSharedPreferences(XR_REFRESH_KEY,Context.MODE_APPEND);
+                    .getSharedPreferences(spKeyName,Context.MODE_APPEND);
         s.edit().putLong(XR_REFRESH_TIME_KEY,refreshTime).commit();
     }
 
