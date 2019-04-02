@@ -31,7 +31,7 @@ public class XRecyclerView extends RecyclerView {
     private ArrayList<View> mHeaderViews = new ArrayList<>();
     private WrapAdapter mWrapAdapter;
     private float mLastY = -1;
-    private static final float DRAG_RATE = 3;
+    private float dragRate = 3;
     private CustomFooterViewCallBack footerViewCallBack;
     private LoadingListener mLoadingListener;
     private ArrowRefreshHeader mRefreshHeader;
@@ -282,6 +282,19 @@ public class XRecyclerView extends RecyclerView {
         }
     }
 
+    /**
+      * issues/303
+      * 下拉刷新的触发距离过大，导致用户下拉刷新操作经常达不到触发点，无法刷新，必须用力向下拉一段距离才可以。
+      * */
+    // 设置下拉时候的偏移计量因子。y = deltaY/dragRate
+    // dragRate 越大，意味着，用户要下拉滑动更久来触发下拉刷新。相反越小，就越短距离
+    public void setDragRate(float rate){
+        if(rate <= 0.5){
+            return;
+        }
+        dragRate = rate;
+    }
+
     // if you can't sure that you are 100% going to
     // have no data load back from server anymore,do not use this
     @Deprecated
@@ -290,6 +303,7 @@ public class XRecyclerView extends RecyclerView {
         mDataObserver.onChanged();
     }
 
+    @Deprecated
     public View getEmptyView() {
         return mEmptyView;
     }
@@ -430,7 +444,7 @@ public class XRecyclerView extends RecyclerView {
                 if (isOnTop() && pullRefreshEnabled && appbarState == AppBarStateChangeListener.State.EXPANDED) {
                     if(mRefreshHeader == null)
                         break;
-                    mRefreshHeader.onMove(deltaY / DRAG_RATE);
+                    mRefreshHeader.onMove(deltaY / dragRate);
                     if (mRefreshHeader.getVisibleHeight() > 0 && mRefreshHeader.getState() < ArrowRefreshHeader.STATE_REFRESHING) {
                         return false;
                     }
