@@ -154,7 +154,7 @@ public class ArrowRefreshHeader extends LinearLayout implements BaseRefreshHeade
                 mProgressBar.setVisibility(View.INVISIBLE);
             }
         }
-        mHeaderTimeView.setText(friendlyTime(getLastRefreshTime()));
+        mHeaderTimeView.setText(friendlyTime(getContext(), getLastRefreshTime()));
         switch (state) {
             case STATE_NORMAL:
                 if (mState == STATE_RELEASE_TO_REFRESH) {
@@ -212,7 +212,7 @@ public class ArrowRefreshHeader extends LinearLayout implements BaseRefreshHeade
 
     @Override
     public void refreshComplete() {
-        mHeaderTimeView.setText(friendlyTime(getLastRefreshTime()));
+        mHeaderTimeView.setText(friendlyTime(getContext(), getLastRefreshTime()));
         saveLastRefreshTime(System.currentTimeMillis());
         setState(STATE_DONE);
         new Handler().postDelayed(new Runnable() {
@@ -297,35 +297,40 @@ public class ArrowRefreshHeader extends LinearLayout implements BaseRefreshHeade
     }
 
 
-    public static String friendlyTime(Date time) {
-        return friendlyTime(time.getTime());
+    public static String friendlyTime(Context context, Date time) {
+        return friendlyTime(context, time.getTime());
     }
 
-    public static String friendlyTime(long time) {
+    public static String friendlyTime(Context context, long time) {
         //Get time from the current number of seconds
         int ct = (int) ((System.currentTimeMillis() - time) / 1000);
 
         if (ct == 0) {
-            return "Vừa xong";
+            return context.getString(R.string.just_now);
         }
 
         if (ct > 0 && ct < 60) {
-            return ct + " giây trước";
+            return ct + context.getResources().getQuantityString(R.plurals.second_ago, ct);
         }
 
         if (ct >= 60 && ct < 3600) {
-            return Math.max(ct / 60, 1) + " phút trước";
+            int minute = Math.max(ct / 60, 1);
+            return minute + context.getResources().getQuantityString(R.plurals.minute_ago, minute);
         }
-        if (ct >= 3600 && ct < 86400)
-            return ct / 3600 + " giờ trước";
+        if (ct >= 3600 && ct < 86400) {
+            int hour = ct / 3600;
+            return hour + context.getResources().getQuantityString(R.plurals.hour_ago, hour);
+        }
         if (ct >= 86400 && ct < 2592000) { //86400 * 30
             int day = ct / 86400;
-            return day + " ngày trước";
+            return day + context.getResources().getQuantityString(R.plurals.day_ago, day);
         }
         if (ct >= 2592000 && ct < 31104000) { //86400 * 30
-            return ct / 2592000 + " tháng trước";
+            int month = ct / 2592000;
+            return month + context.getResources().getQuantityString(R.plurals.month_ago, month);
         }
-        return ct / 31104000 + " năm trước";
+        int year = ct / 31104000;
+        return year + context.getResources().getQuantityString(R.plurals.year_ago, year);
     }
 
 }

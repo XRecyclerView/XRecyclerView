@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <plurals name="second_ago">
+        <item quantity="other">" seconds ago"</item>
+        <item quantity="one">" second ago"</item>
+    </plurals>
+    <plurals name="minute_ago">
+        <item quantity="other">" minutes ago"</item>
+        <item quantity="one">" minute ago"</item>
+    </plurals>
+    <plurals name="hour_ago">
+        <item quantity="other">" hour ago"</item>
+        <item quantity="one">" hour ago"</item>
+    </plurals>
+    <plurals name="day_ago">
+        <item quantity="other">" days ago"</item>
+        <item quantity="one">" day ago"</item>
+    </plurals>
+    <plurals name="month_ago">
+        <item quantity="other">" months ago"</item>
+        <item quantity="one">" month ago"</item>
+    </plurals>
+    <plurals name="year_ago">
+        <item quantity="other">" years ago"</item>
+        <item quantity="one">" year ago"</item>
+    </plurals>
+</resources>

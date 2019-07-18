@@ -495,7 +495,7 @@ public class XRecyclerView extends RecyclerView {
                 mWrapAdapter.notifyDataSetChanged();
             }
             if (mWrapAdapter != null && mEmptyView != null) {
-                int emptyCount = 1 + mWrapAdapter.getHeadersCount();
+                int emptyCount = getRefreshHeaderCount() + mWrapAdapter.getHeadersCount();
                 if (loadingMoreEnabled) {
                     emptyCount++;
                 }
@@ -647,7 +647,7 @@ public class XRecyclerView extends RecyclerView {
                 return TYPE_REFRESH_HEADER;
             }
             if (isHeader(position)) {
-                position = position - 1;
+                position = position - getRefreshHeaderCount();
                 return sHeaderTypes.get(position);
             }
             if (isFooter(position)) {

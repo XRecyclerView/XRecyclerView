@@ -1,10 +1,11 @@
 <resources>
-    <string name="listview_header_hint_normal">Kéo để làm mới</string>
-    <string name="listview_header_hint_release">Thả ra để làm mới</string>
-    <string name="listview_loading">Đang tải…</string>
-    <string name="nomore_loading">Không còn mục nào</string>
-    <string name="refreshing">Đang làm mới…</string>
-    <string name="refresh_done">Đã làm mới</string>
-    <string name="loading_done">Đã tải xong</string>
-    <string name="listview_header_last_time">Lần cập nhật cuối：</string>
+    <string name="listview_header_hint_normal">Pull to refresh</string>
+    <string name="listview_header_hint_release">Release to start refresh</string>
+    <string name="listview_loading">Loading…</string>
+    <string name="nomore_loading">No more to be loaded</string>
+    <string name="refreshing">Refreshing…</string>
+    <string name="refresh_done">Refresh done</string>
+    <string name="loading_done">Loading done</string>
+    <string name="listview_header_last_time">Last update：</string>
+    <string name="just_now">Just now</string>
 </resources>
