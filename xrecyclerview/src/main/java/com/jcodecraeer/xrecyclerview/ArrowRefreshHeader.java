@@ -313,26 +313,26 @@ public class ArrowRefreshHeader extends LinearLayout implements BaseRefreshHeade
         int ct = (int)((System.currentTimeMillis() - time)/1000);
 
         if(ct == 0) {
-            return "刚刚";
+            return "Vừa xong";
         }
 
         if(ct > 0 && ct < 60) {
-            return ct + "秒前";
+            return ct + " giây trước";
         }
 
         if(ct >= 60 && ct < 3600) {
-            return Math.max(ct / 60,1) + "分钟前";
+            return Math.max(ct / 60,1) + " phút trước";
         }
         if(ct >= 3600 && ct < 86400)
-            return ct / 3600 + "小时前";
+            return ct / 3600 + " giờ trước";
         if(ct >= 86400 && ct < 2592000){ //86400 * 30
             int day = ct / 86400 ;
-            return day + "天前";
+            return day + " ngày trước";
         }
         if(ct >= 2592000 && ct < 31104000) { //86400 * 30
-            return ct / 2592000 + "月前";
+            return ct / 2592000 + " tháng trước";
         }
-        return ct / 31104000 + "年前";
+        return ct / 31104000 + " năm trước";
     }
 
 }
