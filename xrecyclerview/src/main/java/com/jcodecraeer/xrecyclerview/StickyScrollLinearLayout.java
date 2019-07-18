@@ -99,7 +99,7 @@ public class StickyScrollLinearLayout
         return this.mContentView;
     }
 
-    // 设置，当 XR 里面显示的 item 第一个的位置是多少时，触发拦截
+    // Set, trigger interception when the first position of the item displayed in the XR is
     // to set a position of XR's dataList to control when we should call over scroll
     public void setTargetFirstVisiblePosition(int targetFirstVisiblePosition) {
         this.targetFirstVisiblePosition = targetFirstVisiblePosition;
@@ -112,7 +112,7 @@ public class StickyScrollLinearLayout
     }
 
     @Override
-    public void onNestedScrollAccepted(View child, View target, int nestedScrollAxes) {
+    public void onNestedScrollAccepted(@NonNull View child, @NonNull View target, int nestedScrollAxes) {
         Log.e(TAG, "onNestedScrollAccepted");
     }
 
@@ -122,12 +122,12 @@ public class StickyScrollLinearLayout
     }
 
     @Override
-    public void onNestedScroll(View target, int dxConsumed, int dyConsumed, int dxUnconsumed, int dyUnconsumed) {
+    public void onNestedScroll(@NonNull View target, int dxConsumed, int dyConsumed, int dxUnconsumed, int dyUnconsumed) {
         Log.e(TAG, "onNestedScroll "+dyConsumed+"----"+dyUnconsumed);
     }
 
     @Override
-    public void onNestedPreScroll(View target, int dx, int dy, int[] consumed) {
+    public void onNestedPreScroll(@NonNull View target, int dx, int dy, @NonNull int[] consumed) {
 
         if(!(target instanceof XRecyclerView))
             // todo 2017-12-31，make it more general
@@ -178,13 +178,13 @@ public class StickyScrollLinearLayout
     }
 
     @Override
-    public boolean onNestedFling(View target, float velocityX, float velocityY, boolean consumed) {
+    public boolean onNestedFling(@NonNull View target, float velocityX, float velocityY, boolean consumed) {
         Log.e(TAG, "onNestedFling");
         return false;
     }
 
     @Override
-    public boolean onNestedPreFling(View target, float velocityX, float velocityY) {
+    public boolean onNestedPreFling(@NonNull View target, float velocityX, float velocityY) {
         Log.e(TAG, "onNestedPreFling");
         //down - //up+
         if (getScrollY() >= mTopViewHeight) return false;
@@ -215,7 +215,7 @@ public class StickyScrollLinearLayout
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
-        // 你可以在 xml 文件内配置
+        // You can configure it in the xml file
         // you can init those views in your xml file
 
 //        mTopView = findViewById(R.id.topContainer);
@@ -274,7 +274,7 @@ public class StickyScrollLinearLayout
             y = 0;
 
         if (y > mTopViewHeight)
-            // 边界限制，防止把 tabView 也挡住了
+            // Boundary restrictions prevent the tabView from blocking
             // Prevent it from hiding the tabView,so we limit it
             y = mTopViewHeight;
 

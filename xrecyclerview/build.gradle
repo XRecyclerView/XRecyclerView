@@ -10,12 +10,11 @@ def siteUrl = 'https://github.com/jianghejie/XRecyclerView'
 def gitUrl = 'https://github.com/jianghejie/XRecyclerView.git'
 
 android {
-    compileSdkVersion 24
-    buildToolsVersion "24.0.2"
+    compileSdkVersion 28
 
     defaultConfig {
-        minSdkVersion 11
-        targetSdkVersion 24
+        minSdkVersion 14
+        targetSdkVersion 28
         versionCode 1
         versionName "1.0"
     }
@@ -28,10 +27,10 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:appcompat-v7:23.4.0'
-    compile 'com.android.support:recyclerview-v7:23.4.0'
-    compile 'com.android.support:design:23.4.0'
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'androidx.appcompat:appcompat:1.1.0-rc01'
+    implementation 'com.google.android.material:material:1.1.0-alpha08'
+
 }
 
 install {
@@ -52,7 +51,7 @@ install {
                 }
                 developers {
                     developer {
-                        id 'jianghejie'        //填写的一些基本信息
+                        id 'jianghejie'        //Some basic information to fill out
                         name 'jianghejie'
                         email 'jianghejie888@gmail.com'
                     }
@@ -83,7 +82,7 @@ bintray {
     configurations = ['archives']
     pkg {
         repo = "maven"
-        name = "xrecyclerview"    //发布到JCenter上的项目名字
+        name = "xrecyclerview"    //Project name posted to JCenter
         websiteUrl = siteUrl
         vcsUrl = gitUrl
         licenses = ["Apache-2.0"]
