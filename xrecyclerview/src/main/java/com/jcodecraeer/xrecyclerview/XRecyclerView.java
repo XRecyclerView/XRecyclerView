@@ -38,20 +38,21 @@ public class XRecyclerView extends RecyclerView {
     private ArrowRefreshHeader mRefreshHeader;
     private boolean pullRefreshEnabled = true;
     private boolean loadingMoreEnabled = true;
-    //下面的ItemViewType是保留值(ReservedItemViewType),如果用户的adapter与它们重复将会强制抛出异常。不过为了简化,我们检测到重复时对用户的提示是ItemViewType必须小于10000
-    private static final int TYPE_REFRESH_HEADER = 10000;//设置一个很大的数字,尽可能避免和用户的adapter冲突
+    //The following ItemViewType is a reserved value (ReservedItemViewType), which will be thrown if the user's adapter is repeated with them
+    // However, for the sake of simplicity, we have detected that the prompt to the user when repeating is that the ItemViewType must be less than 10000.
+    private static final int TYPE_REFRESH_HEADER = 10000;//Set a big number and avoid conflicts with the user's adapter as much as possible
     private static final int TYPE_FOOTER = 10001;
     private static final int HEADER_INIT_INDEX = 10002;
-    private static List<Integer> sHeaderTypes = new ArrayList<>();//每个header必须有不同的type,不然滚动的时候顺序会变化
+    private static List<Integer> sHeaderTypes = new ArrayList<>();//Each header must have a different type, otherwise the order will change when scrolling
 
-    //adapter没有数据的时候显示,类似于listView的emptyView
+    //When the adapter has no data, it is similar to the emptyView of the listView.
     private View mEmptyView;
     private View mFootView;
     private final RecyclerView.AdapterDataObserver mDataObserver = new DataObserver();
     private AppBarStateChangeListener.State appbarState = AppBarStateChangeListener.State.EXPANDED;
 
     // limit number to call load more
-    // 控制多出多少条的时候调用 onLoadMore
+    // Call onLoadMore when controlling how many extras
     private int limitNumberToCallLoadMore = 1;
 
     public XRecyclerView(Context context) {
@@ -164,7 +165,7 @@ public class XRecyclerView extends RecyclerView {
         }
     }
 
-    //根据header的ViewType判断是哪个header
+    //Determine which header is based on the ViewType of the header
     private View getHeaderViewByType(int itemType) {
         if (!isHeaderType(itemType)) {
             return null;
@@ -174,14 +175,14 @@ public class XRecyclerView extends RecyclerView {
         return mHeaderViews.get(itemType - HEADER_INIT_INDEX);
     }
 
-    //判断一个type是否为HeaderType
+    //Determine if a type is HeaderType
     private boolean isHeaderType(int itemViewType) {
         if (mHeaderViews == null || sHeaderTypes == null)
             return false;
         return mHeaderViews.size() > 0 && sHeaderTypes.contains(itemViewType);
     }
 
-    //判断是否是XRecyclerView保留的itemViewType
+    //Determine if it is an itemViewType reserved by XRecyclerView
     private boolean isReservedItemViewType(int itemViewType) {
         if (itemViewType == TYPE_REFRESH_HEADER || itemViewType == TYPE_FOOTER || sHeaderTypes.contains(itemViewType)) {
             return true;
@@ -199,7 +200,7 @@ public class XRecyclerView extends RecyclerView {
         this.footerViewCallBack = footerViewCallBack;
     }
 
-    // Fix issues (多个地方使用该控件的时候，所有刷新时间都相同 #359)
+    // Fix issues (all refresh times are the same when using this control in multiple places #359)
     public void setRefreshTimeSpKeyName(String keyName) {
         if (mRefreshHeader != null) {
             mRefreshHeader.setXrRefreshTimeKey(keyName);
@@ -319,7 +320,7 @@ public class XRecyclerView extends RecyclerView {
         mDataObserver.onChanged();
     }
 
-    //避免用户自己调用getAdapter() 引起的ClassCastException
+    //Avoid the ClassCastException caused by the user calling getAdapter()
     @Override
     public Adapter getAdapter() {
         if (mWrapAdapter != null)
@@ -386,7 +387,7 @@ public class XRecyclerView extends RecyclerView {
     }
 
     private int getHeaders_includingRefreshCount() {
-        return mWrapAdapter.getHeadersCount() + 1;
+        return mWrapAdapter.getHeadersCount() + getRefreshHeaderCount();
     }
 
     /**
@@ -538,6 +539,10 @@ public class XRecyclerView extends RecyclerView {
         return mWrapAdapter;
     }
 
+    public int getRefreshHeaderCount() {
+        return pullRefreshEnabled ? 1 : 0;
+    }
+
     private class WrapAdapter extends RecyclerView.Adapter<ViewHolder> {
 
         private RecyclerView.Adapter adapter;
@@ -553,7 +558,7 @@ public class XRecyclerView extends RecyclerView {
         public boolean isHeader(int position) {
             if (mHeaderViews == null)
                 return false;
-            return position >= 1 && position < mHeaderViews.size() + 1;
+            return position >= getRefreshHeaderCount() && position < mHeaderViews.size() + getRefreshHeaderCount();
         }
 
         public boolean isFooter(int position) {
@@ -565,7 +570,9 @@ public class XRecyclerView extends RecyclerView {
         }
 
         public boolean isRefreshHeader(int position) {
-            return position == 0;
+            if (pullRefreshEnabled)
+                return position == 0;
+            return false;
         }
 
         public int getHeadersCount() {
@@ -592,7 +599,7 @@ public class XRecyclerView extends RecyclerView {
             if (isHeader(position) || isRefreshHeader(position)) {
                 return;
             }
-            int adjPosition = position - (getHeadersCount() + 1);
+            int adjPosition = position - (getHeadersCount() + getRefreshHeaderCount());
             int adapterCount;
             if (adapter != null) {
                 adapterCount = adapter.getItemCount();
@@ -609,7 +616,7 @@ public class XRecyclerView extends RecyclerView {
                 return;
             }
 
-            int adjPosition = position - (getHeadersCount() + 1);
+            int adjPosition = position - (getHeadersCount() + getRefreshHeaderCount());
             int adapterCount;
             if (adapter != null) {
                 adapterCount = adapter.getItemCount();
@@ -625,7 +632,7 @@ public class XRecyclerView extends RecyclerView {
 
         @Override
         public int getItemCount() {
-            int adjLen = (loadingMoreEnabled ? 2 : 1);
+            int adjLen = (loadingMoreEnabled ? getRefreshHeaderCount() + 1 : getRefreshHeaderCount());
             if (adapter != null) {
                 return getHeadersCount() + adapter.getItemCount() + adjLen;
             } else {
@@ -635,7 +642,7 @@ public class XRecyclerView extends RecyclerView {
 
         @Override
         public int getItemViewType(int position) {
-            int adjPosition = position - (getHeadersCount() + 1);
+            int adjPosition = position - (getHeadersCount() + getRefreshHeaderCount());
             if (isRefreshHeader(position)) {
                 return TYPE_REFRESH_HEADER;
             }
@@ -662,8 +669,8 @@ public class XRecyclerView extends RecyclerView {
 
         @Override
         public long getItemId(int position) {
-            if (adapter != null && position >= getHeadersCount() + 1) {
-                int adjPosition = position - (getHeadersCount() + 1);
+            if (adapter != null && position >= getHeadersCount() + getRefreshHeaderCount()) {
+                int adjPosition = position - (getHeadersCount() + getRefreshHeaderCount());
                 if (adjPosition < adapter.getItemCount()) {
                     return adapter.getItemId(adjPosition);
                 }
@@ -736,23 +743,6 @@ public class XRecyclerView extends RecyclerView {
             }
         }
 
-        public class BaseXRecyclerViewHolder extends ViewHolder {
-            public int getRealAdapterPosition() {
-                int adjPosition = getAdapterPosition() - (getHeadersCount() + 1);
-                int adapterCount;
-                if (adapter != null) {
-                    adapterCount = adapter.getItemCount();
-                    if (adjPosition < adapterCount) {
-                        return adjPosition;
-                    }
-                }
-                return getAdapterPosition();
-            }
-
-            public BaseXRecyclerViewHolder(@NonNull View itemView) {
-                super(itemView);
-            }
-        }
     }
 
     public void setLoadingListener(LoadingListener listener) {
@@ -769,7 +759,7 @@ public class XRecyclerView extends RecyclerView {
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
-        //解决和CollapsingToolbarLayout冲突的问题
+        //Solve the problem of conflict with CollapsingToolbarLayout
         AppBarLayout appBarLayout = null;
         ViewParent p = getParent();
         while (p != null) {
@@ -844,7 +834,7 @@ public class XRecyclerView extends RecyclerView {
         public void getItemOffsets(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
             super.getItemOffsets(outRect, view, parent, state);
 
-            if (parent.getChildAdapterPosition(view) <= mWrapAdapter.getHeadersCount() + 1) {
+            if (parent.getChildAdapterPosition(view) <= mWrapAdapter.getHeadersCount() + getRefreshHeaderCount()) {
                 return;
             }
             mOrientation = ((LinearLayoutManager) parent.getLayoutManager()).getOrientation();
