@@ -409,8 +409,8 @@ public class XRecyclerView extends RecyclerView {
             } else {
                 lastVisibleItemPosition = ((LinearLayoutManager) layoutManager).findLastVisibleItemPosition();
             }
-            int adjAdapterItemCount = layoutManager.getItemCount() + getHeaders_includingRefreshCount();
-            //Log.e("aaaaa","adjAdapterItemCount "+adjAdapterItemCount +" getItemCount "+layoutManager.getItemCount());
+            int adjAdapterItemCount = layoutManager.getItemCount() + getHeaders_includingRefreshCount() + 1;
+//            Log.e("aaaaa", "adjAdapterItemCount " + adjAdapterItemCount + " getItemCount " + layoutManager.getItemCount());
 
             int status = STATE_DONE;
 
