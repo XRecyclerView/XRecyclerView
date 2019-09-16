@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import android.view.ViewParent;
 
 import androidx.annotation.NonNull;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -38,6 +40,7 @@ public class XRecyclerView extends RecyclerView {
     private ArrowRefreshHeader mRefreshHeader;
     private boolean pullRefreshEnabled = true;
     private boolean loadingMoreEnabled = true;
+    private boolean isWrappedByScrollView = false;
     //The following ItemViewType is a reserved value (ReservedItemViewType), which will be thrown if the user's adapter is repeated with them
     // However, for the sake of simplicity, we have detected that the prompt to the user when repeating is that the ItemViewType must be less than 10000.
     private static final int TYPE_REFRESH_HEADER = 10000;//Set a big number and avoid conflicts with the user's adapter as much as possible
@@ -373,6 +376,7 @@ public class XRecyclerView extends RecyclerView {
     }
 
     public void notifyItemChanged(int position) {
+        Log.d(getClass().getSimpleName(), "notifyItemChanged() called with: position = [" + position + "]");
         if (mWrapAdapter.adapter == null)
             return;
         int adjPos = position + getHeaders_includingRefreshCount();
@@ -380,6 +384,7 @@ public class XRecyclerView extends RecyclerView {
     }
 
     public void notifyItemChanged(int position, Object o) {
+        Log.d(getClass().getSimpleName(), "notifyItemChanged() called with: position = [" + position + "], o = [" + o + "]");
         if (mWrapAdapter.adapter == null)
             return;
         int adjPos = position + getHeaders_includingRefreshCount();
@@ -387,7 +392,61 @@ public class XRecyclerView extends RecyclerView {
     }
 
     private int getHeaders_includingRefreshCount() {
+        Log.d(getClass().getSimpleName(), "getHeaders_includingRefreshCount() called");
+        if (mWrapAdapter == null) return getRefreshHeaderCount();
         return mWrapAdapter.getHeadersCount() + getRefreshHeaderCount();
+    }
+
+    NestedScrollView.OnScrollChangeListener onScrollChangeListener = new NestedScrollView.OnScrollChangeListener() {
+        @Override
+        public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+            if (v.getChildAt(v.getChildCount() - 1) != null) {
+                if ((scrollY >= (v.getChildAt(v.getChildCount() - 1).getMeasuredHeight() - v.getMeasuredHeight())) &&
+                        scrollY > oldScrollY) {
+                    LayoutManager layoutManager = getLayoutManager();
+                    int lastVisibleItemPosition;
+                    int pastVisiblesItems;
+                    if (layoutManager instanceof GridLayoutManager) {
+                        lastVisibleItemPosition = ((GridLayoutManager) layoutManager).findLastVisibleItemPosition();
+                        pastVisiblesItems = ((GridLayoutManager) layoutManager).findFirstVisibleItemPosition();
+                    } else if (layoutManager instanceof StaggeredGridLayoutManager) {
+                        int[] into = new int[((StaggeredGridLayoutManager) layoutManager).getSpanCount()];
+                        int[] intoFirst = new int[((StaggeredGridLayoutManager) layoutManager).getSpanCount()];
+                        ((StaggeredGridLayoutManager) layoutManager).findLastVisibleItemPositions(into);
+                        ((StaggeredGridLayoutManager) layoutManager).findFirstVisibleItemPositions(intoFirst);
+                        lastVisibleItemPosition = findMax(into);
+                        pastVisiblesItems = findMax(intoFirst);
+                    } else {
+                        lastVisibleItemPosition = ((LinearLayoutManager) layoutManager).findLastVisibleItemPosition();
+                        pastVisiblesItems = ((LinearLayoutManager) layoutManager).findFirstVisibleItemPosition();
+                    }
+                    int visibleItemCount = layoutManager.getChildCount();
+                    int totalItemCount = layoutManager.getItemCount();
+                    int status = STATE_DONE;
+
+                    if (mRefreshHeader != null)
+                        status = mRefreshHeader.getState();
+                    if (layoutManager.getChildCount() > 0
+                            && (visibleItemCount + pastVisiblesItems) >= totalItemCount
+                            && !isNoMore
+                            && status < ArrowRefreshHeader.STATE_REFRESHING) {
+                        activeLoadMore();
+                    }
+                }
+            }
+        }
+    };
+
+    void activeLoadMore() {
+        isLoadingData = true;
+        if (mFootView instanceof LoadingMoreFooter) {
+            ((LoadingMoreFooter) mFootView).setState(LoadingMoreFooter.STATE_LOADING);
+        } else {
+            if (footerViewCallBack != null) {
+                footerViewCallBack.onLoadingMore(mFootView);
+            }
+        }
+        mLoadingListener.onLoadMore();
     }
 
     /**
@@ -396,9 +455,11 @@ public class XRecyclerView extends RecyclerView {
 
     @Override
     public void onScrollStateChanged(int state) {
+//        Log.d(getClass().getSimpleName(), "onScrollStateChanged() called with: state = [" + state + "]");
         super.onScrollStateChanged(state);
         if (state == RecyclerView.SCROLL_STATE_IDLE && mLoadingListener != null && !isLoadingData && loadingMoreEnabled) {
             LayoutManager layoutManager = getLayoutManager();
+
             int lastVisibleItemPosition;
             if (layoutManager instanceof GridLayoutManager) {
                 lastVisibleItemPosition = ((GridLayoutManager) layoutManager).findLastVisibleItemPosition();
@@ -409,29 +470,17 @@ public class XRecyclerView extends RecyclerView {
             } else {
                 lastVisibleItemPosition = ((LinearLayoutManager) layoutManager).findLastVisibleItemPosition();
             }
-            int adjAdapterItemCount = layoutManager.getItemCount() + getHeaders_includingRefreshCount() + 1;
-//            Log.e("aaaaa", "adjAdapterItemCount " + adjAdapterItemCount + " getItemCount " + layoutManager.getItemCount());
-
+            int adjAdapterItemCount = layoutManager.getItemCount() + getHeaders_includingRefreshCount() + (pullRefreshEnabled ? 1 : 2);
             int status = STATE_DONE;
-
             if (mRefreshHeader != null)
                 status = mRefreshHeader.getState();
-            if (
-                    layoutManager.getChildCount() > 0
-                            && lastVisibleItemPosition >= adjAdapterItemCount - limitNumberToCallLoadMore
-                            && adjAdapterItemCount >= layoutManager.getChildCount()
-                            && !isNoMore
-                            && status < ArrowRefreshHeader.STATE_REFRESHING
-            ) {
-                isLoadingData = true;
-                if (mFootView instanceof LoadingMoreFooter) {
-                    ((LoadingMoreFooter) mFootView).setState(LoadingMoreFooter.STATE_LOADING);
-                } else {
-                    if (footerViewCallBack != null) {
-                        footerViewCallBack.onLoadingMore(mFootView);
-                    }
-                }
-                mLoadingListener.onLoadMore();
+            if (!isWrappedByScrollView
+                    && layoutManager.getChildCount() > 0
+                    && lastVisibleItemPosition >= adjAdapterItemCount - limitNumberToCallLoadMore
+                    && adjAdapterItemCount >= layoutManager.getChildCount()
+                    && !isNoMore
+                    && status < ArrowRefreshHeader.STATE_REFRESHING) {
+                activeLoadMore();
             }
         }
     }
@@ -576,6 +625,7 @@ public class XRecyclerView extends RecyclerView {
         }
 
         public int getHeadersCount() {
+//            Log.d(getClass().getSimpleName(), "getHeadersCount() called");
             if (mHeaderViews == null)
                 return 0;
             return mHeaderViews.size();
@@ -762,14 +812,21 @@ public class XRecyclerView extends RecyclerView {
         //Solve the problem of conflict with CollapsingToolbarLayout
         AppBarLayout appBarLayout = null;
         ViewParent p = getParent();
+        CoordinatorLayout coordinatorLayout = null;
         while (p != null) {
             if (p instanceof CoordinatorLayout) {
-                break;
+                coordinatorLayout = (CoordinatorLayout) p;
+//                break;
+            } else if (p instanceof NestedScrollView) {
+                if (loadingMoreEnabled) {
+                    NestedScrollView nestedScrollView = (NestedScrollView) p;
+                    isWrappedByScrollView = true;
+                    nestedScrollView.setOnScrollChangeListener(onScrollChangeListener);
+                }
             }
             p = p.getParent();
         }
-        if (p != null) {
-            CoordinatorLayout coordinatorLayout = (CoordinatorLayout) p;
+        if (coordinatorLayout != null) {
             final int childCount = coordinatorLayout.getChildCount();
             for (int i = childCount - 1; i >= 0; i--) {
                 final View child = coordinatorLayout.getChildAt(i);
