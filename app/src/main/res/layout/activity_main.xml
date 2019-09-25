@@ -1,82 +1,85 @@
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".MainActivity">
+
     <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dip"
         android:onClick="gotoLinearActivity"
+        android:text="LinearLayoutManager" />
+
+    <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dip"
-        android:text="LinearLayoutManager"/>
-
-    <Button
         android:onClick="gotoStickyScrollLinearActivity"
+        android:text="StickyScrollLinearActivity" />
+
+    <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dip"
-        android:text="StickyScrollLinearActivity"
-        />
-
-    <Button
         android:onClick="gotoGridActivity"
+        android:text="GridLayoutManager" />
+
+    <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dip"
-        android:text="GridLayoutManager"
-        />
-    <Button
         android:onClick="gotoStaggeredGridActivity"
+        android:text="StaggeredGridLayoutManager" />
+
+    <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dip"
-        android:text="StaggeredGridLayoutManager"
-        />
-
-    <Button
         android:onClick="gotoEmptyViewActivity"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10dip"
-        android:text="emptyViewSupport"
-        />
-    <Button
-        android:onClick="gotoCollapsingToolbarLayoutActivity"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10dip"
-        android:text="CollapsingToolbarLayoutTest"
-        />
-    <Button
-        android:onClick="gotoDisableExampleActivity"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10dip"
-        android:text="DisableExampleActivity"
-        />
-    <Button
-        android:onClick="gotoMultiHeaderActivity"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10dip"
-        android:text="MultiHeaderActivity"
-        />
-    <Button
-        android:onClick="gotoItemDecorationActivity"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10dip"
-        android:text="ItemDecorationActivity"
-        />
+        android:text="emptyViewSupport" />
 
     <Button
-        android:onClick="gotoItemAlphaChangeActivity"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dip"
-        android:text="AlphaChangeActivity"
-        />
+        android:onClick="gotoCollapsingToolbarLayoutActivity"
+        android:text="CollapsingToolbarLayoutTest" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dip"
+        android:onClick="gotoDisableExampleActivity"
+        android:text="DisableExampleActivity" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dip"
+        android:onClick="gotoMultiHeaderActivity"
+        android:text="MultiHeaderActivity" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dip"
+        android:onClick="gotoItemDecorationActivity"
+        android:text="ItemDecorationActivity" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dip"
+        android:onClick="gotoItemAlphaChangeActivity"
+        android:text="AlphaChangeActivity" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dip"
+        android:onClick="gotoViewPagerActivity"
+        android:text="VIEW-PAGER" />
 
 </LinearLayout>
