@@ -46,7 +46,11 @@
         android:id="@+id/recyclerview"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent" />
+        android:layout_height="fill_parent"
+        app:refresh_txt_color="@color/dark_blue"
+        app:refresh_icon_colorFilter="@color/gold"
+        app:loadMore_txt_color="@color/light_red"
+        app:loadMore_progress_indicator_color="@color/light_green"/>
 
 
 </android.support.design.widget.CoordinatorLayout>

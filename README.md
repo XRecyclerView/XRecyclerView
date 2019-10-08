@@ -235,6 +235,27 @@ View header1 =   LayoutInflater.from(this).inflate(R.layout.recyclerview_header1
 mRecyclerView.addHeaderView(header);
 mRecyclerView.addHeaderView(header1);
 ```
+
+# GridLayoutSpanPositionListener
+if you want to have custom span count for some positions 
+```java
+mRecyclerView.setGridLayoutSpanPositionListener(GridLayoutSpanPositionListener gridLayoutSpanPositionListener)
+```
+
+# header and footer colors
+You can use these methods to just control the refresh header and loadMoreFooter icons and text color
+for refresh header view
+```java
+mRecyclerView.setRefreshHeaderTxtColor(int color);
+mRecyclerView.setRefreshHeaderArrowFilterColor(int color);
+```
+for loadMore footer view
+```java
+mRecyclerView.setLoadMoreFooterTxtColor(int color);
+mRecyclerView.setLoadMoreFooterProgressIndicatorColor(int color);
+```
+
+
 License
 -------
 
@@ -251,4 +272,3 @@ License
     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
     See the License for the specific language governing permissions and
     limitations under the License.
-

@@ -5,18 +5,17 @@ import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
 
+import com.jcodecraeer.xrecyclerview.GridLayoutSpanPositionListener;
 import com.jcodecraeer.xrecyclerview.ProgressStyle;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 
 import java.util.ArrayList;
 
-public class GridActivity extends AppCompatActivity {
+public class GridActivity extends AppCompatActivity implements GridLayoutSpanPositionListener {
     private XRecyclerView mRecyclerView;
     private MyAdapter mAdapter;
     private ArrayList<String> listData;
@@ -34,11 +33,11 @@ public class GridActivity extends AppCompatActivity {
         mRecyclerView = (XRecyclerView)this.findViewById(R.id.recyclerview);
         GridLayoutManager layoutManager = new GridLayoutManager(this,3);
         mRecyclerView.setLayoutManager(layoutManager);
+        mRecyclerView.setGridLayoutSpanPositionListener(this);
 
         mRecyclerView.setRefreshProgressStyle(ProgressStyle.BallSpinFadeLoader);
         mRecyclerView.setLoadingMoreProgressStyle(ProgressStyle.BallRotate);
         mRecyclerView.setArrowImageView(R.drawable.iconfont_downgrey);
-
         mRecyclerView.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
@@ -113,4 +112,9 @@ public class GridActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public int getSpanCountForPosition(int position) {
+        Log.i("getSpanCount", ""+position);
+        return 3;
+    }
 }
