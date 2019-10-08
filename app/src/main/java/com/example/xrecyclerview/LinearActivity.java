@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.jcodecraeer.xrecyclerview.ProgressStyle;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
@@ -54,11 +55,25 @@ public class LinearActivity extends AppCompatActivity {
                 .getDefaultRefreshHeaderView()
                 .setRefreshTimeVisible(true);
         View header = LayoutInflater.from(this).inflate(R.layout.recyclerview_header, (ViewGroup)findViewById(android.R.id.content),false);
+        header.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(v.getContext(),"这是头部1",Toast.LENGTH_LONG).show();
+            }
+        });
         mRecyclerView.addHeaderView(header);
-
+        View header1 = LayoutInflater.from(this).inflate(R.layout.recyclerview_header, (ViewGroup)findViewById(android.R.id.content),false);
+        mRecyclerView.addHeaderView(header1);
+        header1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(v.getContext(),"这是头部2",Toast.LENGTH_LONG).show();
+            }
+        });
         mRecyclerView.getDefaultFootView().setLoadingHint("自定义加载中提示");
         mRecyclerView.getDefaultFootView().setNoMoreHint("自定义加载完毕提示");
 
+        // 设置自定义 footerView 的代码如下
         // if you use setFooterView,the default footerView will unUseful
 //        TextView tv = new TextView(this);
 //        tv.setText("自定义 footer");

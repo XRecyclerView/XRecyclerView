@@ -42,8 +42,9 @@ public class ArrowRefreshHeader extends LinearLayout implements BaseRefreshHeade
     public int mMeasuredHeight;
     private AVLoadingIndicatorView progressView;
     private int indicatorColor = 0xffB5B5B5;
+    private String customRefreshPsKey = null;
 
-    public void destroy() {
+	public void destroy(){
         mProgressBar = null;
         if (progressView != null) {
             progressView.destroy();
@@ -78,11 +79,18 @@ public class ArrowRefreshHeader extends LinearLayout implements BaseRefreshHeade
             mHeaderRefreshTimeContainer.setVisibility(show ? VISIBLE : GONE);
     }
 
-    private void initView() {
-        // 初始情况，设置下拉刷新view高度为0
-        mContainer = (LinearLayout) LayoutInflater.from(getContext()).inflate(
-                R.layout.listview_header, null);
 
+    public void setXrRefreshTimeKey(String keyName){
+	    if(keyName != null){
+	        customRefreshPsKey = keyName;
+        }
+    }
+
+	private void initView() {
+		// 初始情况，设置下拉刷新view高度为0
+		mContainer = (LinearLayout) LayoutInflater.from(getContext()).inflate(
+				R.layout.listview_header, null);
+    
         mHeaderRefreshTimeContainer
                 = (LinearLayout) mContainer.findViewById(R.id.header_refresh_time_container);
 
@@ -205,18 +213,26 @@ public class ArrowRefreshHeader extends LinearLayout implements BaseRefreshHeade
         return mState;
     }
 
-    private long getLastRefreshTime() {
+    private long getLastRefreshTime(){
+        String spKeyName = XR_REFRESH_KEY;
+        if(customRefreshPsKey != null){
+            spKeyName = customRefreshPsKey;
+        }
         SharedPreferences s =
                 getContext()
-                        .getSharedPreferences(XR_REFRESH_KEY, Context.MODE_APPEND);
-        return s.getLong(XR_REFRESH_TIME_KEY, new Date().getTime());
+                    .getSharedPreferences(spKeyName,Context.MODE_APPEND);
+        return s.getLong(XR_REFRESH_TIME_KEY,new Date().getTime());
     }
 
-    private void saveLastRefreshTime(long refreshTime) {
+    private void saveLastRefreshTime(long refreshTime){
+        String spKeyName = XR_REFRESH_KEY;
+        if(customRefreshPsKey != null){
+            spKeyName = customRefreshPsKey;
+        }
         SharedPreferences s =
                 getContext()
-                        .getSharedPreferences(XR_REFRESH_KEY, Context.MODE_APPEND);
-        s.edit().putLong(XR_REFRESH_TIME_KEY, refreshTime).commit();
+                    .getSharedPreferences(spKeyName,Context.MODE_APPEND);
+        s.edit().putLong(XR_REFRESH_TIME_KEY,refreshTime).commit();
     }
 
     @Override
