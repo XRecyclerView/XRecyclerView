@@ -25,7 +25,9 @@ dependencies {
     //compile 'com.jcodecraeer:xrecyclerview:1.5.8' // use compile
     implementation 'com.google.android.material:material:1.0.0'
     implementation 'androidx.cardview:cardview:1.0.0'
-    implementation 'androidx.appcompat:appcompat:1.0.0'
-    implementation 'androidx.recyclerview:recyclerview:1.0.0'
+    implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation 'androidx.recyclerview:recyclerview:1.1.0'
     implementation 'com.squareup.leakcanary:leakcanary-android:1.5'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+
 }
