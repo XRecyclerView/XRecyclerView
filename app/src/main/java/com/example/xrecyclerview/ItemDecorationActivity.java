@@ -1,20 +1,20 @@
 package com.example.xrecyclerview;
 
 import android.graphics.drawable.Drawable;
-import android.os.Handler;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.Toolbar;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+
 import com.jcodecraeer.xrecyclerview.ProgressStyle;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
-import com.jcodecraeer.xrecyclerview.XRecyclerView.DividerItemDecoration;
 
 import java.util.ArrayList;
 
@@ -53,6 +53,7 @@ public class ItemDecorationActivity extends AppCompatActivity {
                 refreshTime ++;
                 times = 0;
                 new Handler().postDelayed(new Runnable(){
+                    @Override
                     public void run() {
 
                         listData.clear();
@@ -70,6 +71,7 @@ public class ItemDecorationActivity extends AppCompatActivity {
             public void onLoadMore() {
                 if(times < 2){
                     new Handler().postDelayed(new Runnable(){
+                        @Override
                         public void run() {
                             for(int i = 0; i < 15 ;i++){
                                 listData.add("item" + (1 + listData.size() ) );
@@ -80,6 +82,7 @@ public class ItemDecorationActivity extends AppCompatActivity {
                     }, 1000);
                 } else {
                     new Handler().postDelayed(new Runnable() {
+                        @Override
                         public void run() {
                             for(int i = 0; i < 9 ;i++){
                                 listData.add("item" + (1 + listData.size() ) );

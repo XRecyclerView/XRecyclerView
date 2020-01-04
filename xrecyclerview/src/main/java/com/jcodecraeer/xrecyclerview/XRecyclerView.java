@@ -4,19 +4,20 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.NonNull;
-import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.CoordinatorLayout;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
+
+import androidx.annotation.NonNull;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
+
+import com.google.android.material.appbar.AppBarLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -131,8 +132,9 @@ public class XRecyclerView extends RecyclerView {
     }
 
     public void addHeaderView(View view) {
-        if(mHeaderViews == null || sHeaderTypes == null)
+        if(mHeaderViews == null || sHeaderTypes == null) {
             return;
+        }
         sHeaderTypes.add(HEADER_INIT_INDEX + mHeaderViews.size());
         mHeaderViews.add(view);
         if (mWrapAdapter != null) {
@@ -141,8 +143,9 @@ public class XRecyclerView extends RecyclerView {
     }
 
     public void removeHeaderView(@NonNull View v){
-        if(mHeaderViews == null || sHeaderTypes == null || v == null)
+        if(mHeaderViews == null || sHeaderTypes == null || v == null) {
             return;
+        }
         for (View view : mHeaderViews) {
             if (view == v) {
                 mHeaderViews.remove(view);
@@ -155,8 +158,9 @@ public class XRecyclerView extends RecyclerView {
     }
 
     public void removeAllHeaderView(){
-        if(mHeaderViews == null || sHeaderTypes == null)
+        if(mHeaderViews == null || sHeaderTypes == null) {
             return;
+        }
         mHeaderViews.clear();
         if (mWrapAdapter != null) {
             mWrapAdapter.notifyDataSetChanged();
@@ -349,8 +353,9 @@ public class XRecyclerView extends RecyclerView {
 
     // example: listData.remove(position); You can also see a demo on LinearActivity
     public<T> void notifyItemRemoved(List<T> listData,int position) {
-        if(mWrapAdapter.adapter == null)
+        if(mWrapAdapter.adapter == null) {
             return;
+        }
         int headerSize = getHeaders_includingRefreshCount();
         int adjPos = position + headerSize;
         mWrapAdapter.adapter.notifyItemRemoved(adjPos);
@@ -358,8 +363,9 @@ public class XRecyclerView extends RecyclerView {
     }
     
     public<T> void notifyItemInserted(List<T> listData,int position) {
-        if(mWrapAdapter.adapter == null)
+        if(mWrapAdapter.adapter == null) {
             return;
+        }
         int headerSize = getHeaders_includingRefreshCount();
         int adjPos = position + headerSize;
         mWrapAdapter.adapter.notifyItemInserted(adjPos);
@@ -367,22 +373,25 @@ public class XRecyclerView extends RecyclerView {
     }
 
     public void notifyItemChanged(int position) {
-        if(mWrapAdapter.adapter == null)
+        if(mWrapAdapter.adapter == null) {
             return;
+        }
         int adjPos = position + getHeaders_includingRefreshCount();
         mWrapAdapter.adapter.notifyItemChanged(adjPos);
     }
 
     public void notifyItemChanged(int position,Object o) {
-        if(mWrapAdapter.adapter == null)
+        if(mWrapAdapter.adapter == null) {
             return;
+        }
         int adjPos = position + getHeaders_includingRefreshCount();
         mWrapAdapter.adapter.notifyItemChanged(adjPos,o);
     }
 
     private int getHeaders_includingRefreshCount(){
-        if(mWrapAdapter == null)
+        if(mWrapAdapter == null) {
             return 0;
+        }
         return mWrapAdapter.getHeadersCount()+1;
     }
 
@@ -444,8 +453,9 @@ public class XRecyclerView extends RecyclerView {
                 final float deltaY = ev.getRawY() - mLastY;
                 mLastY = ev.getRawY();
                 if (isOnTop() && pullRefreshEnabled && appbarState == AppBarStateChangeListener.State.EXPANDED) {
-                    if(mRefreshHeader == null)
+                    if(mRefreshHeader == null) {
                         break;
+                    }
                     mRefreshHeader.onMove(deltaY / dragRate);
                     if (mRefreshHeader.getVisibleHeight() > 0 && mRefreshHeader.getState() < ArrowRefreshHeader.STATE_REFRESHING) {
                         return false;
@@ -546,8 +556,9 @@ public class XRecyclerView extends RecyclerView {
         }
 
         public boolean isHeader(int position) {
-            if(mHeaderViews == null)
+            if(mHeaderViews == null) {
                 return false;
+            }
             return position >= 1 && position < mHeaderViews.size() + 1;
         }
 

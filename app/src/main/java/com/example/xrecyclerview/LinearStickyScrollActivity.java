@@ -2,10 +2,11 @@ package com.example.xrecyclerview;
 
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.jcodecraeer.xrecyclerview.ProgressStyle;
 import com.jcodecraeer.xrecyclerview.StickyScrollLinearLayout;
@@ -45,8 +46,9 @@ public class LinearStickyScrollActivity extends AppCompatActivity {
                 new View.OnLayoutChangeListener() {
                     @Override
                     public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
-                        if(s.getContentView() != null)
+                        if(s.getContentView() != null) {
                             return;
+                        }
                         // 放在这里是为了等初始化结束后再添加，防止 height 获取 =0
                         // add from here just in cause they height==0
                         s.setInitInterface(
@@ -94,6 +96,7 @@ public class LinearStickyScrollActivity extends AppCompatActivity {
             public void onLoadMore() {
                 if(times < 2){
                     new Handler().postDelayed(new Runnable(){
+                        @Override
                         public void run() {
                             for(int i = 0; i < 10 ;i++){
                                 listData.add("item" + (1 + listData.size() ) );
@@ -104,6 +107,7 @@ public class LinearStickyScrollActivity extends AppCompatActivity {
                     }, 1000);
                 } else {
                     new Handler().postDelayed(new Runnable() {
+                        @Override
                         public void run() {
                             for(int i = 0; i < 10 ;i++){
                                 listData.add("item" + (1 + listData.size() ) );

@@ -1,15 +1,15 @@
 package com.example.xrecyclerview;
 
-import android.os.Handler;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.jcodecraeer.xrecyclerview.ProgressStyle;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
@@ -55,6 +55,7 @@ public class MultiHeaderActivity extends AppCompatActivity {
                 refreshTime ++;
                 times = 0;
                 new Handler().postDelayed(new Runnable(){
+                    @Override
                     public void run() {
 
                         listData.clear();
@@ -72,6 +73,7 @@ public class MultiHeaderActivity extends AppCompatActivity {
             public void onLoadMore() {
                 if(times < 2){
                     new Handler().postDelayed(new Runnable(){
+                        @Override
                         public void run() {
                             for(int i = 0; i < 15 ;i++){
                                 listData.add("item" + (1 + listData.size() ) );
@@ -82,6 +84,7 @@ public class MultiHeaderActivity extends AppCompatActivity {
                     }, 1000);
                 } else {
                     new Handler().postDelayed(new Runnable() {
+                        @Override
                         public void run() {
                             for(int i = 0; i < 9 ;i++){
                                 listData.add("item" + (1 + listData.size() ) );
