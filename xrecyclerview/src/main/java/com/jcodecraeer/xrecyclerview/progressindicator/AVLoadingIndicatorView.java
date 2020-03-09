@@ -7,9 +7,10 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Build;
-import android.support.annotation.IntDef;
 import android.util.AttributeSet;
 import android.view.View;
+
+import androidx.annotation.IntDef;
 
 import com.jcodecraeer.xrecyclerview.R;
 import com.jcodecraeer.xrecyclerview.progressindicator.indicator.BallBeatIndicator;
@@ -337,8 +338,9 @@ public class AVLoadingIndicatorView extends View{
     public void setVisibility(int v) {
         if (getVisibility() != v) {
             super.setVisibility(v);
-            if(mIndicatorController == null)
+            if(mIndicatorController == null) {
                 return;
+            }
             if (v == GONE || v == INVISIBLE) {
                 mIndicatorController.setAnimationStatus(BaseIndicatorController.AnimStatus.END);
             } else {
@@ -350,28 +352,32 @@ public class AVLoadingIndicatorView extends View{
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-        if(mIndicatorController == null)
+        if(mIndicatorController == null) {
             return;
+        }
         mIndicatorController.setAnimationStatus(BaseIndicatorController.AnimStatus.CANCEL);
     }
 
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
-        if(mIndicatorController == null)
+        if(mIndicatorController == null) {
             return;
+        }
         mIndicatorController.setAnimationStatus(BaseIndicatorController.AnimStatus.START);
     }
 
     void drawIndicator(Canvas canvas){
-        if(mIndicatorController == null)
+        if(mIndicatorController == null) {
             return;
+        }
         mIndicatorController.draw(canvas, mPaint);
     }
 
     void applyAnimation(){
-        if(mIndicatorController == null)
+        if(mIndicatorController == null) {
             return;
+        }
         mIndicatorController.initAnimation();
     }
 

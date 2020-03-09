@@ -1,6 +1,7 @@
 package com.jcodecraeer.xrecyclerview;
 
-import android.support.design.widget.AppBarLayout;
+
+import com.google.android.material.appbar.AppBarLayout;
 
 /**
  * Created by jianghejie on 16/6/19.

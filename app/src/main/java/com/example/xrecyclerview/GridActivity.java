@@ -2,14 +2,12 @@ package com.example.xrecyclerview;
 
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.GridLayoutManager;
 
 import com.jcodecraeer.xrecyclerview.ProgressStyle;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
@@ -45,6 +43,7 @@ public class GridActivity extends AppCompatActivity {
                 refreshTime ++;
                 times = 0;
                 new Handler().postDelayed(new Runnable(){
+                    @Override
                     public void run() {
 
                         listData.clear();
@@ -62,6 +61,7 @@ public class GridActivity extends AppCompatActivity {
             public void onLoadMore() {
                 if(times < 2){
                     new Handler().postDelayed(new Runnable(){
+                        @Override
                         public void run() {
                             mRecyclerView.loadMoreComplete();
                             for(int i = 0; i < 20 ;i++){
@@ -73,6 +73,7 @@ public class GridActivity extends AppCompatActivity {
                     }, 1000);
                 } else {
                     new Handler().postDelayed(new Runnable() {
+                        @Override
                         public void run() {
                             for(int i = 0; i < 9 ;i++){
                                 listData.add("item" + (i + listData.size()) );

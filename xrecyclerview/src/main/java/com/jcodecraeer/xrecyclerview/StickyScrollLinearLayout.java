@@ -1,14 +1,6 @@
 package com.jcodecraeer.xrecyclerview;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.view.NestedScrollingParent;
-import android.support.v4.view.ViewCompat;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.VelocityTracker;
@@ -16,6 +8,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.OverScroller;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.view.NestedScrollingParent;
+import androidx.core.view.ViewCompat;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 /**
  * 作者：林冠宏
@@ -79,17 +80,20 @@ public class StickyScrollLinearLayout
 
     @SuppressWarnings("all")
     public void setInitInterface(@NonNull StickyScrollInitInterface initInterface){
-        if(initInterface == null)
+        if(initInterface == null) {
             throw new NullPointerException("initInterface can not be null!");
+        }
         this.mTopView = initInterface.setTopView();
-        if(this.mTopView != null)
+        if(this.mTopView != null) {
             getTopViewHeight();
+        }
 
         this.mTabView = initInterface.setTabView();
 
         this.mContentView = initInterface.setContentView();
-        if(this.mContentView == null)
+        if(this.mContentView == null) {
             return;
+        }
         setTotalHeight();
         requestLayout();
     }
@@ -130,7 +134,9 @@ public class StickyScrollLinearLayout
 
         if(!(target instanceof XRecyclerView))
             // todo 2017-12-31，make it more general
+        {
             throw new UnsupportedOperationException("insert your content must is XRecyclerView!");
+        }
 
         layoutManager = ((RecyclerView)target).getLayoutManager();
 
@@ -144,8 +150,9 @@ public class StickyScrollLinearLayout
         } else {
             firstVisiblePosition = ((LinearLayoutManager) layoutManager).findFirstCompletelyVisibleItemPosition();
         }
-        if(firstVisiblePosition < 0)
+        if(firstVisiblePosition < 0) {
             return;
+        }
 
         int scrollY = getScrollY();
         boolean temp = dy > 0 && (scrollY < mTopViewHeight);
@@ -186,7 +193,9 @@ public class StickyScrollLinearLayout
     public boolean onNestedPreFling(View target, float velocityX, float velocityY) {
         Log.e(TAG, "onNestedPreFling");
         //down - //up+
-        if (getScrollY() >= mTopViewHeight) return false;
+        if (getScrollY() >= mTopViewHeight) {
+            return false;
+        }
         fling((int) velocityY);
         return true;
     }
@@ -199,8 +208,9 @@ public class StickyScrollLinearLayout
 
     @Deprecated
     private void initVelocityTrackerIfNotExists() {
-        if (mVelocityTracker == null)
+        if (mVelocityTracker == null) {
             mVelocityTracker = VelocityTracker.obtain();
+        }
     }
 
     // call this when destroy
@@ -225,8 +235,9 @@ public class StickyScrollLinearLayout
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        if(mTabView == null || mTopView == null || mContentView == null)
+        if(mTabView == null || mTopView == null || mContentView == null) {
             return;
+        }
 //        getChildAt(0).
 //                measure(
 //                        widthMeasureSpec,
@@ -250,8 +261,9 @@ public class StickyScrollLinearLayout
     }
 
     private void getTopViewHeight(){
-        if(mTopView == null)
+        if(mTopView == null) {
             return;
+        }
         mTopViewHeight = mTopView.getMeasuredHeight();
     }
 
@@ -269,16 +281,20 @@ public class StickyScrollLinearLayout
 
     @Override
     public void scrollTo(int x, int y) {
-        if (y < 0)
+        if (y < 0) {
             y = 0;
+        }
 
         if (y > mTopViewHeight)
             // 边界限制，防止把 tabView 也挡住了
             // Prevent it from hiding the tabView,so we limit it
+        {
             y = mTopViewHeight;
+        }
 
-        if (y != getScrollY())
+        if (y != getScrollY()) {
             super.scrollTo(x, y);
+        }
     }
 
     @Override
