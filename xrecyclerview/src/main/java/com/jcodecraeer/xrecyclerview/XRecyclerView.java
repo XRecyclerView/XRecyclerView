@@ -41,7 +41,7 @@ public class XRecyclerView extends RecyclerView {
     private static final int TYPE_REFRESH_HEADER = 10000;//设置一个很大的数字,尽可能避免和用户的adapter冲突
     private static final int TYPE_FOOTER = 10001;
     private static final int HEADER_INIT_INDEX = 10002;
-    private static List<Integer> sHeaderTypes = new ArrayList<>();//每个header必须有不同的type,不然滚动的时候顺序会变化
+    private List<Integer> sHeaderTypes = new ArrayList<>();//每个header必须有不同的type,不然滚动的时候顺序会变化
 
     //adapter没有数据的时候显示,类似于listView的emptyView
     private View mEmptyView;
