@@ -46,7 +46,7 @@ public class XRecyclerView extends RecyclerView {
     private static final int TYPE_REFRESH_HEADER = 10000;//Set a big number and avoid conflicts with the user's adapter as much as possible
     private static final int TYPE_FOOTER = 10001;
     private static final int HEADER_INIT_INDEX = 10002;
-    private static List<Integer> sHeaderTypes = new ArrayList<>();//Each header must have a different type, otherwise the order will change when scrolling
+    private List<Integer> sHeaderTypes = new ArrayList<>();//Each header must have a different type, otherwise the order will change when scrolling
 
     //When the adapter has no data, it is similar to the emptyView of the listView.
     private View mEmptyView;
@@ -376,7 +376,6 @@ public class XRecyclerView extends RecyclerView {
     }
 
     public void notifyItemChanged(int position) {
-        Log.d(getClass().getSimpleName(), "notifyItemChanged() called with: position = [" + position + "]");
         if (mWrapAdapter.adapter == null)
             return;
         int adjPos = position + getHeaders_includingRefreshCount();
@@ -384,7 +383,6 @@ public class XRecyclerView extends RecyclerView {
     }
 
     public void notifyItemChanged(int position, Object o) {
-        Log.d(getClass().getSimpleName(), "notifyItemChanged() called with: position = [" + position + "], o = [" + o + "]");
         if (mWrapAdapter.adapter == null)
             return;
         int adjPos = position + getHeaders_includingRefreshCount();
@@ -392,7 +390,6 @@ public class XRecyclerView extends RecyclerView {
     }
 
     private int getHeaders_includingRefreshCount() {
-        Log.d(getClass().getSimpleName(), "getHeaders_includingRefreshCount() called");
         if (mWrapAdapter == null) return getRefreshHeaderCount();
         return mWrapAdapter.getHeadersCount() + getRefreshHeaderCount();
     }
