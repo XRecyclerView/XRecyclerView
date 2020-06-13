@@ -107,23 +107,23 @@ public class StickyScrollLinearLayout
 
     @Override
     public boolean onStartNestedScroll(View child, View target, int nestedScrollAxes) {
-        Log.e(TAG, "onStartNestedScroll "+child.toString()+"  "+target.toString());
+//        Log.e(TAG, "onStartNestedScroll "+child.toString()+"  "+target.toString());
         return true;
     }
 
     @Override
     public void onNestedScrollAccepted(@NonNull View child, @NonNull View target, int nestedScrollAxes) {
-        Log.e(TAG, "onNestedScrollAccepted");
+//        Log.e(TAG, "onNestedScrollAccepted");
     }
 
     @Override
     public void onStopNestedScroll(View target) {
-        Log.e(TAG, "onStopNestedScroll "+target.toString());
+//        Log.e(TAG, "onStopNestedScroll "+target.toString());
     }
 
     @Override
     public void onNestedScroll(@NonNull View target, int dxConsumed, int dyConsumed, int dxUnconsumed, int dyUnconsumed) {
-        Log.e(TAG, "onNestedScroll "+dyConsumed+"----"+dyUnconsumed);
+//        Log.e(TAG, "onNestedScroll "+dyConsumed+"----"+dyUnconsumed);
     }
 
     @Override
@@ -150,11 +150,11 @@ public class StickyScrollLinearLayout
 
         int scrollY = getScrollY();
         boolean temp = dy > 0 && (scrollY < mTopViewHeight);
-        Log.e(TAG,
-                "mTopViewHeight == "+mTopViewHeight
-                        +"\ndy == "+dy
-                        +"\nscrollY == "+scrollY
-                        +"\nhiddenTop && showTop "+temp);
+//        Log.e(TAG,
+//                "mTopViewHeight == "+mTopViewHeight
+//                        +"\ndy == "+dy
+//                        +"\nscrollY == "+scrollY
+//                        +"\nhiddenTop && showTop "+temp);
         if(!temp){
             // judge
             temp = dy < 0
@@ -165,11 +165,11 @@ public class StickyScrollLinearLayout
                                     ||
                             firstVisiblePosition==targetFirstVisiblePosition
                     );
-            Log.e(TAG,
-                    "mTopViewHeight == "+mTopViewHeight
-                            +"\ndy == "+dy
-                            +"\nscrollY == "+scrollY
-                            +"\nfirstVisiblePosition "+firstVisiblePosition);
+//            Log.e(TAG,
+//                    "mTopViewHeight == "+mTopViewHeight
+//                            +"\ndy == "+dy
+//                            +"\nscrollY == "+scrollY
+//                            +"\nfirstVisiblePosition "+firstVisiblePosition);
         }
         if (temp) {
             scrollBy(0, dy);
@@ -179,13 +179,13 @@ public class StickyScrollLinearLayout
 
     @Override
     public boolean onNestedFling(@NonNull View target, float velocityX, float velocityY, boolean consumed) {
-        Log.e(TAG, "onNestedFling");
+//        Log.e(TAG, "onNestedFling");
         return false;
     }
 
     @Override
     public boolean onNestedPreFling(@NonNull View target, float velocityX, float velocityY) {
-        Log.e(TAG, "onNestedPreFling");
+//        Log.e(TAG, "onNestedPreFling");
         //down - //up+
         if (getScrollY() >= mTopViewHeight) return false;
         fling((int) velocityY);
@@ -194,7 +194,7 @@ public class StickyScrollLinearLayout
 
     @Override
     public int getNestedScrollAxes() {
-        Log.e(TAG, "getNestedScrollAxes");
+//        Log.e(TAG, "getNestedScrollAxes");
         return 0;
     }
 

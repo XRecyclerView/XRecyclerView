@@ -5,7 +5,6 @@ import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.jcodecraeer.xrecyclerview.BaseRefreshHeader.STATE_DONE;
+import static com.jcodecraeer.xrecyclerview.BaseRefreshHeader.STATE_REFRESHING;
 
 public class XRecyclerView extends RecyclerView {
     private boolean isLoadingData = false;
@@ -452,11 +452,9 @@ public class XRecyclerView extends RecyclerView {
 
     @Override
     public void onScrollStateChanged(int state) {
-//        Log.d(getClass().getSimpleName(), "onScrollStateChanged() called with: state = [" + state + "]");
         super.onScrollStateChanged(state);
         if (state == RecyclerView.SCROLL_STATE_IDLE && mLoadingListener != null && !isLoadingData && loadingMoreEnabled) {
             LayoutManager layoutManager = getLayoutManager();
-
             int lastVisibleItemPosition;
             if (layoutManager instanceof GridLayoutManager) {
                 lastVisibleItemPosition = ((GridLayoutManager) layoutManager).findLastVisibleItemPosition();
@@ -467,17 +465,29 @@ public class XRecyclerView extends RecyclerView {
             } else {
                 lastVisibleItemPosition = ((LinearLayoutManager) layoutManager).findLastVisibleItemPosition();
             }
-            int adjAdapterItemCount = layoutManager.getItemCount() + getHeaders_includingRefreshCount() + (pullRefreshEnabled ? 1 : 2);
+            int adjAdapterItemCount = layoutManager.getItemCount() + getHeaders_includingRefreshCount();
+            //Log.e("aaaaa","adjAdapterItemCount "+adjAdapterItemCount +" getItemCount "+layoutManager.getItemCount());
+
             int status = STATE_DONE;
+
             if (mRefreshHeader != null)
                 status = mRefreshHeader.getState();
-            if (!isWrappedByScrollView
-                    && layoutManager.getChildCount() > 0
-                    && lastVisibleItemPosition >= adjAdapterItemCount - limitNumberToCallLoadMore
-                    && adjAdapterItemCount >= layoutManager.getChildCount()
-                    && !isNoMore
-                    && status < ArrowRefreshHeader.STATE_REFRESHING) {
-                activeLoadMore();
+            if (
+                    layoutManager.getChildCount() > 0
+                            && lastVisibleItemPosition >= adjAdapterItemCount - limitNumberToCallLoadMore
+                            && adjAdapterItemCount >= layoutManager.getChildCount()
+                            && !isNoMore
+                            && status < ArrowRefreshHeader.STATE_REFRESHING
+            ) {
+                isLoadingData = true;
+                if (mFootView instanceof LoadingMoreFooter) {
+                    ((LoadingMoreFooter) mFootView).setState(LoadingMoreFooter.STATE_LOADING);
+                } else {
+                    if (footerViewCallBack != null) {
+                        footerViewCallBack.onLoadingMore(mFootView);
+                    }
+                }
+                mLoadingListener.onLoadMore();
             }
         }
     }
@@ -532,6 +542,11 @@ public class XRecyclerView extends RecyclerView {
             return false;
         else
             return mRefreshHeader.getParent() != null;
+    }
+
+    public boolean isRefreshing() {
+        if (mRefreshHeader != null) return mRefreshHeader.getState() == STATE_REFRESHING;
+        return false;
     }
 
     private class DataObserver extends RecyclerView.AdapterDataObserver {
@@ -632,11 +647,17 @@ public class XRecyclerView extends RecyclerView {
         @Override
         public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             if (viewType == TYPE_REFRESH_HEADER) {
-                return new SimpleViewHolder(mRefreshHeader);
+                SimpleViewHolder refreshHolder = new SimpleViewHolder(mRefreshHeader);
+                refreshHolder.setIsRecyclable(false);
+                return refreshHolder;
             } else if (isHeaderType(viewType)) {
-                return new SimpleViewHolder(getHeaderViewByType(viewType));
+                SimpleViewHolder headerHolder = new SimpleViewHolder(getHeaderViewByType(viewType));
+                headerHolder.setIsRecyclable(false);
+                return headerHolder;
             } else if (viewType == TYPE_FOOTER) {
-                return new SimpleViewHolder(mFootView);
+                SimpleViewHolder footerHolder = new SimpleViewHolder(mFootView);
+                footerHolder.setIsRecyclable(false);
+                return footerHolder;
             }
             return adapter.onCreateViewHolder(parent, viewType);
         }
