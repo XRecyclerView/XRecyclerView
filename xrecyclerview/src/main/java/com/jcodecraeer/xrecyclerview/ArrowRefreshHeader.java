@@ -317,22 +317,22 @@ public class ArrowRefreshHeader extends LinearLayout implements BaseRefreshHeade
         }
 
         if(ct > 0 && ct < 60) {
-            return ct + "Seconds ago";
+            return ct + " Seconds ago";
         }
 
         if(ct >= 60 && ct < 3600) {
-            return Math.max(ct / 60,1) + "Seconds ago";
+            return Math.max(ct / 60,1) + " Seconds ago";
         }
         if(ct >= 3600 && ct < 86400)
-            return ct / 3600 + "An hour ago";
+            return ct / 3600 + " An hour ago";
         if(ct >= 86400 && ct < 2592000){ //86400 * 30
             int day = ct / 86400 ;
-            return day + "Days ago";
+            return day + " Days ago";
         }
         if(ct >= 2592000 && ct < 31104000) { //86400 * 30
-            return ct / 2592000 + "Month ago";
+            return ct / 2592000 + " Month ago";
         }
-        return ct / 31104000 + "Years ago";
+        return ct / 31104000 + " Years ago";
     }
 
 }
