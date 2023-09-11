@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <plurals name="second_ago">
+        <item quantity="other">" 刚刚"</item>
+    </plurals>
+    <plurals name="minute_ago">
+        <item quantity="other">" 分钟前"</item>
+    </plurals>
+    <plurals name="hour_ago">
+        <item quantity="other">" 小时前"</item>
+    </plurals>
+    <plurals name="day_ago">
+        <item quantity="other">" 天前"</item>
+    </plurals>
+    <plurals name="month_ago">
+        <item quantity="other">" 月前"</item>
+    </plurals>
+    <plurals name="year_ago">
+        <item quantity="other">" 年前"</item>
+    </plurals>
+</resources>

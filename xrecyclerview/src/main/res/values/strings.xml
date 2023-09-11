@@ -1,10 +1,11 @@
 <resources>
-    <string name="listview_header_hint_normal">pull to refresh</string>
-    <string name="listview_header_hint_release">release to start refresh</string>
-    <string name="listview_loading">loading...</string>
-    <string name="nomore_loading">no more to be loaded</string>
-    <string name="refreshing">refreshing...</string>
-    <string name="refresh_done">refresh done</string>
-    <string name="loading_done">loading done</string>
-    <string name="listview_header_last_time">last update：</string>
+    <string name="listview_header_hint_normal">Pull to refresh</string>
+    <string name="listview_header_hint_release">Release to start refresh</string>
+    <string name="listview_loading">Loading…</string>
+    <string name="nomore_loading">No more to be loaded</string>
+    <string name="refreshing">Refreshing…</string>
+    <string name="refresh_done">Refresh done</string>
+    <string name="loading_done">Loading done</string>
+    <string name="listview_header_last_time">Last update：</string>
+    <string name="just_now">Just now</string>
 </resources>

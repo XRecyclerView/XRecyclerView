@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <plurals name="second_ago">
+        <item quantity="other">" giây trước"</item>
+    </plurals>
+    <plurals name="minute_ago">
+        <item quantity="other">" phút trước"</item>
+    </plurals>
+    <plurals name="hour_ago">
+        <item quantity="other">" giờ trước"</item>
+    </plurals>
+    <plurals name="day_ago">
+        <item quantity="other">" ngày trước"</item>
+    </plurals>
+    <plurals name="month_ago">
+        <item quantity="other">" tháng trước"</item>
+    </plurals>
+    <plurals name="year_ago">
+        <item quantity="other">" năm trước"</item>
+    </plurals>
+</resources>

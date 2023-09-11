@@ -3,7 +3,7 @@ package com.jcodecraeer.xrecyclerview;
 import android.view.View;
 
 /**
- * 作者：林冠宏
+ * Author: Lin Guanhong
  * <p>
  * My GitHub : https://github.com/af913337456/
  * <p>

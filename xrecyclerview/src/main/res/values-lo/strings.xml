@@ -1,0 +1,11 @@
+<resources>
+    <string name="listview_header_hint_normal">ດຶງເພື່ອໂຫຼດຫນ້າຈໍຄືນ</string>
+    <string name="listview_header_hint_release">ປ່ອຍເພື່ອເລີ່ມໂຫຼດຂໍ້ມູນຄືນໃໝ່</string>
+    <string name="listview_loading">ກຳລັງໂຫລດ…</string>
+    <string name="nomore_loading">ບໍ່ຕ້ອງໂຫລດອີກຕໍ່ໄປ</string>
+    <string name="refreshing">ສົດຊື່ນ…</string>
+    <string name="refresh_done">ສຳເລັດການໂຫຼດຂໍ້ມູນຄືນໃໝ່</string>
+    <string name="loading_done">ສຳເລັດການໂຫຼດ</string>
+    <string name="listview_header_last_time">ອັບເດດຫຼ້າສຸດ: </string>
+    <string name="just_now">ສົດໆຮ້ອນໆ</string>
+</resources>

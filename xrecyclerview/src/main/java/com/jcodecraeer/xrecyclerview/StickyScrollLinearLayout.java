@@ -1,14 +1,6 @@
 package com.jcodecraeer.xrecyclerview;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.view.NestedScrollingParent;
-import android.support.v4.view.ViewCompat;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.VelocityTracker;
@@ -16,6 +8,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.OverScroller;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.view.NestedScrollingParent;
+import androidx.core.view.ViewCompat;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 /**
  * 作者：林冠宏
@@ -98,7 +99,7 @@ public class StickyScrollLinearLayout
         return this.mContentView;
     }
 
-    // 设置，当 XR 里面显示的 item 第一个的位置是多少时，触发拦截
+    // Set, trigger interception when the first position of the item displayed in the XR is
     // to set a position of XR's dataList to control when we should call over scroll
     public void setTargetFirstVisiblePosition(int targetFirstVisiblePosition) {
         this.targetFirstVisiblePosition = targetFirstVisiblePosition;
@@ -106,27 +107,27 @@ public class StickyScrollLinearLayout
 
     @Override
     public boolean onStartNestedScroll(View child, View target, int nestedScrollAxes) {
-        Log.e(TAG, "onStartNestedScroll "+child.toString()+"  "+target.toString());
+//        Log.e(TAG, "onStartNestedScroll "+child.toString()+"  "+target.toString());
         return true;
     }
 
     @Override
-    public void onNestedScrollAccepted(View child, View target, int nestedScrollAxes) {
-        Log.e(TAG, "onNestedScrollAccepted");
+    public void onNestedScrollAccepted(@NonNull View child, @NonNull View target, int nestedScrollAxes) {
+//        Log.e(TAG, "onNestedScrollAccepted");
     }
 
     @Override
     public void onStopNestedScroll(View target) {
-        Log.e(TAG, "onStopNestedScroll "+target.toString());
+//        Log.e(TAG, "onStopNestedScroll "+target.toString());
     }
 
     @Override
-    public void onNestedScroll(View target, int dxConsumed, int dyConsumed, int dxUnconsumed, int dyUnconsumed) {
-        Log.e(TAG, "onNestedScroll "+dyConsumed+"----"+dyUnconsumed);
+    public void onNestedScroll(@NonNull View target, int dxConsumed, int dyConsumed, int dxUnconsumed, int dyUnconsumed) {
+//        Log.e(TAG, "onNestedScroll "+dyConsumed+"----"+dyUnconsumed);
     }
 
     @Override
-    public void onNestedPreScroll(View target, int dx, int dy, int[] consumed) {
+    public void onNestedPreScroll(@NonNull View target, int dx, int dy, @NonNull int[] consumed) {
 
         if(!(target instanceof XRecyclerView))
             // todo 2017-12-31，make it more general
@@ -149,11 +150,11 @@ public class StickyScrollLinearLayout
 
         int scrollY = getScrollY();
         boolean temp = dy > 0 && (scrollY < mTopViewHeight);
-        Log.e(TAG,
-                "mTopViewHeight == "+mTopViewHeight
-                        +"\ndy == "+dy
-                        +"\nscrollY == "+scrollY
-                        +"\nhiddenTop && showTop "+temp);
+//        Log.e(TAG,
+//                "mTopViewHeight == "+mTopViewHeight
+//                        +"\ndy == "+dy
+//                        +"\nscrollY == "+scrollY
+//                        +"\nhiddenTop && showTop "+temp);
         if(!temp){
             // judge
             temp = dy < 0
@@ -164,11 +165,11 @@ public class StickyScrollLinearLayout
                                     ||
                             firstVisiblePosition==targetFirstVisiblePosition
                     );
-            Log.e(TAG,
-                    "mTopViewHeight == "+mTopViewHeight
-                            +"\ndy == "+dy
-                            +"\nscrollY == "+scrollY
-                            +"\nfirstVisiblePosition "+firstVisiblePosition);
+//            Log.e(TAG,
+//                    "mTopViewHeight == "+mTopViewHeight
+//                            +"\ndy == "+dy
+//                            +"\nscrollY == "+scrollY
+//                            +"\nfirstVisiblePosition "+firstVisiblePosition);
         }
         if (temp) {
             scrollBy(0, dy);
@@ -177,14 +178,14 @@ public class StickyScrollLinearLayout
     }
 
     @Override
-    public boolean onNestedFling(View target, float velocityX, float velocityY, boolean consumed) {
-        Log.e(TAG, "onNestedFling");
+    public boolean onNestedFling(@NonNull View target, float velocityX, float velocityY, boolean consumed) {
+//        Log.e(TAG, "onNestedFling");
         return false;
     }
 
     @Override
-    public boolean onNestedPreFling(View target, float velocityX, float velocityY) {
-        Log.e(TAG, "onNestedPreFling");
+    public boolean onNestedPreFling(@NonNull View target, float velocityX, float velocityY) {
+//        Log.e(TAG, "onNestedPreFling");
         //down - //up+
         if (getScrollY() >= mTopViewHeight) return false;
         fling((int) velocityY);
@@ -193,7 +194,7 @@ public class StickyScrollLinearLayout
 
     @Override
     public int getNestedScrollAxes() {
-        Log.e(TAG, "getNestedScrollAxes");
+//        Log.e(TAG, "getNestedScrollAxes");
         return 0;
     }
 
@@ -214,7 +215,7 @@ public class StickyScrollLinearLayout
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
-        // 你可以在 xml 文件内配置
+        // You can configure it in the xml file
         // you can init those views in your xml file
 
 //        mTopView = findViewById(R.id.topContainer);
@@ -273,7 +274,7 @@ public class StickyScrollLinearLayout
             y = 0;
 
         if (y > mTopViewHeight)
-            // 边界限制，防止把 tabView 也挡住了
+            // Boundary restrictions prevent the tabView from blocking
             // Prevent it from hiding the tabView,so we limit it
             y = mTopViewHeight;
 
